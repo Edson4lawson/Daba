@@ -43,7 +43,7 @@ function generateInvoice($pdo, $orderId, $amount) {
             INSERT INTO invoices (order_id, invoice_number, amount, status, created_at)
             VALUES (?, ?, ?, 'pending', NOW())
         ");
-        $stmt->execute([$orderId, $amount, $amount]);
+        $stmt->execute([$orderId, $invoiceNumber, $amount]);
         
         return $pdo->lastInsertId();
         
