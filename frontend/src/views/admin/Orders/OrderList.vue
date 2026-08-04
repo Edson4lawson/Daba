@@ -64,7 +64,7 @@
               {{ formatDate(order.created_at) }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <router-link :to="`/Bloom-manager/orders/${order.id}`" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
+              <router-link :to="`/admin/orders/${order.id}`" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
                 Détails
               </router-link>
             </td>

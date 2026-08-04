@@ -9,7 +9,8 @@ require_once __DIR__ . '/../../middleware/auth.php';
 
 // Authentifier l'administrateur
 $user = authenticate();
-if ($user['role'] !== 'admin') {
+$allowedRoles = ['admin', 'magasinier'];
+if (!in_array($user['role'], $allowedRoles)) {
     sendJsonResponse(['error' => 'Accès refusé'], 403);
 }
 

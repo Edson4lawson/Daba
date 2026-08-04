@@ -7,64 +7,154 @@
     <!-- En-tête contextuel avec Date Dynamique -->
     <div class="dashboard-header flex items-center justify-between space-y-8">
       <div>
-        <h2 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight space-y-2">Bonjour {{ authStore.user?.name || 'Admin' }}</h2>
-        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Voici l'activité de votre boutique Bloom aujourd'hui.</p>
+        <h2 class="text-2xl font-black text-daba-navy dark:text-daba-cream tracking-tight space-y-2">Bonjour {{ authStore.user?.role || 'Admin' }}</h2>
+        <p class="text-sm text-daba-slate dark:text-daba-slate-dark font-medium">Voici l'activité de votre boutique Daba aujourd'hui.</p>
       </div>
-      <div class="flex items-center space-x-2 bg-white dark:bg-[rgb(43,44,43)] px-4 py-2 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-500">
-        <Calendar class="w-4 h-4 text-slate-400" />
-        <span class="text-sm font-bold text-slate-700 dark:text-slate-200">{{ currentDate }}</span>
+      <div class="flex items-center space-x-2 bg-daba-cream dark:bg-daba-dark-bg px-4 py-2 rounded-2xl shadow-sm border border-daba-cream-alt dark:border-daba-dark-border">
+        <Calendar class="w-4 h-4 text-daba-slate-dark" />
+        <span class="text-sm font-bold text-daba-navy dark:text-white">{{ currentDate }}</span>
       </div>
     </div>
 
     <!-- Section Cartes Statistiques (KPIs) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <StatsCard
-        title="Total Produits"
-        :value="stats?.totalProducts ?? 0"
-        :icon="Package"
-        color="purple"
-        class="stats-card-anim mb-4"
-        :loading="isLoading"
-      />
-      <StatsCard
-        title="Commandes"
-        :value="stats?.totalOrders ?? 0"
-        :icon="ShoppingCart"
-        color="purple"
-        class="stats-card-anim mb-4"
-        :loading="isLoading"
-      />
-      <StatsCard
-        title="Clients"
-        :value="stats?.totalClients ?? 0"
-        :icon="Users"
-        color="purple"
-        class="stats-card-anim mb-4"
-        :loading="isLoading"
-      />
-      <StatsCard
-        title="Chiffre d'Affaires"
-        :value="stats?.totalRevenue ?? 0"
-        :icon="Wallet"
-        suffix="FCFA"
-        color="purple"
-        class="stats-card-anim mb-4"
-        :loading="isLoading"
-      />
+      <!-- Admin: Tous les KPIs -->
+      <template v-if="userRole === 'admin'">
+        <StatsCard
+          title="Total Produits"
+          :value="stats?.totalProducts ?? 0"
+          :icon="Package"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Commandes"
+          :value="stats?.totalOrders ?? 0"
+          :icon="ShoppingCart"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Clients"
+          :value="stats?.totalClients ?? 0"
+          :icon="Users"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Chiffre d'Affaires"
+          :value="stats?.totalRevenue ?? 0"
+          :icon="Wallet"
+          suffix="FCFA"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+      </template>
+      
+      <!-- Commercial: Commandes du jour + en attente + panier moyen -->
+      <template v-else-if="userRole === 'commercial'">
+        <StatsCard
+          title="Commandes du Jour"
+          :value="stats?.todayOrders ?? 0"
+          :icon="ShoppingCart"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="En Attente"
+          :value="stats?.pendingOrders ?? 0"
+          :icon="Clock"
+          color="amber"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Panier Moyen"
+          :value="stats?.avgCart ?? 0"
+          :icon="Wallet"
+          suffix="FCFA"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+      </template>
+      
+      <!-- Magasinier: Alertes stock + commandes en attente de préparation -->
+      <template v-else-if="userRole === 'magasinier'">
+        <StatsCard
+          title="Alertes Stock"
+          :value="stats?.stockAlerts ?? 0"
+          :icon="AlertTriangle"
+          color="rose"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="À Préparer"
+          :value="stats?.pendingOrders ?? 0"
+          :icon="Package"
+          color="amber"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+      </template>
+      
+      <!-- Comptable: CA période + factures + panier moyen -->
+      <template v-else-if="userRole === 'comptable'">
+        <StatsCard
+          title="Chiffre d'Affaires"
+          :value="stats?.totalRevenue ?? 0"
+          :icon="Wallet"
+          suffix="FCFA"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Factures Payées"
+          :value="stats?.paidInvoices ?? 0"
+          :icon="FileText"
+          color="emerald"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Factures En Attente"
+          :value="stats?.pendingInvoices ?? 0"
+          :icon="FileText"
+          color="amber"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+        <StatsCard
+          title="Panier Moyen"
+          :value="stats?.avgCart ?? 0"
+          :icon="Wallet"
+          suffix="FCFA"
+          color="purple"
+          class="stats-card-anim mb-4"
+          :loading="isLoading"
+        />
+      </template>
     </div>
 
     <!-- Section Graphiques et Tableaux -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 space-y-8">
       
-      <!-- Graphique d'Évolution des Revenus (Utilise Chart.js via vue-chartjs) -->
-      <div class="dashboard-chart bg-white dark:bg-[rgb(43,44,43)] rounded-3xl shadow-sm border border-slate-100 dark:border-slate-500 p-8 hover:shadow-xl transition-all duration-500">
+      <!-- Graphique d'Évolution des Revenus (Admin uniquement) -->
+      <div v-if="userRole === 'admin'" class="dashboard-chart bg-daba-cream dark:bg-daba-dark-bg rounded-3xl shadow-sm border border-daba-cream-alt dark:border-daba-dark-border p-8 hover:shadow-xl transition-all duration-500">
         <div class="flex items-center justify-between mb-8">
           <div>
-            <h2 class="text-lg font-bold text-slate-800 dark:text-white">Évolution des Revenus</h2>
-            <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">Revenus mensuels cumulés</p>
+            <h2 class="text-lg font-bold text-daba-navy dark:text-daba-cream">Évolution des Revenus</h2>
+            <p class="text-xs text-daba-slate dark:text-daba-slate-dark font-medium">Revenus mensuels cumulés</p>
           </div>
-          <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-2xl">
-            <TrendingUp class="w-5 h-5 text-purple-600" />
+          <div class="p-3 bg-daba-cream-alt dark:bg-[rgb(43,44,43)] rounded-2xl">
+            <TrendingUp class="w-5 h-5 text-daba-orange" />
           </div>
         </div>
         <div class="h-80">
@@ -74,49 +164,51 @@
             :data="revenueChartData" 
             :options="chartOptions" 
           />
-          <div v-else class="h-full flex items-center justify-center text-slate-400 italic text-sm">
+          <div v-else class="h-full flex items-center justify-center text-daba-slate-dark italic text-sm">
             Chargement des données...
           </div>
         </div>
       </div>
 
-      <!-- Tableau des Commandes Récentes -->
-      <div class="dashboard-table bg-white dark:bg-[rgb(43,44,43)] rounded-3xl shadow-sm border border-slate-100 dark:border-slate-500 overflow-hidden flex flex-col hover:shadow-xl transition-all duration-500">
-        <div class="px-8 py-6 border-b border-slate-50 dark:border-slate-500 flex items-center justify-between bg-slate-50/30 dark:bg-slate-900/20 ">
-          <h2 class="text-lg font-bold text-slate-800 dark:text-white">Commandes Récentes</h2>
-          <button @click="router.push('/Bloom-manager/orders')" class="text-xs font-black uppercase text-purple-600 dark:text-purple-400 hover:text-purple-700 tracking-widest">
+      <!-- Tableau des Commandes Récentes (Admin, Commercial, Magasinier) -->
+      <div v-if="userRole === 'admin' || userRole === 'commercial' || userRole === 'magasinier'" class="dashboard-table bg-daba-cream dark:bg-daba-dark-bg rounded-3xl shadow-sm border border-daba-cream-alt dark:border-daba-dark-border overflow-hidden flex flex-col hover:shadow-xl transition-all duration-500">
+        <div class="px-8 py-6 border-b border-daba-cream-alt dark:border-daba-dark-border flex items-center justify-between bg-daba-cream-alt/50 dark:bg-[rgb(43,44,43)]/30 ">
+          <h2 class="text-lg font-bold text-daba-navy dark:text-daba-cream">
+            {{ userRole === 'magasinier' ? 'Commandes à Préparer' : 'Commandes Récentes' }}
+          </h2>
+          <button @click="router.push('/admin/orders')" class="text-xs font-black uppercase text-daba-orange dark:text-daba-orange hover:text-daba-orange-dark tracking-widest">
             Tout voir
           </button>
         </div>
         <div class="overflow-x-auto flex-1">
-          <table class="min-w-full divide-y divide-slate-50 dark:divide-slate-500">
-            <thead class="bg-slate-50/50 dark:bg-slate-900/30">
+          <table class="min-w-full divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
+            <thead class="bg-daba-cream-alt dark:bg-[rgb(43,44,43)]/30">
               <tr>
-                <th class="px-8 py-4 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Client</th>
-                <th class="px-8 py-4 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Montant</th>
-                <th class="px-8 py-4 text-right text-[10px] font-black text-slate-400 uppercase tracking-widest">Statut</th>
+                <th class="px-8 py-4 text-left text-[10px] font-black text-daba-slate-dark uppercase tracking-widest">Client</th>
+                <th class="px-8 py-4 text-center text-[10px] font-black text-daba-slate-dark uppercase tracking-widest">Montant</th>
+                <th class="px-8 py-4 text-right text-[10px] font-black text-daba-slate-dark uppercase tracking-widest">Statut</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50 dark:divide-slate-500">
+            <tbody class="divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
               <!-- Squelettes de chargement -->
               <tr v-if="isLoading" v-for="i in 3" :key="'skeleton-'+i" class="animate-pulse">
-                <td class="px-8 py-4"><div class="h-4 bg-slate-100 dark:bg-slate-700 rounded w-24 mb-1"></div><div class="h-2 bg-slate-50 dark:bg-slate-800 rounded w-16"></div></td>
-                <td class="px-8 py-4"><div class="h-4 bg-slate-100 dark:bg-slate-700 rounded w-16 mx-auto"></div></td>
-                <td class="px-8 py-4 text-right"><div class="h-6 bg-slate-100 dark:bg-slate-700 rounded-full w-20 ml-auto"></div></td>
+                <td class="px-8 py-4"><div class="h-4 bg-daba-cream-alt dark:bg-[rgb(43,44,43)] rounded w-24 mb-1"></div><div class="h-2 bg-daba-cream-alt dark:bg-[rgb(43,44,43)] rounded w-16"></div></td>
+                <td class="px-8 py-4"><div class="h-4 bg-daba-cream-alt dark:bg-[rgb(43,44,43)] rounded w-16 mx-auto"></div></td>
+                <td class="px-8 py-4 text-right"><div class="h-6 bg-daba-cream-alt dark:bg-[rgb(43,44,43)] rounded-full w-20 ml-auto"></div></td>
               </tr>
               <!-- État vide -->
               <tr v-else-if="stats.recentOrders.length === 0">
-                <td colspan="3" class="px-8 py-12 text-center text-slate-400 dark:text-slate-500 text-sm font-medium italic">
+                <td colspan="3" class="px-8 py-12 text-center text-daba-slate dark:text-daba-slate-dark text-sm font-medium italic">
                   Aucune commande récente
                 </td>
               </tr>
               <!-- Liste des commandes -->
-              <tr v-else v-for="order in stats.recentOrders" :key="order.id" class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition-colors group">
+              <tr v-else v-for="order in stats.recentOrders" :key="order.id" class="hover:bg-daba-cream-alt/50 dark:hover:bg-[rgb(43,44,43)]/30 transition-colors group">
                 <td class="px-8 py-4 whitespace-nowrap">
-                  <div class="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-purple-600 transition-colors">{{ order.user_name }}</div>
-                  <div class="text-[10px] text-slate-400 dark:text-slate-500 font-medium tracking-tighter uppercase">ID #{{ order.id }} • {{ formatDate(order.created_at) }}</div>
+                  <div class="text-sm font-bold text-daba-navy dark:text-white group-hover:text-daba-orange transition-colors">{{ order.user_name }}</div>
+                  <div class="text-[10px] text-daba-slate dark:text-daba-slate-dark font-medium tracking-tighter uppercase">ID #{{ order.id }} • {{ formatDate(order.created_at) }}</div>
                 </td>
-                <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-black text-slate-800 dark:text-white">
+                <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-black text-daba-navy dark:text-daba-cream">
                   {{ formatNumber(order.total_amount) }} FCFA
                 </td>
                 <td class="px-8 py-4 whitespace-nowrap text-right">
@@ -131,36 +223,36 @@
       </div>
     </div>
 
-    <!-- Section Accès Rapide : Meilleurs Produits et Catégories -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Section Accès Rapide : Meilleurs Produits et Catégories (Admin uniquement) -->
+    <div v-if="userRole === 'admin'" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
       <!-- Aperçu des Nouveaux Produits (Dashboard) -->
-      <div class="dashboard-quick-view mt-8 lg:col-span-2 bg-white dark:bg-[rgb(43,44,43)] rounded-3xl shadow-sm border border-slate-100 dark:border-slate-500 p-8 hover:shadow-xl transition-all duration-500">
+      <div class="dashboard-quick-view mt-8 lg:col-span-2 bg-daba-cream dark:bg-daba-dark-bg rounded-3xl shadow-sm border border-daba-cream-alt dark:border-daba-dark-border p-8 hover:shadow-xl transition-all duration-500">
         <div class="flex items-center justify-between mb-8 ">
-          <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center">
-            <LucideBookSearch class="w-5 h-5 mr-3 text-purple-400" />
+          <h2 class="text-lg font-bold text-daba-navy dark:text-daba-cream flex items-center">
+            <LucideBookSearch class="w-5 h-5 mr-3 text-daba-orange" />
              Catalogue Produit
           </h2>
-          <button @click="router.push('/bloom-manager/products')" class="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl transition-colors">
-            <ArrowRight class="w-5 h-5 text-slate-400 dark:text-slate-500 hover:text-purple-600" />
+          <button @click="router.push('/admin/products')" class="p-2 hover:bg-daba-cream-alt dark:hover:bg-[rgb(43,44,43)] rounded-xl transition-colors">
+            <ArrowRight class="w-5 h-5 text-daba-slate dark:text-daba-slate-dark hover:text-daba-orange" />
           </button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div v-for="p in recentProducts.slice(0, 3)" :key="p.id" class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-500 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md transition-all cursor-pointer group" @click="router.push('/bloom-manager/products')">
-            <div class="w-full aspect-square rounded-xl bg-slate-200 dark:bg-[rgb(43,44,43)] mb-3 overflow-hidden">
+          <div v-for="p in recentProducts.slice(0, 3)" :key="p.id" class="p-4 rounded-2xl bg-daba-cream-alt dark:bg-[rgb(43,44,43)]/30 border border-daba-cream-alt dark:border-daba-dark-border hover:bg-daba-cream dark:hover:bg-[rgb(43,44,43)] hover:shadow-md transition-all cursor-pointer group" @click="router.push('/admin/products')">
+            <div class="w-full aspect-square rounded-xl bg-daba-cream-alt dark:bg-[rgb(43,44,43)] mb-3 overflow-hidden">
                <img :src="getImageUrl(p.image_url)" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">{{ p.name }}</h4>
+            <h4 class="text-sm font-bold text-white dark:text-white truncate">{{ p.name }}</h4>
             <div class="flex items-center justify-between mt-1">
-              <span class="text-sm text-purple-600 dark:text-purple-400 font-bold">{{ formatNumber(p.price) }} FCFA</span>
-              <span class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter">{{ p.category_name }}</span>
+              <span class="text-sm text-daba-orange dark:text-daba-orange font-bold">{{ formatNumber(p.price) }} FCFA</span>
+              <span class="text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-tighter">{{ p.category_name }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Résumé des Catégories (Carte Noire Premium) -->
-      <div class="dashboard-category bg-black dark:bg-slate-950 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/20 mt-8">
+      <div class="dashboard-category bg-daba-navy dark:bg-daba-dark-bg rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-slate-900/20 mt-8">
         <div class="relative z-10 h-full flex flex-col"> 
           <h2 class="text-lg font-bold mb-6 flex items-center">
             <Layers class="w-5 h-5 mr-3 text-white/60" />
@@ -172,12 +264,12 @@
               <span class="px-2 py-0.5 rounded-lg bg-white/10 text-[10px] font-black">{{ cat.product_count }} items</span>
             </div>
           </div>
-          <button @click="router.push('/bloom-manager/categories')" class="mt-8 w-full py-3 bg-white text-black text-xs font-black uppercase tracking-widest rounded-xl hover:bg-slate-100 transition-all">
+          <button @click="router.push('/admin/categories')" class="mt-8 w-full py-3 bg-white text-black text-xs font-black uppercase tracking-widest rounded-xl hover:bg-slate-100 transition-all">
             Gérer les rayons
           </button>
         </div>
         <!-- Décoration visuelle (Blur effect) -->
-        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-600/70 rounded-full blur-3xl text-purple-600"></div>
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-daba-orange/70 rounded-full blur-3xl text-daba-orange"></div>
       </div>
     </div>
   </div>
@@ -203,7 +295,10 @@ import {
   Coins,
   DollarSign,
   CircleDollarSign,
-  Wallet
+  Wallet,
+  Clock,
+  AlertTriangle,
+  FileText
 } from 'lucide-vue-next'
 // Imports Chart.js pour les graphiques
 import {
@@ -226,10 +321,40 @@ const { addNotification } = useNotifications()
 
 let eventSource = null;
 
+// Rôle de l'utilisateur connecté
+const userRole = computed(() => authStore.user?.role || 'admin')
+
+// Détermine quels KPI afficher selon le rôle
+const showKPIs = computed(() => {
+  const role = userRole.value
+  return {
+    totalProducts: role === 'admin',
+    totalOrders: role === 'admin',
+    totalClients: role === 'admin',
+    totalRevenue: role === 'admin' || role === 'comptable',
+    todayOrders: role === 'commercial',
+    pendingOrders: role === 'commercial' || role === 'magasinier',
+    stockAlerts: role === 'magasinier',
+    avgCart: role === 'admin' || role === 'commercial' || role === 'comptable'
+  }
+})
+
+// Détermine quelles sections afficher
+const showSections = computed(() => {
+  const role = userRole.value
+  return {
+    revenueChart: role === 'admin',
+    recentOrders: role === 'admin' || role === 'commercial' || role === 'magasinier',
+    productCatalog: role === 'admin',
+    categories: role === 'admin'
+  }
+})
+
 // État des statistiques globales (initialisé avec des valeurs vides)
 const stats = ref({
   totalProducts: 0, totalOrders: 0, totalClients: 0, 
-  totalRevenue: 0, recentOrders: [], monthlySales: []
+  totalRevenue: 0, recentOrders: [], monthlySales: [],
+  todayOrders: 0, pendingOrders: 0, stockAlerts: 0, avgCart: 0
 })
 const recentProducts = ref([])
 const categories = ref([])
@@ -250,24 +375,82 @@ const currentDate = computed(() => {
 const loadStats = async () => {
   isLoading.value = true
   try {
-    // Lancer toutes les requêtes en parallèle pour un chargement ultra-rapide
-    const [statsRes, catRes] = await Promise.all([
-      adminService.getStats(),
-      adminService.getCategories()
-    ]);
+    const role = userRole.value
+    
+    // Pour admin, on charge toutes les stats
+    if (role === 'admin') {
+      const [statsRes, catRes] = await Promise.all([
+        adminService.getStats(),
+        adminService.getCategories()
+      ])
 
-    if (statsRes.success) {
-      stats.value = statsRes.stats;
-      recentProducts.value = statsRes.stats.recentProducts || [];
+      if (statsRes.success) {
+        stats.value = statsRes.stats;
+        recentProducts.value = statsRes.stats.recentProducts || [];
+        // Calculer le panier moyen
+        if (stats.value.totalOrders > 0) {
+          stats.value.avgCart = Math.round(stats.value.totalRevenue / stats.value.totalOrders)
+        }
+      }
+      
+      if (catRes.success) {
+        categories.value = Array.isArray(catRes.categories) ? catRes.categories : [];
+      }
+    } 
+    // Pour commercial: charger les commandes du jour et en attente
+    else if (role === 'commercial') {
+      const ordersRes = await adminService.getOrders()
+      if (ordersRes.success) {
+        const today = new Date().toDateString()
+        const todayOrders = ordersRes.orders.filter(o => new Date(o.created_at).toDateString() === today)
+        const pendingOrders = ordersRes.orders.filter(o => o.status === 'pending' || o.status === 'en attente')
+        
+        stats.value.todayOrders = todayOrders.length
+        stats.value.pendingOrders = pendingOrders.length
+        stats.value.recentOrders = ordersRes.orders.slice(0, 10)
+        
+        // Calculer le panier moyen
+        if (ordersRes.orders.length > 0) {
+          const total = ordersRes.orders.reduce((sum, o) => sum + (parseFloat(o.total_amount) || 0), 0)
+          stats.value.avgCart = Math.round(total / ordersRes.orders.length)
+        }
+      }
+    }
+    // Pour magasinier: charger les alertes stock et commandes à préparer
+    else if (role === 'magasinier') {
+      const [productsRes, ordersRes] = await Promise.all([
+        adminService.getProducts({ per_page: 200 }),
+        adminService.getOrders()
+      ])
+      
+      if (productsRes.success) {
+        stats.value.stockAlerts = productsRes.products.filter(p => p.stock <= 10).length
+      }
+      
+      if (ordersRes.success) {
+        const pendingOrders = ordersRes.orders.filter(o => o.status === 'pending' || o.status === 'en attente' || o.status === 'confirmed')
+        stats.value.pendingOrders = pendingOrders.length
+        stats.value.recentOrders = pendingOrders.slice(0, 10)
+      }
+    }
+    // Pour comptable: charger le CA et les factures
+    else if (role === 'comptable') {
+      const statsRes = await adminService.getStats()
+      if (statsRes.success) {
+        stats.value.totalRevenue = statsRes.stats.totalRevenue || 0
+        stats.value.totalOrders = statsRes.stats.totalOrders || 0
+        // Calculer le panier moyen
+        if (stats.value.totalOrders > 0) {
+          stats.value.avgCart = Math.round(stats.value.totalRevenue / stats.value.totalOrders)
+        }
+        // Simuler les factures (à remplacer par vrai endpoint)
+        stats.value.paidInvoices = Math.floor(stats.value.totalOrders * 0.7)
+        stats.value.pendingInvoices = Math.floor(stats.value.totalOrders * 0.3)
+      }
     }
     
-    if (catRes.success) {
-      categories.value = Array.isArray(catRes.categories) ? catRes.categories : [];
-    }
-    
-    console.log('[Dashboard] Données chargées:', { stats: stats.value, recentProducts: recentProducts.value });
+    console.log('[Dashboard] Données chargées pour', role, ':', stats.value);
 
-    // Lancer l'animation une fois les données chargées
     await nextTick();
     runAnimations();
   } catch (error) {
@@ -341,18 +524,18 @@ const revenueChartData = computed(() => {
     // Création d'un dégradé pour l'aire sous la courbe
     const ctx = document.createElement('canvas').getContext('2d')
     const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-    gradient.addColorStop(0, 'rgba(192, 38, 211, 0.4)')
-    gradient.addColorStop(1, 'rgba(192, 38, 211, 0)')
+    gradient.addColorStop(0, 'rgba(206, 70, 0, 0.4)')
+    gradient.addColorStop(1, 'rgba(206, 70, 0, 0)')
     
     return {
       labels: sales.map(s => s.month || ''),
       datasets: [{
         label: 'Revenus (FCFA)',
         data: sales.map(s => parseFloat(s.revenue || s.total || 0)),
-        borderColor: '#c026d3',
+        borderColor: '#CE4600',
         borderWidth: 4,
         pointBackgroundColor: '#fff',
-        pointBorderColor: '#c026d3',
+        pointBorderColor: '#CE4600',
         pointBorderWidth: 3,
         pointRadius: 5,
         pointHoverRadius: 8,
@@ -418,10 +601,11 @@ const chartOptions = {
  */
 const getStatusClass = (status) => {
   const s = status.toLowerCase()
-  if (s.includes('completed') || s.includes('livré') || s.includes('delivered')) return 'bg-emerald-50 text-emerald-600'
-  if (s.includes('pending') || s.includes('en attente')) return 'bg-amber-50 text-amber-600'
-  if (s.includes('cancel')) return 'bg-rose-50 text-rose-600'
-  return 'bg-blue-50 text-blue-600'
+  if (s.includes('completed') || s.includes('livré') || s.includes('delivered')) return 'bg-daba-cream-alt text-daba-green dark:bg-[rgb(43,44,43)]/30 dark:text-daba-green'
+  if (s.includes('pending') || s.includes('en attente')) return 'bg-daba-cream-alt text-daba-orange dark:bg-[rgb(43,44,43)]/30 dark:text-daba-orange'
+  if (s.includes('cancel')) return 'bg-daba-cream-alt text-rose-600 dark:bg-[rgb(43,44,43)]/30 dark:text-rose-400'
+  if (s.includes('shipped') || s.includes('expédié')) return 'bg-daba-cream-alt text-daba-navy dark:bg-[rgb(43,44,43)]/30 dark:text-daba-navy'
+  return 'bg-daba-cream-alt text-daba-slate dark:bg-[rgb(43,44,43)]/30 dark:text-daba-slate-dark'
 }
 
 /**

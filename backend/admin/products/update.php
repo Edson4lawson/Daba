@@ -9,7 +9,8 @@ require_once __DIR__ . '/../../middleware/auth.php';
 
 // Authentifier l'administrateur
 $user = authenticate();
-if ($user['role'] !== 'admin') {
+$allowedRoles = ['admin', 'magasinier'];
+if (!in_array($user['role'], $allowedRoles)) {
     sendJsonResponse(['error' => 'Accès refusé'], 403);
 }
 
@@ -30,6 +31,7 @@ $price = $data['price'] ?? null;
 $category_id = $data['category_id'] ?? null;
 $status = $data['status'] ?? null;
 $image_url = $data['image_url'] ?? null;
+$stock = $data['stock'] ?? null;
 
 try {
     // Construire la requête dynamiquement pour ne mettre à jour que ce qui est envoyé
@@ -42,6 +44,7 @@ try {
     if ($category_id !== null) { $fields[] = "category_id = ?"; $params[] = $category_id; }
     if ($status !== null) { $fields[] = "status = ?"; $params[] = $status; }
     if ($image_url !== null) { $fields[] = "image_url = ?"; $params[] = $image_url; }
+    if ($stock !== null) { $fields[] = "stock_quantity = ?"; $params[] = $stock; }
 
     if (empty($fields)) {
         sendJsonResponse(['error' => 'Aucune donnée à mettre à jour'], 400);

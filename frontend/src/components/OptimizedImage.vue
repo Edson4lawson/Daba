@@ -3,7 +3,7 @@
     <!-- Placeholder avec blur pendant le chargement -->
     <div 
       v-show="!loaded" 
-      class="absolute inset-0 bg-gradient-to-br from-purple-100 to-purple-50 animate-pulse"
+      class="absolute inset-0 bg-gradient-to-br from-daba-cream-alt to-daba-cream animate-pulse"
       :style="placeholderStyle"
     ></div>
     
@@ -28,9 +28,9 @@
     <!-- Fallback si erreur de chargement -->
     <div 
       v-if="error" 
-      class="absolute inset-0 flex items-center justify-center bg-gray-100"
+      class="absolute inset-0 flex items-center justify-center bg-daba-cream-alt"
     >
-      <Icon icon="solar:image-broken-linear" class="w-12 h-12 text-gray-400" />
+      <Icon icon="solar:image-broken-linear" class="w-12 h-12 text-daba-slate-dark" />
     </div>
   </div>
 </template>

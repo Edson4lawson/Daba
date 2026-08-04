@@ -1,0 +1,52 @@
+-- Migration 006: Ajout des rôles Daba (commercial, magasinier, comptable)
+-- Bloom Chloé / Daba Project
+-- Date: 2026-07-31
+-- Cette migration ajoute 3 nouveaux rôles sans modifier les rôles existants
+
+-- Insérer les nouveaux rôles
+INSERT INTO roles (name, description, level) VALUES
+('commercial', 'Gestion commerciale et ventes', 2),
+('magasinier', 'Gestion du stock et entrepôt', 2),
+('comptable', 'Gestion comptable et facturation', 3)
+ON DUPLICATE KEY UPDATE name=name;
+
+-- Récupérer les IDs des nouveaux rôles
+SET @commercial_id = (SELECT id FROM roles WHERE name = 'commercial');
+SET @magasinier_id = (SELECT id FROM roles WHERE name = 'magasinier');
+SET @comptable_id = (SELECT id FROM roles WHERE name = 'comptable');
+
+-- Assigner les permissions au rôle commercial
+INSERT INTO role_permissions (role_id, permission_id, created_at)
+SELECT @commercial_id, id, NOW() FROM permissions WHERE name IN (
+    'products.view',
+    'categories.view',
+    'orders.view',
+    'orders.view_all',
+    'orders.update_status',
+    'reports.view'
+)
+ON DUPLICATE KEY UPDATE role_id=role_id;
+
+-- Assigner les permissions au rôle magasinier
+INSERT INTO role_permissions (role_id, permission_id, created_at)
+SELECT @magasinier_id, id, NOW() FROM permissions WHERE name IN (
+    'products.view',
+    'products.update',
+    'categories.view',
+    'orders.view'
+)
+ON DUPLICATE KEY UPDATE role_id=role_id;
+
+-- Assigner les permissions au rôle comptable
+INSERT INTO role_permissions (role_id, permission_id, created_at)
+SELECT @comptable_id, id, NOW() FROM permissions WHERE name IN (
+    'orders.view',
+    'orders.view_all',
+    'reports.view',
+    'reports.export'
+)
+ON DUPLICATE KEY UPDATE role_id=role_id;
+
+-- Afficher un résumé
+SELECT 'Migration RBAC Daba terminée avec succès' AS message;
+SELECT COUNT(*) AS roles_added FROM roles WHERE name IN ('commercial', 'magasinier', 'comptable');

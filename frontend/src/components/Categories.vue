@@ -10,16 +10,16 @@
             </div>
             <!-- Categories Grid -->
             <div v-if="loading" class="flex justify-center py-20">
-                <div class="animate-spin rounded-full h-12 w-12 border-4 border-purple-100 border-t-purple-600"></div>
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-daba-cream-alt border-t-daba-orange"></div>
             </div>
             <!-- Empty/Error State -->
-            <div v-else-if="products.length === 0" class="py-12 text-center bg-slate-50 rounded-[2.5rem] border border-dashed border-slate-200">
-                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                    <Icon icon="solar:fire-minimalistic-linear" class="w-8 h-8 text-slate-300" />
+            <div v-else-if="products.length === 0" class="py-12 text-center bg-daba-cream-alt rounded-[2.5rem] border border-dashed border-daba-cream-alt">
+                <div class="w-16 h-16 bg-daba-cream rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <Icon icon="solar:fire-minimalistic-linear" class="w-8 h-8 text-daba-slate-dark" />
                 </div>
-                <h3 class="text-lg font-bold text-slate-900 mb-1">Aucune tendance trouvée</h3>
-                <p class="text-slate-500 text-sm mb-4">Rechargez la page pour mettre à jour les tendances.</p>
-                <button @click="fetchTrends" class="text-purple-600 font-black uppercase tracking-widest text-[10px] hover:underline">Rafraîchir</button>
+                <h3 class="text-lg font-bold text-daba-navy mb-1">Aucune tendance trouvée</h3>
+                <p class="text-daba-slate text-sm mb-4">Rechargez la page pour mettre à jour les tendances.</p>
+                <button @click="fetchTrends" class="text-daba-orange font-black uppercase tracking-widest text-[10px] hover:underline">Rafraîchir</button>
             </div>
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div v-for="(product, index) in products" :key="product.id"
@@ -33,17 +33,17 @@
                     />
                     
                     <!-- Gradient Overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-900/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-daba-navy/90 via-daba-navy/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                     
                     <!-- Content -->
                     <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
                         <h3 class="text-2xl font-bold text-white mb-2"> {{ product.name }} </h3>
-                        <p class="text-purple-100 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <p class="text-daba-cream-alt text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             {{ product.description }}
                         </p>
                         <div class="mt-4 flex items-center justify-between">
                             <span class="text-white font-black text-xl">{{ product.price?.toLocaleString() }} FCFA</span>
-                            <div class="w-10 h-1 bg-white rounded-full"></div>
+                            <div class="w-10 h-1 bg-daba-cream rounded-full"></div>
                         </div>
                     </div>
                 </div>

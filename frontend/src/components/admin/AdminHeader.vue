@@ -1,18 +1,18 @@
 ﻿<template>
-  <header class="h-16 bg-white dark:bg-[rgb(43,44,43)] border-b border-slate-100 dark:border-slate-700 flex items-center justify-between px-8 shadow-sm">
+  <header class="h-16 bg-daba-cream dark:bg-daba-dark-card border-b border-daba-cream-alt dark:border-daba-dark-border flex items-center justify-between px-8 shadow-sm">
     <div class="flex items-center gap-4">
-      <button @click="$emit('toggle-sidebar')" class="lg:hidden p-2 text-slate-500 hover:text-slate-800 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+      <button @click="$emit('toggle-sidebar')" class="lg:hidden p-2 text-daba-slate hover:text-daba-navy dark:hover:text-white rounded-lg hover:bg-daba-cream-alt dark:hover:bg-slate-800 transition-colors">
         <Menu class="w-5 h-5" />
       </button>
-      <h2 class="text-lg font-black text-slate-800 dark:text-white tracking-tight">{{ pageTitle }}</h2>
+      <h2 class="text-lg font-black text-daba-navy dark:text-white tracking-tight">{{ pageTitle }}</h2>
     </div>
     <div class="flex items-center gap-4">
       <ThemeToggle />
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-xs font-bold">
+        <div class="w-8 h-8 rounded-full bg-daba-orange flex items-center justify-center text-white text-xs font-bold">
           {{ initials }}
         </div>
-        <span class="hidden sm:block text-sm font-bold text-slate-700 dark:text-slate-300">{{ userName }}</span>
+        <span class="hidden sm:block text-sm font-bold text-daba-slate dark:text-daba-slate-dark">{{ userName }}</span>
       </div>
     </div>
   </header>
@@ -37,7 +37,7 @@ const pageTitle = computed(() => {
     'AdminAnalytics': 'Analytiques',
     'AdminSettings': 'Paramètres'
   }
-  return titles[route.name] || 'Bloom Manager'
+  return titles[route.name] || 'Daba'
 })
 
 const userName = computed(() => {

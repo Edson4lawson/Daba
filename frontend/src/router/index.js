@@ -18,18 +18,20 @@ const AdminLogin = () => import('@/views/admin/AdminLogin.vue')
 const AdminLayout = () => import('@/layouts/AdminLayout.vue')
 const Dashboard = () => import('@/views/admin/Dashboard.vue')
 const AdminProducts = () => import('@/views/admin/AdminProducts.vue')
+const AdminStock = () => import('@/views/admin/AdminStock.vue')
 const AdminOrders = () => import('@/views/admin/AdminOrders.vue')
 const AdminCustomers = () => import('@/views/admin/AdminCustomers.vue')
 const AdminSettings = () => import('@/views/admin/AdminSettings.vue')
 const AdminAnalytics = () => import('@/views/admin/AdminAnalytics.vue')
 const CategoryManager = () => import('@/views/admin/Categories/CategoryManager.vue')
+const Unauthorized = () => import('@/views/Unauthorized.vue')
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    meta: { title: 'Accueil — Bloom by Chloé' }
+    meta: { title: 'Accueil — Daba' }
   },
   {
     path: '/boutique',
@@ -39,68 +41,64 @@ const routes = [
     path: '/produit/:slug',
     name: 'ProductDetail',
     component: ProductDetail,
-    meta: { title: 'Produit — Bloom by Chloé' }
+    meta: { title: 'Produit — Daba' }
   },
   {
     path: '/mon-compte',
-    name: 'Account',
-    component: AccountPage,
-    meta: { requiresAuth: true, title: 'Mon Compte — Bloom by Chloé' }
+    redirect: '/'
   },
   {
     path: '/commande-confirmee/:orderId',
     name: 'OrderConfirmation',
     component: OrderConfirmation,
-    meta: { title: 'Commande confirmée — Bloom by Chloé' }
+    meta: { title: 'Commande confirmée — Daba' }
   },
   {
     path: '/cookie-policy',
     name: 'CookiePolicy',
     component: CookiePolicy,
-    meta: { title: 'Politique cookies — Bloom by Chloé' }
+    meta: { title: 'Politique cookies — Daba' }
   },
   {
     path: '/faq',
     name: 'FAQ',
     component: FAQ,
-    meta: { title: 'FAQ — Bloom by Chloé' }
+    meta: { title: 'FAQ — Daba' }
   },
   {
     path: '/privacy',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy,
-    meta: { title: 'Confidentialité — Bloom by Chloé' }
+    meta: { title: 'Confidentialité — Daba' }
   },
   {
     path: '/returns',
     name: 'Returns',
     component: Returns,
-    meta: { title: 'Retours — Bloom by Chloé' }
+    meta: { title: 'Retours — Daba' }
   },
   {
     path: '/shipping',
     name: 'Shipping',
     component: Shipping,
-    meta: { title: 'Livraison — Bloom by Chloé' }
+    meta: { title: 'Livraison — Daba' }
   },
   {
     path: '/terms',
     name: 'Terms',
     component: Terms,
-    meta: { title: 'CGV — Bloom by Chloé' }
+    meta: { title: 'CGV — Daba' }
   },
   // Admin Login — Route séparée
   {
-    path: '/bloom-manager/login',
-    alias: '/admin/login',
+    path: '/admin/login',
     name: 'AdminLogin',
     component: AdminLogin,
-    meta: { title: 'Admin Login — Bloom Manager' }
+    meta: { title: 'Admin Login — Daba' }
   },
-  // Admin Dashboard (avec layout sidebar) — Plus de conflit de route
+  // Admin Dashboard (avec layout sidebar)
   {
-    path: '/bloom-manager',
-    alias: '/admin',
+    path: '/admin',
     component: AdminLayout,
     meta: { requiresAuth: true, requiresAdmin: true },
     children: [
@@ -111,48 +109,67 @@ const routes = [
       {
         path: 'dashboard',
         name: 'AdminDashboard',
-        component: Dashboard
+        component: Dashboard,
+        meta: { allowedRoles: ['admin', 'commercial', 'magasinier', 'comptable'] }
       },
       {
         path: 'products',
         name: 'AdminProducts',
-        component: AdminProducts
+        component: AdminProducts,
+        meta: { allowedRoles: ['admin', 'magasinier'] }
+      },
+      {
+        path: 'stock',
+        name: 'AdminStock',
+        component: AdminStock,
+        meta: { allowedRoles: ['admin', 'magasinier'] }
       },
       {
         path: 'orders',
         name: 'AdminOrders',
-        component: AdminOrders
+        component: AdminOrders,
+        meta: { allowedRoles: ['admin', 'commercial', 'comptable'] }
       },
       {
         path: 'users',
         name: 'AdminCustomers',
-        component: AdminCustomers
+        component: AdminCustomers,
+        meta: { allowedRoles: ['admin'] }
+      },
+      {
+        path: 'invoices',
+        name: 'AdminInvoices',
+        component: AdminOrders,
+        meta: { allowedRoles: ['admin', 'comptable'] }
       },
       {
         path: 'settings',
         name: 'AdminSettings',
-        component: AdminSettings
+        component: AdminSettings,
+        meta: { allowedRoles: ['admin'] }
       },
       {
         path: 'analytics',
         name: 'AdminAnalytics',
-        component: AdminAnalytics
+        component: AdminAnalytics,
+        meta: { allowedRoles: ['admin', 'commercial', 'comptable'] }
       },
       {
         path: 'categories',
         name: 'AdminCategories',
-        component: CategoryManager
+        component: CategoryManager,
+        meta: { allowedRoles: ['admin'] }
       }
     ]
   },
-  // Redirection de l'ancien chemin admin
-  {
-    path: '/yubuy-manager/:pathMatch(.*)*',
-    redirect: to => {
-      return { path: to.path.replace('/yubuy-manager', '/bloom-manager') }
-    }
-  },
 
+  // Unauthorized access
+  {
+    path: '/unauthorized',
+    name: 'Unauthorized',
+    component: Unauthorized,
+    meta: { title: 'Accès non autorisé — Daba' }
+  },
   // Catch-all 404
   {
     path: '/:pathMatch(.*)*',
@@ -191,11 +208,25 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // Admin guard
+  // RBAC guard - Vérifier les rôles autorisés
+  if (to.meta.allowedRoles) {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    const userRole = user.role || 'customer'
+
+    if (!to.meta.allowedRoles.includes(userRole)) {
+      next({ name: 'Unauthorized' })
+      return
+    }
+  }
+
+  // Admin guard (legacy - pour compatibilité)
   if (to.meta.requiresAdmin) {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    if (user.role !== 'admin') {
-      next({ name: 'Home' })
+    const userRole = user.role || 'customer'
+    const staffRoles = ['admin', 'super_admin', 'commercial', 'magasinier', 'comptable']
+
+    if (!staffRoles.includes(userRole)) {
+      next({ name: 'AdminLogin' })
       return
     }
   }

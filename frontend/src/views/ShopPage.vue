@@ -1,18 +1,18 @@
 <template>
-  <div class="min-h-screen bg-[#fdfaff]">
+  <div class="min-h-screen bg-daba-cream">
     <!-- Mini Header -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-purple-100/50 py-3">
+    <header class="sticky top-0 z-50 bg-daba-cream/80 backdrop-blur-xl border-b border-daba-cream-alt/50 py-3">
       <div class="container mx-auto px-4 flex items-center justify-between">
         <router-link to="/" class="flex items-center gap-2">
-          <img src="../assets/bloom-icone.png" alt="Bloom" class="w-12 h-12" />
+          <img src="../assets/daba-icone.png" alt="Daba" class="w-12 h-12" />
         </router-link>
         <div class="flex items-center gap-4">
-          <router-link to="/" class="text-sm font-bold text-gray-600 hover:text-purple-600 transition-colors">Accueil</router-link>
-          <span class="text-sm font-bold text-purple-600">Boutique</span>
+          <router-link to="/" class="text-sm font-bold text-daba-slate hover:text-daba-orange transition-colors">Accueil</router-link>
+          <span class="text-sm font-bold text-daba-orange">Boutique</span>
         </div>
-        <button @click="cartOpen = true" class="relative p-2 text-gray-600 hover:text-purple-600">
+        <button @click="cartOpen = true" class="relative p-2 text-daba-slate hover:text-daba-orange">
           <Icon icon="solar:cart-large-minimalistic-bold" class="w-6 h-6" />
-          <span v-if="cartStore.totalItems > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-purple-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">{{ cartStore.totalItems }}</span>
+          <span v-if="cartStore.totalItems > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-daba-orange text-white text-[10px] font-bold rounded-full flex items-center justify-center">{{ cartStore.totalItems }}</span>
         </button>
       </div>
     </header>
@@ -20,38 +20,38 @@
     <main class="container mx-auto px-4 py-8">
       <!-- Page Title -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-6xl font-black text-gray-800 mb-3">Notre <span class="text-purple-600">Boutique</span></h1>
-        <p class="text-gray-500 font-medium">{{ filteredProducts.length }} produits disponibles</p>
+        <h1 class="text-4xl md:text-6xl font-black text-daba-navy mb-3">Notre <span class="text-daba-orange">Boutique</span></h1>
+        <p class="text-daba-slate font-medium">{{ filteredProducts.length }} produits disponibles</p>
       </div>
 
       <div class="flex flex-col lg:flex-row gap-8">
         <!-- Sidebar Filters -->
         <aside class="w-full lg:w-72 shrink-0">
-          <div class="bg-white rounded-3xl p-6 border border-purple-50 shadow-sm sticky top-24">
-            <h3 class="text-sm font-black text-gray-800 uppercase tracking-wider mb-6">Filtres</h3>
+          <div class="bg-white rounded-3xl p-6 border border-daba-cream-alt shadow-sm sticky top-24">
+            <h3 class="text-sm font-black text-daba-navy uppercase tracking-wider mb-6">Filtres</h3>
             
             <!-- Search -->
             <div class="mb-6">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Recherche</label>
+              <label class="text-xs font-bold text-daba-slate uppercase tracking-wider block mb-2">Recherche</label>
               <div class="relative">
-                <Icon icon="solar:magnifer-linear" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Icon icon="solar:magnifer-linear" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-daba-slate" />
                 <input v-model="searchQuery" placeholder="Rechercher..." 
-                  class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-200" />
+                  class="w-full pl-10 pr-4 py-2.5 bg-daba-cream-alt border border-daba-cream-alt rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-daba-cream-alt" />
               </div>
             </div>
 
             <!-- Categories -->
             <div class="mb-6">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Catégorie</label>
+              <label class="text-xs font-bold text-daba-slate uppercase tracking-wider block mb-3">Catégorie</label>
               <div class="space-y-1 max-h-48 overflow-y-auto">
                 <button @click="selectedCategory = ''" 
                   class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all"
-                  :class="selectedCategory === '' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-50'">
+                  :class="selectedCategory === '' ? 'bg-daba-cream-alt text-daba-navy' : 'text-daba-slate hover:bg-daba-cream-alt'">
                   Toutes ({{ productStore.products.length }})
                 </button>
                 <button v-for="cat in categories" :key="cat" @click="selectedCategory = cat"
                   class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all"
-                  :class="selectedCategory === cat ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-50'">
+                  :class="selectedCategory === cat ? 'bg-daba-cream-alt text-daba-navy' : 'text-daba-slate hover:bg-daba-cream-alt'">
                   {{ cat }}
                 </button>
               </div>
@@ -59,15 +59,15 @@
 
             <!-- Price Range -->
             <div class="mb-6">
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-3">Prix max : {{ priceRange.toLocaleString('fr-FR') }} FCFA</label>
+              <label class="text-xs font-bold text-daba-slate uppercase tracking-wider block mb-3">Prix max : {{ priceRange.toLocaleString('fr-FR') }} FCFA</label>
               <input type="range" v-model.number="priceRange" :min="0" :max="maxPrice" step="500"
-                class="w-full accent-purple-600" />
+                class="w-full accent-daba-orange" />
             </div>
 
             <!-- Sort -->
             <div>
-              <label class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Trier par</label>
-              <select v-model="sortBy" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-200">
+              <label class="text-xs font-bold text-daba-slate uppercase tracking-wider block mb-2">Trier par</label>
+              <select v-model="sortBy" class="w-full px-3 py-2.5 bg-daba-cream-alt border border-daba-cream-alt rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-daba-cream-alt">
                 <option value="default">Par défaut</option>
                 <option value="price-asc">Prix croissant</option>
                 <option value="price-desc">Prix décroissant</option>
@@ -77,7 +77,7 @@
             </div>
 
             <!-- Reset -->
-            <button @click="resetFilters" class="w-full mt-6 py-2.5 border border-purple-200 text-purple-600 font-bold text-sm rounded-xl hover:bg-purple-50 transition-all">
+            <button @click="resetFilters" class="w-full mt-6 py-2.5 border border-daba-cream-alt text-daba-orange font-bold text-sm rounded-xl hover:bg-daba-cream-alt transition-all">
               Réinitialiser
             </button>
           </div>
@@ -86,13 +86,13 @@
         <!-- Products Grid -->
         <div class="flex-1">
           <div v-if="loading" class="flex justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600"></div>
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-daba-cream-alt border-t-daba-orange"></div>
           </div>
 
           <div v-else-if="filteredProducts.length === 0" class="text-center py-20">
-            <Icon icon="solar:box-minimalistic-broken" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 class="text-lg font-bold text-gray-600 mb-2">Aucun produit trouvé</h3>
-            <p class="text-gray-400 text-sm">Essayez avec d'autres filtres</p>
+            <Icon icon="solar:box-minimalistic-broken" class="w-16 h-16 text-daba-slate-dark mx-auto mb-4" />
+            <h3 class="text-lg font-bold text-daba-slate mb-2">Aucun produit trouvé</h3>
+            <p class="text-daba-slate text-sm">Essayez avec d'autres filtres</p>
           </div>
 
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -100,29 +100,29 @@
               v-for="product in filteredProducts" 
               :key="product.id"
               :to="`/produit/${product.slug || product.id}`"
-              class="group bg-white rounded-2xl overflow-hidden border border-gray-50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              class="group bg-white rounded-2xl overflow-hidden border border-daba-cream-alt shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >
               <div class="relative aspect-square overflow-hidden">
                 <img :src="product.thumbnail" :alt="product.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div v-if="product.discount" class="absolute top-3 right-3 bg-purple-600 text-white text-[10px] font-black px-2 py-1 rounded-full">-{{ product.discount }}%</div>
+                <div v-if="product.discount" class="absolute top-3 right-3 bg-daba-orange text-white text-[10px] font-black px-2 py-1 rounded-full">-{{ product.discount }}%</div>
                 <!-- Quick Actions -->
                 <div class="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity" @click.prevent>
-                  <button @click="addToWishlist(product)" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-50">
-                    <Icon :icon="wishlistStore.isInWishlist(product.id) ? 'solar:heart-bold' : 'solar:heart-linear'" class="w-5 h-5" :class="wishlistStore.isInWishlist(product.id) ? 'text-purple-600' : 'text-gray-600'" />
+                  <button @click="addToWishlist(product)" class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-daba-cream-alt">
+                    <Icon :icon="wishlistStore.isInWishlist(product.id) ? 'solar:heart-bold' : 'solar:heart-linear'" class="w-5 h-5" :class="wishlistStore.isInWishlist(product.id) ? 'text-daba-orange' : 'text-daba-slate'" />
                   </button>
-                  <button @click="addToCart(product)" class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-700">
+                  <button @click="addToCart(product)" class="w-10 h-10 bg-daba-orange rounded-full flex items-center justify-center shadow-lg hover:bg-daba-orange-dark">
                     <Icon icon="solar:cart-plus-bold" class="w-5 h-5 text-white" />
                   </button>
                 </div>
               </div>
               <div class="p-5">
-                <p class="text-[10px] text-purple-600 font-black uppercase tracking-wider mb-1">{{ product.category }}</p>
-                <h3 class="text-base font-bold text-gray-800 truncate mb-2 group-hover:text-purple-600 transition-colors">{{ product.title }}</h3>
+                <p class="text-[10px] text-daba-orange font-black uppercase tracking-wider mb-1">{{ product.category }}</p>
+                <h3 class="text-base font-bold text-daba-navy truncate mb-2 group-hover:text-daba-orange transition-colors">{{ product.title }}</h3>
                 <div class="flex items-center justify-between">
-                  <span class="text-lg font-black text-gray-900">{{ product.price?.toLocaleString('fr-FR') }} <span class="text-xs text-gray-400">FCFA</span></span>
+                  <span class="text-lg font-black text-daba-navy">{{ product.price?.toLocaleString('fr-FR') }} <span class="text-xs text-daba-slate">FCFA</span></span>
                   <div class="flex items-center gap-1">
                     <Icon icon="solar:star-bold" class="w-3.5 h-3.5 text-yellow-400" />
-                    <span class="text-xs font-bold text-gray-500">{{ product.rating?.toFixed(1) || '4.5' }}</span>
+                    <span class="text-xs font-bold text-daba-slate">{{ product.rating?.toFixed(1) || '4.5' }}</span>
                   </div>
                 </div>
               </div>
@@ -234,7 +234,7 @@ onMounted(async () => {
   updateMetaTags({
     title: 'Boutique',
     description: 'Découvrez tous nos produits — Beauté, bien-être, accessoires et plus encore. Livraison rapide au Bénin.',
-    keywords: 'boutique, beauté, bien-être, accessoires, Bloom Chloé, Bénin'
+    keywords: 'boutique, beauté, bien-être, accessoires, Daba, Bénin'
   });
 });
 </script>

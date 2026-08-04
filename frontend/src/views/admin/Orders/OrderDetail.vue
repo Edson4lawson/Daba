@@ -2,7 +2,7 @@
   <div class="p-6">
     <div class="order-detail-header flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Commande #{{ orderId }}</h1>
-      <router-link to="/Bloom-manager/orders" class="text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-white">
+      <router-link to="/admin/orders" class="text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-white">
         â† Retour aux commandes
       </router-link>
     </div>

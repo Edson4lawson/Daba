@@ -1,0 +1,32 @@
+-- Migration 007: Création de la table invoices
+-- Cette table stocke les factures générées pour les commandes
+
+-- Vérifier si la table existe déjà
+SET @table_exists = (
+    SELECT COUNT(*)
+    FROM information_schema.tables
+    WHERE table_schema = DATABASE()
+    AND table_name = 'invoices'
+);
+
+-- Créer la table uniquement si elle n'existe pas
+SET @sql = IF(@table_exists = 0,
+    'CREATE TABLE invoices (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        order_id INT NOT NULL,
+        invoice_number VARCHAR(50) NOT NULL UNIQUE,
+        amount DECIMAL(10,2) NOT NULL,
+        status ENUM(''pending'', ''paid'') NOT NULL DEFAULT ''pending'',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        pdf_url VARCHAR(255) NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+        INDEX idx_invoice_number (invoice_number),
+        INDEX idx_order_id (order_id),
+        INDEX idx_status (status)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci',
+    'SELECT ''Table invoices already exists'' AS message'
+);
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;

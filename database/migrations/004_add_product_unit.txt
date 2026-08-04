@@ -1,0 +1,25 @@
+-- Migration 004: Ajout de la colonne 'unit' à la table products
+-- Bloom Chloé / Daba Project
+-- Date: 2026-07-31
+
+-- Vérifier si la colonne existe déjà
+SET @column_exists = (
+    SELECT COUNT(*)
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'products'
+    AND COLUMN_NAME = 'unit'
+);
+
+-- Ajouter la colonne uniquement si elle n'existe pas
+SET @sql = IF(@column_exists = 0,
+    'ALTER TABLE products ADD COLUMN unit VARCHAR(50) DEFAULT "pièce" AFTER stock_quantity',
+    'SELECT "Colonne unit déjà existante" AS message'
+);
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- Ajouter un commentaire à la colonne
+ALTER TABLE products MODIFY COLUMN unit VARCHAR(50) DEFAULT "pièce" COMMENT "Unité de mesure: kg, 500g, 250g, paquet, carton, pièce, etc.";

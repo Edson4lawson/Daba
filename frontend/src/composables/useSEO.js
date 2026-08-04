@@ -1,7 +1,7 @@
 ﻿import { onMounted, watch } from 'vue';
 
 export function useSEO() {
-  const baseUrl = 'https://bloom-chloe.com';
+  const baseUrl = 'https://daba.com';
 
   /**
    * Met à jour les meta tags de base
@@ -10,7 +10,7 @@ export function useSEO() {
     const { title, description, keywords, image, url, noIndex } = metadata;
 
     if (title) {
-      document.title = `${title} | Bloom by Chloé`;
+      document.title = `${title} | Daba`;
       updateOrCreateMetaTag('og:title', title);
       updateOrCreateMetaTag('twitter:title', title);
     }
@@ -122,7 +122,7 @@ export function useSEO() {
       image: [product.image_url],
       brand: {
         '@type': 'Brand',
-        name: 'Bloom by Chloé'
+        name: 'Daba'
       },
       offers: {
         '@type': 'Offer',
@@ -134,7 +134,7 @@ export function useSEO() {
           : 'https://schema.org/OutOfStock',
         seller: {
           '@type': 'Organization',
-          name: 'Bloom by Chloé',
+          name: 'Daba',
           url: baseUrl
         }
       },
@@ -159,10 +159,10 @@ export function useSEO() {
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'Bloom by Chloé',
+      name: 'Daba',
       url: baseUrl,
-      logo: `${baseUrl}/bloom-icone.png`,
-      description: 'Votre boutique en ligne de beauté, bien-être et accessoires lifestyle au Bénin',
+      logo: `${baseUrl}/daba-icone.png`,
+      description: 'Votre boucherie et charcuterie premium au Bénin',
       address: {
         '@type': 'PostalAddress',
         addressCountry: 'BJ',
@@ -176,9 +176,9 @@ export function useSEO() {
         availableLanguage: ['French', 'English']
       },
       sameAs: [
-        'https://facebook.com/bloomchloe',
-        'https://instagram.com/bloomchloe',
-        'https://twitter.com/bloomchloe'
+        'https://facebook.com/daba',
+        'https://instagram.com/daba',
+        'https://twitter.com/daba'
       ]
     };
 
@@ -194,9 +194,9 @@ export function useSEO() {
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'Bloom by Chloé',
+      name: 'Daba',
       url: baseUrl,
-      description: 'Boutique en ligne de beauté, bien-être et accessoires au Bénin',
+      description: 'Boucherie et charcuterie premium au Bénin',
       potentialAction: {
         '@type': 'SearchAction',
         target: `${baseUrl}/recherche?q={search_term_string}`,

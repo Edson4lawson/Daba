@@ -6,12 +6,12 @@
         @open-auth="showAuthModal = true"
         @open-payment="openPaymentFromCart"
       />
-      <main class="relative bg-[#fdfaff] min-h-screen overflow-hidden">
+      <main class="relative bg-daba-cream min-h-screen overflow-hidden">
         <!-- Mesh Gradient Background -->
         <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-          <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-purple-200/50 blur-[120px] animate-pulse-slow"></div>
-          <div class="absolute top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-indigo-100/40 blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
-          <div class="absolute -bottom-[10%] left-[20%] w-[45%] h-[45%] rounded-full bg-purple-100/40 blur-[110px] animate-pulse-slow" style="animation-delay: 4s;"></div>
+          <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-daba-cream-alt/50 blur-[120px] animate-pulse-slow"></div>
+          <div class="absolute top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-daba-green/40 blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+          <div class="absolute -bottom-[10%] left-[20%] w-[45%] h-[45%] rounded-full bg-daba-cream-alt/40 blur-[110px] animate-pulse-slow" style="animation-delay: 4s;"></div>
         </div>
         
         <div class="relative z-10">
@@ -23,7 +23,7 @@
             </template>
             <template #fallback>
               <div class="flex justify-center items-center py-20">
-                <div class="animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600"></div>
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-daba-cream-alt border-t-daba-orange"></div>
               </div>
             </template>
           </Suspense>
@@ -70,7 +70,7 @@
         <button 
           v-if="showBackToTop"
           @click="scrollToTop"
-          class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-purple-600 text-white rounded-full shadow-xl shadow-purple-200 flex items-center justify-center hover:bg-purple-700 hover:scale-110 active:scale-95 transition-all"
+          class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-daba-orange text-white rounded-full shadow-xl shadow-daba-orange/20 flex items-center justify-center hover:bg-daba-orange-dark hover:scale-110 active:scale-95 transition-all"
           aria-label="Retour en haut"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -144,8 +144,8 @@ onMounted(() => {
   
   // Inject global animation styles
   const style = document.createElement('style');
-  style.id = 'bloom-global-animations';
-  if (!document.getElementById('bloom-global-animations')) {
+  style.id = 'daba-global-animations';
+  if (!document.getElementById('daba-global-animations')) {
     style.textContent = `
       @keyframes pulse-slow {
         0%, 100% { opacity: 0.4; transform: scale(1); }

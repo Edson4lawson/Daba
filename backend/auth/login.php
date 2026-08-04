@@ -34,8 +34,13 @@ $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 $userAgent = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255);
 
 try {
-    // Récupérer l'utilisateur par email
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
+    // Récupérer l'utilisateur par email avec jointure sur roles pour le nom du rôle
+    $stmt = $pdo->prepare('
+        SELECT u.*, r.name as role_name
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        WHERE u.email = ?
+    ');
     $stmt->execute([$email]);
     $user = $stmt->fetch();
     
@@ -77,11 +82,11 @@ try {
     $stmt = $pdo->prepare('SELECT enabled FROM two_factor_auth WHERE user_id = ?');
     $stmt->execute([$user['id']]);
     $twoFactor = $stmt->fetch();
-    
+
     $requiresTwoFactor = false;
-    
-    // Les admins doivent toujours avoir le 2FA
-    if (in_array($user['role'], ['admin', 'super_admin'])) {
+
+    // Les admins doivent toujours avoir le 2FA (désactivé en développement)
+    if (in_array($user['role'], ['admin', 'super_admin']) && getenv('APP_ENV') === 'production') {
         if (!$twoFactor || !$twoFactor['enabled']) {
             logLoginAttempt($pdo, $user['id'], $email, $ipAddress, $userAgent, 'blocked', '2FA not enabled for admin');
             sendJsonResponse([
@@ -91,8 +96,10 @@ try {
         }
         $requiresTwoFactor = true;
     } elseif ($twoFactor && $twoFactor['enabled']) {
+        // 2FA optionnel pour staff si configuré
         $requiresTwoFactor = true;
     }
+    // Pour les rôles staff (commercial, magasinier, comptable), 2FA non obligatoire
     
     // Si 2FA requis et code non fourni
     if ($requiresTwoFactor && empty($data['two_factor_code'])) {
@@ -163,7 +170,7 @@ try {
         'last_name' => $user['last_name'] ?? null,
         'phone' => $user['phone'] ?? null,
         'address' => $user['address'] ?? null,
-        'role' => $user['role'] ?? 'customer'
+        'role' => $user['role_name'] ?? $user['role'] ?? 'customer'
     ];
     
     // Retourner les tokens
@@ -175,13 +182,13 @@ try {
         'expires_in' => 900, // 15 minutes en secondes
         'user' => $userData
     ]);
-    tchnique ea connexion. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez notre support.], 500);
-} cc (Excptio $e) {
-     ($pdo->nTransation()) {
-        $pdo->rollBck();
+
+} catch (Exception $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
     }
-    error_log('Erreur générale lors de la connexion: ' . $e->geMessage());
-    sendJsonResponse(['error' => 'Une erreur nattendue est surveue
+    error_log('Erreur générale lors de la connexion: ' . $e->getMessage());
+    sendJsonResponse(['error' => 'Une erreur technique est survenue lors de la connexion. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez notre support.'], 500);
 } catch (PDOException $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
@@ -199,12 +206,9 @@ function logLoginAttempt(PDO $pdo, ?int $userId, string $email, string $ipAddres
             INSERT INTO login_logs (user_id, email, ip_address, user_agent, status, failure_reason, created_at) 
           VALUES (?, ?, ?, ?, ?, ?, NOW())
         ');
+        $stmt->execute([$userId, $email, $ipAddress, $userAgent, $status, $reason]);
    } catch (PDOException $e) {
           error_log('Failed to log login attempt: ' . $e->getMessage());
     }
 }
 ?>
-
-?>
-
-

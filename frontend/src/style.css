@@ -1,3 +1,18 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-daba-cream: #FEFDFA;
+  --color-daba-cream-alt: #EFEDE4;
+  --color-daba-navy: #1B2B47;
+  --color-daba-navy-deep: #030046;
+  --color-daba-orange: #CE4600;
+  --color-daba-orange-dark: #B83C00;
+  --color-daba-green: #6F8766;
+  --color-daba-slate: #5A6474;
+  --color-daba-slate-dark: #464650;
+  --color-daba-dark-bg: #12141C;
+  --color-daba-dark-card: #1B2233;
+  --color-daba-dark-border: #2A3244;
+}

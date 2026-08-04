@@ -1,13 +1,13 @@
 <template>
-  <div class="sidebar-container w-64 bg-white dark:bg-[rgb(43,44,43)] text-slate-800 dark:text-white flex flex-col h-screen shadow-xl border-r border-purple-100 dark:border-slate-500 transition-all duration-300">
+  <div class="sidebar-container w-64 bg-daba-cream dark:bg-daba-dark-bg text-daba-navy dark:text-white flex flex-col h-screen shadow-xl border-r border-daba-cream-alt dark:border-daba-dark-border transition-all duration-300">
     <!-- Logo -->
-    <div class="sidebar-logo p-6 border-b border-purple-100 dark:border-slate-500 flex items-center justify-start px-6 gap-3">
-      <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden shadow-sm border border-purple-100 dark:border-slate-500">
-        <img src="/bloom-icone.png" class="w-full h-full object-cover" alt="Bloom Logo">
+    <div class="sidebar-logo p-6 border-b border-daba-cream-alt dark:border-daba-dark-border flex items-center justify-start px-6 gap-3">
+      <div class="w-10 h-10 rounded-xl bg-daba-cream-alt dark:bg-daba-dark-card flex items-center justify-center overflow-hidden shadow-sm border border-daba-cream-alt dark:border-daba-dark-border">
+        <img src="/src/assets/daba-icone.png" class="w-full h-full object-cover" alt="Daba Logo">
       </div>
       <div>
-        <h2 class="text-xl font-black tracking-tight text-purple-900 dark:text-white leading-none">Bloom</h2>
-        <p class="text-[8px] text-purple-400 dark:text-slate-500 uppercase tracking-[0.4em] font-bold mt-1">Manager</p>
+        <h2 class="text-xl font-black tracking-tight text-daba-navy dark:text-white leading-none">Daba</h2>
+        <p class="text-[8px] text-daba-orange dark:text-daba-slate-dark uppercase tracking-[0.4em] font-bold mt-1">{{ authStore.user?.role || '' }}</p>
       </div>
     </div>
     
@@ -19,23 +19,23 @@
         :to="item.path"
         class="sidebar-item flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group"
         :class="isActive(item.path) 
-          ? 'bg-purple-600/10 dark:bg-purple-600/50 text-purple-700 dark:text-white shadow-sm' 
-          : 'text-slate-500 dark:text-slate-400 hover:bg-purple-50 dark:hover:bg-slate-700/50 hover:text-purple-700 dark:hover:text-white'"
+          ? 'bg-daba-orange/10 dark:bg-daba-orange/50 text-daba-navy dark:text-white shadow-sm' 
+          : 'text-daba-slate dark:text-daba-slate-dark hover:bg-daba-cream-alt dark:hover:bg-daba-dark-card/50 hover:text-daba-navy dark:hover:text-white'"
       >
         <component 
           :is="item.icon" 
           class="w-5 h-5 mr-3 transition-colors"
-          :class="isActive(item.path) ? 'text-purple-700 dark:text-white' : 'text-slate-400 dark:text-slate-500 group-hover:text-purple-600 dark:group-hover:text-white'"
+          :class="isActive(item.path) ? 'text-daba-navy dark:text-white' : 'text-daba-slate-dark dark:text-daba-slate group-hover:text-daba-orange dark:group-hover:text-white'"
         />
         {{ item.name }}
       </router-link>
     </nav>
 
     <!-- Bottom Actions -->
-    <div class="sidebar-bottom p-4 border-t border-purple-100 dark:border-slate-500 space-y-1">
+    <div class="sidebar-bottom p-4 border-t border-daba-cream-alt dark:border-daba-dark-border space-y-1">
       <router-link 
         to="/" 
-        class="flex items-center px-4 py-3 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-purple-700 dark:hover:text-white transition-colors rounded-xl hover:bg-purple-50 dark:hover:bg-slate-800"
+        class="flex items-center px-4 py-3 text-sm font-medium text-daba-slate dark:text-daba-slate-dark hover:text-daba-navy dark:hover:text-white transition-colors rounded-xl hover:bg-daba-cream-alt dark:hover:bg-daba-dark-card"
       >
         <ExternalLink class="w-5 h-5 mr-3" />
         Voir le site
@@ -46,28 +46,43 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 import { onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
-  Users, 
+import { useAuthStore } from '@/stores/auth'
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
   BarChart3,
   Settings,
-  ExternalLink
+  ExternalLink,
+  FileText,
+  Warehouse
 } from 'lucide-vue-next'
 
 const route = useRoute()
+const authStore = useAuthStore()
 
-const menuItems = [
-  { name: 'Dashboard', path: '/bloom-manager/dashboard', icon: LayoutDashboard },
-  { name: 'Produits', path: '/bloom-manager/products', icon: Package },
-  { name: 'Commandes', path: '/bloom-manager/orders', icon: ShoppingCart },
-  { name: 'Clients', path: '/bloom-manager/users', icon: Users },
-  { name: 'Analytiques', path: '/bloom-manager/analytics', icon: BarChart3 },
-  { name: 'Paramètres', path: '/bloom-manager/settings', icon: Settings },
-]
+const userRole = computed(() => authStore.user?.role || 'customer')
+
+const menuItems = computed(() => {
+  const role = userRole.value
+
+  const allItems = [
+    { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard, roles: ['admin', 'commercial', 'magasinier', 'comptable'] },
+    { name: 'Produits', path: '/admin/products', icon: Package, roles: ['admin', 'magasinier'] },
+    { name: 'Stock', path: '/admin/stock', icon: Warehouse, roles: ['admin', 'magasinier'] },
+    { name: 'Commandes', path: '/admin/orders', icon: ShoppingCart, roles: ['admin', 'commercial', 'comptable'] },
+    { name: 'Clients', path: '/admin/users', icon: Users, roles: ['admin'] },
+    { name: 'Factures', path: '/admin/invoices', icon: FileText, roles: ['admin', 'comptable'] },
+    { name: 'Analytiques', path: '/admin/analytics', icon: BarChart3, roles: ['admin', 'commercial', 'comptable'] },
+    { name: 'Paramètres', path: '/admin/settings', icon: Settings, roles: ['admin'] },
+  ]
+
+  return allItems.filter(item => item.roles.includes(role))
+})
 
 const isActive = (path) => {
   return route.path === path || route.path.startsWith(path + '/')

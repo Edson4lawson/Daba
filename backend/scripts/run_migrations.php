@@ -40,7 +40,8 @@ echo "  User: $dbUser\n\n";
 // Liste des migrations à exécuter
 $migrations = [
     __DIR__ . '/../../database/migrations/002_2fa_tables.txt',
-    __DIR__ . '/../../database/migrations/003_rbac_permissions.txt'
+    __DIR__ . '/../../database/migrations/003_rbac_permissions.txt',
+    __DIR__ . '/../../database/migrations/008_add_canal_to_orders.txt'
 ];
 
 foreach ($migrations as $migrationFile) {
@@ -52,13 +53,14 @@ foreach ($migrations as $migrationFile) {
     echo "Exécution de: " . basename($migrationFile) . "\n";
     
     // Construire la commande mysql
-    $mysqlPath = 'C:\\laragon\\bin\\mysql\\bin\\mysql.exe'; // Chemin Laragon par défaut
+    $mysqlPath = 'C:\\laragon\\bin\\mysql\\mysql-8.0.30-winx64\\bin\\mysql.exe'; // Chemin Laragon par défaut
     
     // Vérifier si mysql existe à ce chemin
     if (!file_exists($mysqlPath)) {
         // Essayer d'autres chemins possibles
         $possiblePaths = [
             'C:\\laragon\\bin\\mysql\\bin\\mysql.exe',
+            'C:\\laragon\\bin\\mysql\\mysql-8.0.30-winx64\\bin\\mysql.exe',
             'C:\\laragon\\bin\\mariadb\\bin\\mysql.exe',
             'C:\\xampp\\mysql\\bin\\mysql.exe',
             'C:\\wamp64\\bin\\mysql\\mysql8.0.xx\\bin\\mysql.exe',

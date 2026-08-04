@@ -120,7 +120,7 @@
                   <button @click="editProduct(product)" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Modifier">
                     <Edit3 class="w-4 h-4" />
                   </button>
-                  <router-link :to="`/Bloom-manager/products/${product.id}/images`" class="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all" title="Images">
+                  <router-link :to="`/admin/products/${product.id}/images`" class="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all" title="Images">
                     <ImageIcon class="w-4 h-4" />
                   </router-link>
                   <button @click="deleteProduct(product.id)" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Supprimer">
@@ -317,7 +317,7 @@ const saveProduct = async () => {
       const pid = editingProduct.value ? editingProduct.value.id : response.product_id
       if (!editingProduct.value) {
         // Redirection vers la gestion des images pour un nouveau produit
-        router.push(`/Bloom-manager/products/${pid}/images`)
+        router.push(`/admin/products/${pid}/images`)
       }
       cancelEdit()
     }

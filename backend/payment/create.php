@@ -26,7 +26,7 @@ $orderId = (int)$data['order_id'];
 $paymentMethod = $data['payment_method'];
 
 // Valider la méthode de paiement
-$allowedPaymentMethods = ['credit_card', 'paypal', 'mobile_money'];
+$allowedPaymentMethods = ['credit_card', 'paypal', 'mobile_money', 'cash_on_delivery'];
 if (!in_array($paymentMethod, $allowedPaymentMethods)) {
     sendJsonResponse(['error' => 'Méthode de paiement non valide'], 400);
 }
@@ -164,6 +164,8 @@ function processPayment($order, $data, $paymentMethod) {
             return processPayPalPayment($order, $data);
         case 'mobile_money':
             return processMobileMoneyPayment($order, $data);
+        case 'cash_on_delivery':
+            return processCashOnDeliveryPayment($order, $data);
         default:
             return [
                 'success' => false,
@@ -261,6 +263,30 @@ function processMobileMoneyPayment($order, $data) {
             'phone_number' => $data['phone_number'],
             'amount' => $order['total_amount'],
             'transaction_id' => $transactionId
+        ]
+    ];
+}
+
+/**
+ * Traite un paiement à la livraison (Cash on Delivery)
+ */
+function processCashOnDeliveryPayment($order, $data) {
+    // Le paiement à la livraison ne nécessite pas de traitement immédiat
+    // La commande est validée et le paiement sera collecté à la livraison
+    
+    $transactionId = 'COD' . time() . mt_rand(1000, 9999);
+    
+    return [
+        'success' => true,
+        'message' => 'Commande validée. Le paiement sera effectué à la livraison.',
+        'order_status' => 'processing',
+        'payment_status' => 'pending',
+        'transaction_id' => $transactionId,
+        'details' => [
+            'payment_method' => 'cash_on_delivery',
+            'amount' => $order['total_amount'],
+            'transaction_id' => $transactionId,
+            'note' => 'Paiement à la livraison'
         ]
     ];
 }

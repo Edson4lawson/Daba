@@ -1,18 +1,28 @@
 <?php
 /**
- * Inscription utilisateur avec Access Token + Refresh Token
- * Génère un email de vérification
+ * Inscription utilisateur (ADMIN SEULEMENT)
+ * Permet uniquement aux admins de créer des comptes staff
  * 
  * @endpoint POST /api/auth/register.php
- * @body { "email": "string", "password": "string", "first_name": "string", "last_name": "string" }
+ * @header Authorization: Bearer {admin_token}
+ * @body { "email": "string", "password": "string", "first_name": "string", "last_name": "string", "role_id": "int" }
  */
 
 require_once __DIR__ . '/../config/headers.php';
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../middleware/auth.php';
 require_once __DIR__ . '/../middleware/rate_limit.php';
 
-// ⚠️ PROTECTION: Limite à 3 inscriptions par heure par IP
-registerRateLimit();
+// ⚠️ PROTECTION: Authentification admin requise
+$user = authenticate();
+
+// Vérifier que l'utilisateur est un admin
+if ($user['role'] !== 'admin') {
+    sendJsonResponse(['error' => 'Accès refusé. Seuls les administrateurs peuvent créer des comptes.'], 403);
+}
+
+// ⚠️ PROTECTION: Limite à 10 créations par heure par admin
+rateLimit('admin_create_user', 10, 3600);
 
 // Vérifier si la requête est de type POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -28,6 +38,24 @@ foreach ($requiredFields as $field) {
     if (empty($data[$field])) {
         sendJsonResponse(['error' => 'Tous les champs sont obligatoires'], 400);
     }
+}
+
+// Valider role_id si fourni (pour créer des comptes staff)
+$roleId = isset($data['role_id']) ? (int)$data['role_id'] : null;
+if ($roleId !== null) {
+    // Vérifier que le rôle existe
+    $stmt = $pdo->prepare('SELECT id, name FROM roles WHERE id = ?');
+    $stmt->execute([$roleId]);
+    $role = $stmt->fetch();
+    if (!$role) {
+        sendJsonResponse(['error' => 'Rôle invalide'], 400);
+    }
+} else {
+    // Par défaut: rôle customer
+    $stmt = $pdo->prepare('SELECT id FROM roles WHERE name = "customer"');
+    $stmt->execute();
+    $role = $stmt->fetch();
+    $roleId = $role['id'];
 }
 
 // Nettoyer l'email
@@ -105,16 +133,17 @@ $userAgent = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255);
 
 try {
     $pdo->beginTransaction();
-    
-    // Insérer le nouvel utilisateur
-    $stmt = $pdo->prepare('INSERT INTO users (email, password, first_name, last_name, address, phone, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())');
+
+    // Insérer le nouvel utilisateur avec le rôle spécifié
+    $stmt = $pdo->prepare('INSERT INTO users (email, password, first_name, last_name, address, phone, role_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())');
     $stmt->execute([
         $email,
         $hashedPassword,
         trim($data['first_name']),
         trim($data['last_name']),
         $data['address'] ?? null,
-        $data['phone'] ?? null
+        $data['phone'] ?? null,
+        $roleId
     ]);
     
     $userId = $pdo->lastInsertId();

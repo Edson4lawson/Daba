@@ -1,26 +1,31 @@
 <?php
 /**
- * Middleware de Rate Limiting Avancé pour Bloom-Chloe
+ * Middleware de Rate Limiting Avancé pour Daba
  * Protège contre les attaques brute-force et DDoS applicatif
- * 
+ *
  * @author Security Audit
  * @version 2.0.0 - Production Ready
  */
 
 /**
  * Applique une limite de requêtes par IP et endpoint avec protection avancée
- * 
+ *
  * @param string $endpoint Identifiant de l'endpoint
  * @param int $maxAttempts Nombre maximum de tentatives
  * @param int $windowSeconds Fenêtre de temps en secondes
  */
 function rateLimit($endpoint, $maxAttempts = 60, $windowSeconds = 60) {
+    // Désactiver en développement
+    if (getenv('APP_ENV') !== 'production') {
+        return;
+    }
+
     $ip = getClientIP();
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
     $key = "rate_limit:{$endpoint}:{$ip}";
     
     // Répertoire pour stocker les données de rate limiting
-    $rateLimitDir = sys_get_temp_dir() . '/bloom_rate_limit';
+    $rateLimitDir = sys_get_temp_dir() . '/daba_rate_limit';
     if (!is_dir($rateLimitDir)) {
         mkdir($rateLimitDir, 0755, true);
     }
@@ -60,7 +65,7 @@ function rateLimit($endpoint, $maxAttempts = 60, $windowSeconds = 60) {
         $retryAfter = $data['blocked_until'] - time();
         header("Retry-After: $retryAfter");
         header('X-RateLimit-Limit: ' . $maxAttempts);
-        header('X-RateLimit-Remaining: 0);
+        header('X-RateLimit-Remaining: 0');
         header('X-RateLimit-Reset: ' . $data['blocked_until']);
         
         http_response_code(429);
@@ -93,7 +98,7 @@ function rateLimit($endpoint, $maxAttempts = 60, $windowSeconds = 60) {
         $retryAfter = $blockDuration;
         header("Retry-After: $retryAfter");
         header('X-RateLimit-Limit: ' . $maxAttempts);
-        header('X-RateLimit-Remaining: 0);
+        header('X-RateLimit-Remaining: 0');
         header('X-RateLimit-Reset: ' . $data['blocked_until']);
         
         // Logger la tentative suspecte

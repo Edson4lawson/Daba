@@ -10,7 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 // Authentifier l'administrateur
 $user = authenticate();
-if ($user['role'] !== 'admin') {
+$allowedRoles = ['admin', 'commercial', 'comptable', 'magasinier'];
+if (!in_array($user['role'], $allowedRoles)) {
     sendJsonResponse(['error' => 'Accès refusé'], 403);
 }
 

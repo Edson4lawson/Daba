@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-4">
-        <button @click="router.push('/Bloom-manager/products')" class="p-2 hover:bg-white dark:hover:bg-[rgb(43,44,43)] rounded-xl transition-colors">
+        <button @click="router.push('/admin/products')" class="p-2 hover:bg-white dark:hover:bg-[rgb(43,44,43)] rounded-xl transition-colors">
           <ArrowLeft class="w-6 h-6 text-slate-600 dark:text-slate-400" />
         </button>
         <div>

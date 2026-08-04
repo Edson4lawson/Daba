@@ -49,12 +49,12 @@ function authenticate($lenient = false) {
         sendJsonResponse(['error' => 'Token d\'authentification manquant ou invalide'], 401);
     }
     
-    // Vérifier le token dans la base de données
-    $query = 'SELECT id, email, first_name, last_name, phone, address, role FROM users WHERE token = ?';
+    // Vérifier le token dans la base de données avec jointure roles
+    $query = 'SELECT u.id, u.email, u.first_name, u.last_name, u.phone, u.address, u.role, u.role_id, r.name as role_name FROM users u LEFT JOIN roles r ON u.role_id = r.id WHERE u.token = ?';
     if (!$lenient) {
-        $query .= ' AND token_expires_at > NOW()';
+        $query .= ' AND u.token_expires_at > NOW()';
     }
-    
+
     $stmt = $pdo->prepare($query);
     $stmt->execute([$token]);
     $user = $stmt->fetch();
@@ -62,7 +62,12 @@ function authenticate($lenient = false) {
     if (!$user) {
         sendJsonResponse(['error' => $lenient ? 'Utilisateur non trouvé' : 'Token invalide ou expiré'], 401);
     }
-    
+
+    // Utiliser role_name si disponible, sinon role (compatibilité)
+    if (!empty($user['role_name'])) {
+        $user['role'] = $user['role_name'];
+    }
+
     // Retourner l'utilisateur authentifié
     return $user;
 }

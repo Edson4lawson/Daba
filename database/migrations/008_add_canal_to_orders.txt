@@ -1,0 +1,13 @@
+-- =============================================================================
+-- MIGRATION: Ajout du canal de commande
+-- Date: 2026-08-03
+-- Description: Ajout de la colonne canal pour distinguer les commandes par source (site, whatsapp, external)
+-- =============================================================================
+
+-- Ajouter la colonne canal à la table orders
+ALTER TABLE orders 
+    ADD COLUMN IF NOT EXISTS canal VARCHAR(50) DEFAULT 'site' AFTER status,
+    ADD INDEX IF NOT EXISTS idx_canal (canal);
+
+-- Mettre à jour les commandes existantes avec une valeur par défaut
+UPDATE orders SET canal = 'site' WHERE canal IS NULL OR canal = '';

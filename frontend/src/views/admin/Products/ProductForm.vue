@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
           {{ productId ? 'Modifier le produit' : 'Nouveau produit' }}
         </h1>
-        <router-link to="/Bloom-manager/products" class="text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-white">
+        <router-link to="/admin/products" class="text-gray-600 dark:text-slate-400 hover:text-gray-800 dark:hover:text-white">
           ← Retour à la liste
         </router-link>
       </div>
@@ -119,7 +119,7 @@
           <!-- Actions -->
           <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-100 dark:border-slate-600">
             <router-link 
-              to="/Bloom-manager/products" 
+              to="/admin/products" 
               class="px-6 py-2 text-gray-600 dark:text-slate-300 border border-gray-300 dark:border-slate-500 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
             >
               Annuler
@@ -280,7 +280,7 @@ const saveProduct = async () => {
       // Upload des nouvelles images
       await uploadImages(savedProductId)
       
-      router.push('/Bloom-manager/products')
+      router.push('/admin/products')
     }
   } catch (error) {
     console.error('Erreur lors de la sauvegarde:', error)

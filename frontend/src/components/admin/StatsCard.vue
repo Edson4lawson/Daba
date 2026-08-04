@@ -11,8 +11,8 @@
         <component :is="icon" class="w-6 h-6" />
       </div>
       <div>
-        <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">{{ title }}</p>
-        <h3 ref="countUpRef" class="text-2xl font-bold text-slate-900 dark:text-white">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">{{ title }}</p>
+        <h3 ref="countUpRef" class="text-2xl font-black text-slate-800 dark:text-white">
           {{ formattedValue }}
         </h3>
       </div>
@@ -73,11 +73,11 @@ onMounted(() => {
 
 const colorClasses = computed(() => {
   const colors = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
-    green: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400',
-    purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
-    yellow: 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400',
-    red: 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400'
+    blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-500',
+    green: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500',
+    purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-500',
+    yellow: 'bg-amber-50 dark:bg-amber-900/20 text-amber-500',
+    red: 'bg-rose-50 dark:bg-rose-900/20 text-rose-500'
   }
   return colors[props.color] || colors.blue
 })

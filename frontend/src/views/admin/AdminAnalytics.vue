@@ -64,14 +64,14 @@
     <div class="bg-white dark:bg-[rgb(43,44,43)] rounded-3xl p-8 border border-slate-100 dark:border-slate-500 shadow-sm">
       <div class="flex items-center justify-between mb-8">
         <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center">
-          <TrendingUp class="w-5 h-5 mr-3 text-purple-500" />
+          <TrendingUp class="w-5 h-5 mr-3 text-daba-orange" />
           Top 8 des meilleures ventes
         </h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div v-for="(product, idx) in topProducts" :key="product.id" class="group relative bg-slate-50 dark:bg-slate-900/30 border border-slate-100 dark:border-slate-500 rounded-2xl p-3 hover:shadow-xl transition-all duration-300">
           <!-- Position Badge -->
-          <div class="absolute -top-2 -left-2 w-8 h-8 bg-black dark:bg-purple-600 text-white rounded-full flex items-center justify-center text-xs font-black z-20 shadow-lg">
+          <div class="absolute -top-2 -left-2 w-8 h-8 bg-daba-navy dark:bg-daba-orange text-white rounded-full flex items-center justify-center text-xs font-black z-20 shadow-lg">
             #{{ idx + 1 }}
           </div>
           
@@ -85,7 +85,7 @@
           <div class="space-y-1">
             <h4 class="text-sm font-bold text-slate-800 dark:text-white truncate">{{ product.name }}</h4>
             <div class="flex items-center justify-between">
-              <span class="text-xs font-black text-purple-600 dark:text-purple-400">{{ product.sold }} UNITÉS VENDUES</span>
+              <span class="text-xs font-black text-daba-orange dark:text-daba-orange">{{ product.sold }} UNITÉS VENDUES</span>
               <span class="text-[10px] text-slate-400 font-bold uppercase">{{ Math.round((product.revenue / (product.sold || 1))).toLocaleString('fr-FR') }} / u</span>
             </div>
           </div>
@@ -140,18 +140,18 @@ const revenueData = computed(() => {
     // Création d'un dégradé pour l'aire sous la courbe
     const ctx = document.createElement('canvas').getContext('2d')
     const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-    gradient.addColorStop(0, 'rgba(192, 38, 211, 0.4)')
-    gradient.addColorStop(1, 'rgba(192, 38, 211, 0)')
+    gradient.addColorStop(0, 'rgba(206, 70, 0, 0.4)')
+    gradient.addColorStop(1, 'rgba(206, 70, 0, 0)')
     
     return {
       labels: sales.map(s => s.month || ''),
       datasets: [{
         label: 'Revenus (FCFA)',
         data: sales.map(s => parseFloat(s.revenue || 0)),
-        borderColor: '#c026d3',
+        borderColor: '#CE4600',
         borderWidth: 4,
         pointBackgroundColor: '#fff',
-        pointBorderColor: '#c026d3',
+        pointBorderColor: '#CE4600',
         pointBorderWidth: 3,
         pointRadius: 5,
         pointHoverRadius: 8,

@@ -155,8 +155,8 @@ export const adminService = {
   // ═══════════════════════════════════════════
 
   async getOrders(params = {}) {
-    const response = await api.get('/orders/get.php', { 
-      params: { ...params, t: Date.now() } 
+    const response = await api.get('/admin/orders/get_all.php', {
+      params: { ...params, t: Date.now() }
     })
     const raw = response.data
     let list = []
