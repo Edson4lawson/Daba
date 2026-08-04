@@ -251,6 +251,34 @@ export const adminService = {
   async updateSettings(settings) {
     const response = await api.post('/admin/settings/update.php', settings)
     return { success: true, message: response.data.message }
+  },
+
+  // ═══════════════════════════════════════════
+  // FACTURES
+  // ═══════════════════════════════════════════
+
+  async getInvoices(params = {}) {
+    const response = await api.get('/admin/invoices/get_all.php', {
+      params: { ...params, t: Date.now() }
+    })
+    const raw = response.data
+    let list = []
+    if (Array.isArray(raw)) list = raw
+    else if (raw && Array.isArray(raw.data)) list = raw.data
+    else if (raw && Array.isArray(raw.invoices)) list = raw.invoices
+
+    return {
+      success: true,
+      invoices: list
+    }
+  },
+
+  async updateInvoiceStatus(invoiceId, status) {
+    const response = await api.post('/admin/invoices/update_status.php', {
+      invoice_id: invoiceId,
+      status
+    })
+    return { success: true, message: response.data.message }
   }
 }
 

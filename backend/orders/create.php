@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../config/headers.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../middleware/auth.php';
+require_once __DIR__ . '/../helpers/invoice_helper.php';
 
 // Vérifier si la requête est de type POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -269,12 +270,16 @@ try {
     
     $pdo->commit();
     
+    // Générer automatiquement la facture
+    $invoiceId = generateInvoice($pdo, $orderId, $totalAmount);
+    
     sendJsonResponse([
         'message' => 'Commande créée avec succès',
         'order_id' => $orderId,
         'order_number' => $orderNumber,
         'status' => 'pending',
-        'amount' => $totalAmount
+        'amount' => $totalAmount,
+        'invoice_id' => $invoiceId
     ], 201);
     
 } catch (Exception $e) {

@@ -21,6 +21,7 @@ const AdminProducts = () => import('@/views/admin/AdminProducts.vue')
 const AdminStock = () => import('@/views/admin/AdminStock.vue')
 const AdminOrders = () => import('@/views/admin/AdminOrders.vue')
 const AdminCustomers = () => import('@/views/admin/AdminCustomers.vue')
+const AdminInvoices = () => import('@/views/admin/AdminInvoices.vue')
 const AdminSettings = () => import('@/views/admin/AdminSettings.vue')
 const AdminAnalytics = () => import('@/views/admin/AdminAnalytics.vue')
 const CategoryManager = () => import('@/views/admin/Categories/CategoryManager.vue')
@@ -139,7 +140,7 @@ const routes = [
       {
         path: 'invoices',
         name: 'AdminInvoices',
-        component: AdminOrders,
+        component: AdminInvoices,
         meta: { allowedRoles: ['admin', 'comptable'] }
       },
       {

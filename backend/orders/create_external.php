@@ -12,6 +12,7 @@ require_once __DIR__ . '/../config/headers.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/logging.php';
 require_once __DIR__ . '/../middleware/rate_limit.php';
+require_once __DIR__ . '/../helpers/invoice_helper.php';
 
 // Rate limiting: 20 requêtes par minute par IP
 rateLimit('external_order', 20, 60);
@@ -269,6 +270,9 @@ try {
     
     $pdo->commit();
     
+    // Générer automatiquement la facture
+    $invoiceId = generateInvoice($pdo, $orderId, $totalAmount);
+    
     // Logger la création de commande externe
     logAPI("Commande externe créée via API: Order ID $orderId, User ID $userId, Phone $phone");
     
@@ -280,6 +284,7 @@ try {
         'status' => $orderStatus,
         'total_amount' => $totalAmount,
         'shipping_fee' => $shippingFee,
+        'invoice_id' => $invoiceId,
         'message' => 'Commande créée avec succès'
     ], 201);
     
