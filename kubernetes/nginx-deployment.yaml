@@ -1,14 +1,14 @@
 # =============================================================================
-# BLOOM-CHLOE - Kubernetes Deployment pour Nginx (Reverse Proxy)
+# daba - Kubernetes Deployment pour Nginx (Reverse Proxy)
 # =============================================================================
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bloom-chloe-nginx
-  namespace: bloom-chloe
+  name: daba-nginx
+  namespace: daba
   labels:
-    app: bloom-chloe-nginx
+    app: daba-nginx
     version: v1
 spec:
   replicas: 2
@@ -19,11 +19,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: bloom-chloe-nginx
+      app: daba-nginx
   template:
     metadata:
       labels:
-        app: bloom-chloe-nginx
+        app: daba-nginx
         version: v1
     spec:
       containers:
@@ -67,10 +67,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bloom-chloe-nginx-service
-  namespace: bloom-chloe
+  name: daba-nginx-service
+  namespace: daba
   labels:
-    app: bloom-chloe-nginx
+    app: daba-nginx
 spec:
   type: ClusterIP
   ports:
@@ -79,4 +79,4 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: bloom-chloe-nginx
+    app: daba-nginx

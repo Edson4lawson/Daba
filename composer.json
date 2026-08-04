@@ -1,6 +1,6 @@
 {
-    "name": "bloom-chloe/backend",
-    "description": "Bloom Chloé E-commerce Backend API",
+    "name": "daba/backend",
+    "description": "Daba E-commerce Backend API",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BloomChloe\\": "backend/"
+            "Daba\\": "backend/"
         }
     },
     "config": {

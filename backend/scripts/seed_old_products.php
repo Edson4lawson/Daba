@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/backend/config/db.php';
 
-echo "🌱 Seed des ANCIENS produits Bloom-Chloe...\n\n";
+echo "🌱 Seed des ANCIENS produits daba...\n\n";
 
 $catStmt = $pdo->query('SELECT id, name FROM categories');
 $categoriesDb = $catStmt->fetchAll();

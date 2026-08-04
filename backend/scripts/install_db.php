@@ -8,12 +8,12 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Drop and Create DB
-    $pdo->exec("DROP DATABASE IF EXISTS `Bloom_chloe`");
-    $pdo->exec("CREATE DATABASE `Bloom_chloe` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $pdo->exec("DROP DATABASE IF EXISTS `daba`");
+    $pdo->exec("CREATE DATABASE `daba` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     echo "Database created.\n";
     
     // Select DB
-    $pdo->exec("USE `Bloom_chloe`");
+    $pdo->exec("USE `daba`");
     
     // Execution de schema.sql
     $schema = file_get_contents(__DIR__ . '/database/sql/schema.sql');

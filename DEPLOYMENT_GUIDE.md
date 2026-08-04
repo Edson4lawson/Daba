@@ -60,7 +60,7 @@ Ce guide explique comment déployer Bloom Chloé en production sur Render (backe
 
 1. Dans Render, cliquez sur **"New +"** → **"PostgreSQL"**
 2. Configurez :
-   - **Name**: `bloom-chloe-db`
+   - **Name**: `daba-db`
    - **Database**: `bloom_chloe`
    - **User**: `bloom_chloe_user`
    - **Region**: Choisissez la région la plus proche de vos utilisateurs (ex: Frankfurt pour l'Europe)
@@ -77,7 +77,7 @@ Ce guide explique comment déployer Bloom Chloé en production sur Render (backe
 1. Dans Render, cliquez sur **"New +"** → **"Web Service"**
 2. Connectez votre dépôt GitHub Bloom-Chloé
 3. Configurez :
-   - **Name**: `bloom-chloe-api`
+   - **Name**: `daba-api`
    - **Region**: Même région que la base de données
    - **Branch**: `main`
    - **Root Directory**: `backend`
@@ -200,7 +200,7 @@ Créez le fichier `frontend/vercel.json` :
 
 | Paramètre | Valeur recommandée |
 |-----------|-------------------|
-| **Name** | `bloom-chloe-db` |
+| **Name** | `daba-db` |
 | **Database** | `bloom_chloe` |
 | **User** | `bloom_chloe_user` |
 | **Region** | `Frankfurt` (Europe) ou la plus proche de vos utilisateurs |
@@ -634,9 +634,9 @@ ENCRYPTION_KEY=votre_encryption_key_64_caracteres
 PAYMENT_SECRET_KEY=votre_payment_key_64_caracteres
 
 # API & Frontend
-FRONTEND_URL=https://bloom-chloe.vercel.app
-API_URL=https://bloom-chloe-api.onrender.com
-ALLOWED_ORIGINS=https://bloom-chloe.vercel.app,https://www.bloom-chloe.com,https://bloom-chloe.com
+FRONTEND_URL=https://daba.vercel.app
+API_URL=https://daba-api.onrender.com
+ALLOWED_ORIGINS=https://daba.vercel.app,https://www.daba.com,https://daba.com
 
 # Sessions
 SESSION_LIFETIME=900
@@ -657,7 +657,7 @@ RATE_LIMIT_API_WINDOW=60
 Dans Vercel → Project Settings → Environment Variables :
 
 ```bash
-VITE_API_URL=https://bloom-chloe-api.onrender.com
+VITE_API_URL=https://daba-api.onrender.com
 VITE_STRIPE_PUBLIC_KEY=pk_live_votre_cle_stripe
 VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
 ```
@@ -674,7 +674,7 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
    - Publishable Key: `pk_live_...`
    - Secret Key: `sk_live_...`
 4. Configurez le Webhook :
-   - URL: `https://bloom-chloe-api.onrender.com/payment/stripe-webhook`
+   - URL: `https://daba-api.onrender.com/payment/stripe-webhook`
    - Events: `payment_intent.succeeded`, `payment_intent.failed`
 5. Ajoutez dans Render Environment Variables :
    ```bash
@@ -692,7 +692,7 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
 5. Ajoutez dans Render Environment Variables :
    ```bash
    SENDGRID_API_KEY=SG.votre_cle
-   SENDGRID_FROM_EMAIL=noreply@bloom-chloe.com
+   SENDGRID_FROM_EMAIL=noreply@daba.com
    SENDGRID_FROM_NAME=Bloom Chloé
    ```
 
@@ -715,9 +715,9 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
 1. Allez sur https://www.google.com/recaptcha/admin
 2. Créez un compte reCAPTCHA v3
 3. Ajoutez vos domaines :
-   - bloom-chloe.vercel.app
-   - bloom-chloe-api.onrender.com
-   - bloom-chloe.com (si vous avez un domaine)
+   - daba.vercel.app
+   - daba-api.onrender.com
+   - daba.com (si vous avez un domaine)
 4. Ajoutez dans Render et Vercel :
    ```bash
    # Render (Backend)
@@ -735,7 +735,7 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
 
 1. Dans Render → Web Service → Settings → Custom Domains
 2. Cliquez sur **"Add Custom Domain"**
-3. Entrez: `api.bloom-chloe.com`
+3. Entrez: `api.daba.com`
 4. Suivez les instructions pour configurer le DNS :
    - Type: CNAME
    - Name: api
@@ -745,7 +745,7 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
 
 1. Dans Vercel → Project Settings → Domains
 2. Cliquez sur **"Add Domain"**
-3. Entrez: `bloom-chloe.com`
+3. Entrez: `daba.com`
 4. Suivez les instructions pour configurer le DNS :
    - Type: A
    - Name: @
@@ -837,17 +837,17 @@ Vercel fournit :
 
 ```bash
 # Test de santé
-curl https://bloom-chloe-api.onrender.com/
+curl https://daba-api.onrender.com/
 
 # Test d'authentification
-curl -X POST https://bloom-chloe-api.onrender.com/auth/login.php \
+curl -X POST https://daba-api.onrender.com/auth/login.php \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","password":"password"}'
 ```
 
 ### Test Frontend
 
-1. Ouvrez `https://bloom-chloe.vercel.app`
+1. Ouvrez `https://daba.vercel.app`
 2. Testez l'inscription
 3. Testez la connexion
 4. Testez le panier

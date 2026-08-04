@@ -99,7 +99,7 @@ Vous pouvez retirer votre consentement à tout moment.
 
 Pour exercer vos droits, contactez-nous à :
 
-- **Email:** privacy@bloom-chloe.com
+- **Email:** privacy@daba.com
 - **Adresse:** [Adresse physique]
 
 Nous répondrons dans un délai de 30 jours.
@@ -158,7 +158,7 @@ Toute modification sera notifiée par email et sur notre site.
 
 Pour toute question concernant vos données personnelles :
 
-- **Email:** privacy@bloom-chloe.com
+- **Email:** privacy@daba.com
 - **DPO:** [Nom du DPO]
 - **Téléphone:** [Numéro]
 

@@ -10,7 +10,7 @@ echo "=== MIGRATIONS SIMPLIFIÉES ===\n\n";
 // Configuration directe (pas de .env pour éviter les problèmes)
 $dbHost = '127.0.0.1';
 $dbPort = '3306';
-$dbName = 'bloom_chloe';
+$dbName = 'daba';
 $dbUser = 'root';
 $dbPass = '';
 

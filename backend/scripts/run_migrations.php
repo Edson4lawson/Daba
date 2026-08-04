@@ -28,7 +28,7 @@ if (file_exists($envFile)) {
 // Configuration
 $dbHost = getenv('DB_HOST') ?: '127.0.0.1';
 $dbPort = getenv('DB_PORT') ?: '3306';
-$dbName = getenv('DB_NAME') ?: 'bloom_chloe';
+$dbName = getenv('DB_NAME') ?: 'daba';
 $dbUser = getenv('DB_USER') ?: 'root';
 $dbPass = getenv('DB_PASS') ?: '';
 

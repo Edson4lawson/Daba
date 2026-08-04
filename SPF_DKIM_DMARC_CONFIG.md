@@ -1,7 +1,7 @@
-# CONFIGURATION EMAIL SÉCURISÉE - BLOOM-CHLOE
+# CONFIGURATION EMAIL SÉCURISÉE - daba
 
 **Date:** 12 Juillet 2026  
-**Domaine:** bloom-chloe.com
+**Domaine:** daba.com
 
 ---
 
@@ -26,7 +26,7 @@ Value: v=spf1 include:sendgrid.net -all
 ### Test de validation
 
 ```bash
-dig txt bloom-chloe.com
+dig txt daba.com
 ```
 
 Ou utiliser : https://mxtoolbox.com/spf.aspx
@@ -83,7 +83,7 @@ Ajoutez un enregistrement TXT pour votre domaine :
 ```
 Type: TXT
 Name: _dmarc
-Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1
+Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1
 ```
 
 ### Explication des paramètres
@@ -101,28 +101,28 @@ Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmar
 
 **Phase 1 (Semaine 1-2):**
 ```
-v=DMARC1; p=none; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1
+v=DMARC1; p=none; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1
 ```
 
 **Phase 2 (Semaine 3-4):**
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1; pct=50
+v=DMARC1; p=quarantine; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1; pct=50
 ```
 
 **Phase 3 (Après validation):**
 ```
-v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1
+v=DMARC1; p=quarantine; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1
 ```
 
 **Phase 4 (Production stable):**
 ```
-v=DMARC1; p=reject; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1
+v=DMARC1; p=reject; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1
 ```
 
 ### Test de validation
 
 ```bash
-dig txt _dmarc.bloom-chloe.com
+dig txt _dmarc.daba.com
 ```
 
 Ou utiliser : https://dmarcian.com/dmarc-check
@@ -155,7 +155,7 @@ Value: u1234567.wl123.sendgrid.net
 # DMARC
 Type: TXT
 Name: _dmarc
-Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmarc-fail@bloom-chloe.com; fo=1
+Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@daba.com; ruf=mailto:dmarc-fail@daba.com; fo=1
 ```
 
 ---
@@ -185,8 +185,8 @@ Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@bloom-chloe.com; ruf=mailto:dmar
 ### Rapports DMARC
 
 Les rapports DMARC seront envoyés à :
-- `dmarc@bloom-chloe.com` (rapports agrégés quotidiens)
-- `dmarc-fail@bloom-chloe.com` (rapports d'échec en temps réel)
+- `dmarc@daba.com` (rapports agrégés quotidiens)
+- `dmarc-fail@daba.com` (rapports d'échec en temps réel)
 
 ### Analyse des rapports
 
@@ -235,7 +235,7 @@ Utiliser des outils comme :
 
 Pour toute question sur la configuration email :
 
-- **Email:** tech@bloom-chloe.com
+- **Email:** tech@daba.com
 - **Documentation SendGrid:** https://sendgrid.com/docs/for-developers/sending-email/setting-up-spf-and-dkim/
 
 ---

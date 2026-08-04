@@ -1,12 +1,12 @@
 <?php
 /**
- * BLOOM-CHLOE — Seed des produits de la section STORE
+ * daba — Seed des produits de la section STORE
  * Ajoute les produits spécifiques avec la source 'store'
  */
 
 require_once __DIR__ . '/../config/db.php';
 
-echo "=== BLOOM-CHLOE — Seed de la Section Store ===\n\n";
+echo "=== daba — Seed de la Section Store ===\n\n";
 
 if (!isset($pdo)) {
     die("[ERREUR] Connexion BDD impossible\n");

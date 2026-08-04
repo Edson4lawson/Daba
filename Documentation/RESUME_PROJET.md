@@ -1,4 +1,4 @@
-# 📝 Résumé du Projet Bloom-Chloe
+# 📝 Résumé du Projet daba
 
 ## 🌍 Aperçu
 Bloom by Chloé est une boutique e-commerce moderne spécialisée dans les produits de beauté, maison et accessoires bien-être, ciblant principalement le marché béninois.

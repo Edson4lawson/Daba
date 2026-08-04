@@ -5,7 +5,7 @@
  */
 
 // Configuration de la base de données PostgreSQL
-$databaseUrl = getenv('DATABASE_URL') ?: 'postgresql://bloom_chloe_user:password@localhost:5432/bloom_chloe';
+$databaseUrl = getenv('DATABASE_URL') ?: 'postgresql://daba_user:password@localhost:5432/daba';
 
 // Parser l'URL de connexion
 preg_match('/postgresql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/', $databaseUrl, $matches);

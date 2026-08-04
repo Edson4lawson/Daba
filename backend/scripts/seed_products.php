@@ -1,6 +1,6 @@
 <?php
 /**
- * BLOOM-CHLOE — Script de seed intelligent
+ * daba — Script de seed intelligent
  * Migre les 95 produits statiques vers la base MySQL
  * 
  * Usage: php seed_products.php
@@ -8,7 +8,7 @@
 
 require_once __DIR__ . '/api/config/db.php';
 
-echo "=== BLOOM-CHLOE — Seed des Produits ===\n\n";
+echo "=== daba — Seed des Produits ===\n\n";
 
 // db.php crée directement $pdo
 require_once __DIR__ . '/api/config/db.php';

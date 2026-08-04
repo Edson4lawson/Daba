@@ -11,7 +11,7 @@ require_once __DIR__ . '/../config/db.php';
 header('Content-Type: application/xml; charset=utf-8');
 
 // Configuration
-$baseUrl = 'https://bloom-chloe.com';
+$baseUrl = 'https://daba.com';
 $lastmod = date('Y-m-d');
 
 // Début du XML

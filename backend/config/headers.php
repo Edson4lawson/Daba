@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration CORS et Headers de Sécurité Unifiés - Bloom-Chloe
+ * Configuration CORS et Headers de Sécurité Unifiés - daba
  * Ce fichier centralise CORS, sécurité et fonctions utilitaires
  * 
  * @version 2.0.0 - Production Ready

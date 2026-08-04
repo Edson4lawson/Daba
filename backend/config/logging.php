@@ -47,7 +47,7 @@ class SecurityLogger {
         
         // Contexte par défaut
         $this->context = [
-            'app' => 'bloom-chloe',
+            'app' => 'daba',
             'environment' => getenv('APP_ENV') ?: 'development',
             'server_ip' => $_SERVER['SERVER_ADDR'] ?? 'unknown',
             'request_id' => $this->generateRequestId()

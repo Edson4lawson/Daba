@@ -1,11 +1,11 @@
 # =============================================================================
-# BLOOM-CHLOE - Kubernetes Namespace
+# daba - Kubernetes Namespace
 # =============================================================================
 
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: bloom-chloe
+  name: daba
   labels:
-    name: bloom-chloe
+    name: daba
     environment: production

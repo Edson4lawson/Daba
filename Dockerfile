@@ -1,12 +1,12 @@
 # =============================================================================
-# BLOOM-CHLOE - Dockerfile pour Backend PHP
+# daba - Dockerfile pour Backend PHP
 # Optimisé pour la production et Kubernetes
 # =============================================================================
 
 FROM php:8.2-fpm-alpine
 
 # Métadonnées
-LABEL maintainer="Bloom Chloé <contact@bloom-chloe.com>"
+LABEL maintainer="Bloom Chloé <contact@daba.com>"
 LABEL version="1.0.0"
 LABEL description="Bloom Chloé Backend API"
 

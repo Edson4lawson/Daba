@@ -87,7 +87,7 @@ function sendPasswordResetEmail($email, $firstName, $token) {
     // Exemple avec mail() natif (non recommandé en production)
     // $subject = "Réinitialisation de votre mot de passe - Bloom Chloé";
     // $message = "Bonjour $firstName,\n\nCliquez ici pour réinitialiser votre mot de passe:\n$resetUrl\n\nCe lien expire dans 1 heure.";
-    // $headers = "From: noreply@bloom-chloe.com";
+    // $headers = "From: noreply@daba.com";
     // mail($email, $subject, $message, $headers);
 }
 ?>

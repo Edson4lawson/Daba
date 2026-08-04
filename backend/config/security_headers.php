@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration des Headers de Sécurité pour Bloom-Chloe
+ * Configuration des Headers de Sécurité pour daba
  * 
  * Ce fichier centralise tous les headers de sécurité HTTP
  * À inclure dans tous les fichiers API
@@ -18,8 +18,8 @@ $allowedOrigins = [
     'http://localhost:5173',       // Vite dev server
     'http://localhost:3000',       // Alternative dev
     'http://127.0.0.1:5173',      // Localhost alternatif
-    'https://bloom-chloe.com',    // Production
-    'https://www.bloom-chloe.com' // Production WWW
+    'https://daba.com',    // Production
+    'https://www.daba.com' // Production WWW
 ];
 
 // Récupérer l'origine de la requête

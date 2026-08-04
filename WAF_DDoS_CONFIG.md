@@ -1,4 +1,4 @@
-# CONFIGURATION WAF ET PROTECTION DDoS - BLOOM-CHLOE
+# CONFIGURATION WAF ET PROTECTION DDoS - daba
 
 **Date:** 12 Juillet 2026  
 **Infrastructure:** Cloudflare + Kubernetes
@@ -13,8 +13,8 @@
 - **Type:** CNAME
 - **Name:** api (pour backend)
 - **Name:** www (pour frontend)
-- **Target:** bloom-chloe.vercel.app (frontend)
-- **Target:** bloom-chloe-api.onrender.com (backend)
+- **Target:** daba.vercel.app (frontend)
+- **Target:** daba-api.onrender.com (backend)
 
 **SSL/TLS:**
 - **Mode:** Full (strict)
@@ -132,7 +132,7 @@ Activer **Bot Fight Mode** pour :
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bloom-chloe-ingress
+  name: daba-ingress
   annotations:
     nginx.ingress.kubernetes.io/limit-connections: "100"
     nginx.ingress.kubernetes.io/limit-rps: "50"
@@ -269,7 +269,7 @@ location /api/ {
 
 **En cas d'incident de sécurité:**
 
-- **Email:** security@bloom-chloe.com
+- **Email:** security@daba.com
 - **Téléphone:** [Numéro d'urgence]
 - **Slack:** #security-alerts
 

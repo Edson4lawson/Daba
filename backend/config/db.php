@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration de la base de données - Bloom-Chloe
+ * Configuration de la base de données - daba
  * 
  * ⚠️ SÉCURITÉ: Les credentials sont chargés depuis le fichier .env
  * Créez api/.env à partir de api/.env.example avant utilisation
@@ -35,7 +35,7 @@ if (file_exists($envFile)) {
 define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_NAME', getenv('DB_NAME') ?: 'bloom_chloe');
+define('DB_NAME', getenv('DB_NAME') ?: 'daba');
 define('APP_ENV', getenv('APP_ENV') ?: 'development');
 
 // =============================================================================
