@@ -32,7 +32,7 @@
           title="Commandes"
           :value="stats?.totalOrders ?? 0"
           :icon="ShoppingCart"
-          color="purple"
+          color="green"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
@@ -49,7 +49,7 @@
           :value="stats?.totalRevenue ?? 0"
           :icon="Wallet"
           suffix="FCFA"
-          color="purple"
+          color="blue"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
@@ -61,7 +61,7 @@
           title="Commandes du Jour"
           :value="stats?.todayOrders ?? 0"
           :icon="ShoppingCart"
-          color="purple"
+          color="green"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
@@ -78,7 +78,7 @@
           :value="stats?.avgCart ?? 0"
           :icon="Wallet"
           suffix="FCFA"
-          color="purple"
+          color="amber"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
@@ -111,7 +111,7 @@
           :value="stats?.totalRevenue ?? 0"
           :icon="Wallet"
           suffix="FCFA"
-          color="purple"
+          color="blue"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
@@ -136,7 +136,7 @@
           :value="stats?.avgCart ?? 0"
           :icon="Wallet"
           suffix="FCFA"
-          color="purple"
+          color="amber"
           class="stats-card-anim mb-4"
           :loading="isLoading"
         />
