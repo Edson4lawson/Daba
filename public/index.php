@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
 // Configuration du timezone
-date_default_timezone_set('Africa/Porto-Novo');
+date_default_timezone_set('Africa/Lome');
 
 // Charger les configurations
 require_once __DIR__ . '/../backend/config/db.php';

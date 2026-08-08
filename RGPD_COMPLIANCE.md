@@ -1,4 +1,4 @@
-# POLITIQUE DE CONFIDENTIALITÉ - BLOOM-CHLOÉ
+# POLITIQUE DE CONFIDENTIALITÉ - DABA
 
 **Dernière mise à jour:** 12 Juillet 2026  
 **Conforme au:** RGPD (Règlement Général sur la Protection des Données)

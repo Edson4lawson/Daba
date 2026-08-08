@@ -6,9 +6,9 @@
 FROM php:8.2-fpm-alpine
 
 # Métadonnées
-LABEL maintainer="Bloom Chloé <contact@daba.com>"
+LABEL maintainer="Daba <contact@daba.com>"
 LABEL version="1.0.0"
-LABEL description="Bloom Chloé Backend API"
+LABEL description="Daba Backend API"
 
 # Installer les dépendances système
 RUN apk add --no-cache \

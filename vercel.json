@@ -58,12 +58,12 @@
     }
   ],
   "env": {
-    "VITE_API_URL": "https://bloom-chloe-api.onrender.com"
+    "VITE_API_URL": "https://daba-api.onrender.com"
   },
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://bloom-chloe-api.onrender.com/api/:path*"
+      "destination": "https://daba-api.onrender.com/api/:path*"
     }
   ]
 }

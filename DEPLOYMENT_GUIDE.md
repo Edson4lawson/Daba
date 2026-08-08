@@ -1,6 +1,6 @@
-# GUIDE DE DÉPLOIEMENT PRODUCTION - BLOOM-CHLOÉ
+# GUIDE DE DÉPLOIEMENT PRODUCTION - DABA
 
-Ce guide explique comment déployer Bloom Chloé en production sur Render (backend PHP) et Vercel (frontend Vue).
+Ce guide explique comment déployer Daba en production sur Render (backend PHP) et Vercel (frontend Vue).
 
 ---
 
@@ -10,7 +10,7 @@ Ce guide explique comment déployer Bloom Chloé en production sur Render (backe
 2. [Prérequis](#prérequis)
 3. [Étape 1: Configuration Render (Backend PHP)](#render)
 4. [Étape 2: Configuration Vercel (Frontend Vue)](#vercel)
-5. [Étape 3: Configuration Base de Données PostgreSQL](#database)
+5. [Étape 3: Configuration Base de Données MySQL](#database)
 6. [Étape 4: Variables d'Environnement Production](#env)
 7. [Étape 5: Services Externes](#services)
 8. [Étape 6: DNS et Domaines](#dns)
@@ -31,9 +31,9 @@ Ce guide explique comment déployer Bloom Chloé en production sur Render (backe
                                       │
                                       ▼
                               ┌─────────────────┐
-                              │  PostgreSQL     │
+                              │  MySQL          │
                               │  (Render)       │
-                              │  Port 5432      │
+                              │  Port 3306      │
                               └─────────────────┘
 ```
 
@@ -56,13 +56,13 @@ Ce guide explique comment déployer Bloom Chloé en production sur Render (backe
 2. Créez un compte avec GitHub
 3. Connectez votre compte GitHub
 
-### 1.2 Créer une Base de Données PostgreSQL
+### 1.2 Créer une Base de Données MySQL
 
-1. Dans Render, cliquez sur **"New +"** → **"PostgreSQL"**
+1. Dans Render, cliquez sur **"New +"** → **"MySQL"**
 2. Configurez :
    - **Name**: `daba-db`
-   - **Database**: `bloom_chloe`
-   - **User**: `bloom_chloe_user`
+   - **Database**: `daba`
+   - **User**: `daba_user`
    - **Region**: Choisissez la région la plus proche de vos utilisateurs (ex: Frankfurt pour l'Europe)
    - **Plan**: Free (pour démarrer) ou Standard ($7/mois pour la production)
 3. Cliquez sur **"Create Database"**
@@ -191,20 +191,20 @@ Créez le fichier `frontend/vercel.json` :
 
 ---
 
-## 🗄️ ÉTAPE 3: CONFIGURATION BASE DE DONNÉES POSTGRESQL
+## 🗄️ ÉTAPE 3: CONFIGURATION BASE DE DONNÉES MYSQL
 
-### 3.1 Créer la Base de Données PostgreSQL sur Render
+### 3.1 Créer la Base de Données MySQL sur Render
 
-1. Dans Render, cliquez sur **"New +"** → **"PostgreSQL"**
+1. Dans Render, cliquez sur **"New +"** → **"MySQL"**
 2. Configurez les paramètres :
 
 | Paramètre | Valeur recommandée |
 |-----------|-------------------|
 | **Name** | `daba-db` |
-| **Database** | `bloom_chloe` |
-| **User** | `bloom_chloe_user` |
+| **Database** | `daba` |
+| **User** | `daba_user` |
 | **Region** | `Frankfurt` (Europe) ou la plus proche de vos utilisateurs |
-| **PostgreSQL Version** | `16` (dernière version) |
+| **MySQL Version** | `8.0` (dernière version) |
 | **Plan** | `Free` (pour démarrer) ou `Standard` ($7/mois pour la production) |
 
 3. Cliquez sur **"Create Database"**
@@ -225,371 +225,27 @@ Pour exécuter les migrations depuis votre machine locale :
 
 Exemple :
 ```
-postgresql://bloom_chloe_user:password@dpg-xxxxx.oregon-postgres.render.com:5432/bloom_chloe?sslmode=require
+mysql://daba_user:password@daba-db.mysql.render.com:3306/daba
 ```
 
-### 3.3 Adapter les Migrations pour PostgreSQL
+### 3.3 Exécuter les Migrations MySQL
 
-Les migrations actuelles sont pour MySQL. Nous devons les adapter pour PostgreSQL.
+Les migrations sont déjà configurées pour MySQL dans `database/migrations/`.
 
-**Différences principales MySQL → PostgreSQL** :
-- `AUTO_INCREMENT` → `SERIAL` ou `BIGSERIAL`
-- `TINYINT` → `SMALLINT`
-- `DATETIME` → `TIMESTAMP`
-- `TEXT` avec longueur → `TEXT` (sans longueur)
-- `ENGINE=InnoDB` → Non utilisé
-- `utf8mb4` → UTF8 par défaut
-
-### 3.4 Créer les Migrations PostgreSQL
-
-Créez les fichiers de migration PostgreSQL dans `database/migrations/postgres/` :
-
-#### 001_init_tables_postgres.sql
-
-```sql
--- Table users
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    phone VARCHAR(20),
-    address TEXT,
-    role VARCHAR(50) DEFAULT 'customer',
-    email_verified BOOLEAN DEFAULT FALSE,
-    two_factor_required BOOLEAN DEFAULT FALSE,
-    failed_login_attempts INTEGER DEFAULT 0,
-    locked_until TIMESTAMP,
-    token VARCHAR(255),
-    token_expires_at TIMESTAMP,
-    last_login_at TIMESTAMP,
-    last_login_ip VARCHAR(45),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table categories
-CREATE TABLE IF NOT EXISTS categories (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    slug VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT,
-    image_url TEXT,
-    parent_id INTEGER REFERENCES categories(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table products
-CREATE TABLE IF NOT EXISTS products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) UNIQUE NOT NULL,
-    description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    compare_at_price DECIMAL(10,2),
-    sku VARCHAR(100) UNIQUE,
-    stock INTEGER DEFAULT 0,
-    category_id INTEGER REFERENCES categories(id),
-    image_url TEXT,
-    images TEXT[],
-    is_active BOOLEAN DEFAULT TRUE,
-    is_featured BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table cart
-CREATE TABLE IF NOT EXISTS cart (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    session_id VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table cart_items
-CREATE TABLE IF NOT EXISTS cart_items (
-    id SERIAL PRIMARY KEY,
-    cart_id INTEGER REFERENCES cart(id),
-    product_id INTEGER REFERENCES products(id),
-    quantity INTEGER NOT NULL DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table orders
-CREATE TABLE IF NOT EXISTS orders (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    order_number VARCHAR(50) UNIQUE NOT NULL,
-    status VARCHAR(50) DEFAULT 'pending',
-    total DECIMAL(10,2) NOT NULL,
-    subtotal DECIMAL(10,2),
-    tax DECIMAL(10,2),
-    shipping DECIMAL(10,2),
-    currency VARCHAR(3) DEFAULT 'XOF',
-    payment_status VARCHAR(50) DEFAULT 'pending',
-    payment_method VARCHAR(50),
-    payment_intent_id VARCHAR(255),
-    shipping_address TEXT,
-    billing_address TEXT,
-    notes TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table order_items
-CREATE TABLE IF NOT EXISTS order_items (
-    id SERIAL PRIMARY KEY,
-    order_id INTEGER REFERENCES orders(id),
-    product_id INTEGER REFERENCES products(id),
-    product_name VARCHAR(255),
-    quantity INTEGER NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table login_logs
-CREATE TABLE IF NOT EXISTS login_logs (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    email VARCHAR(255),
-    ip_address VARCHAR(45),
-    user_agent TEXT,
-    status VARCHAR(50),
-    failure_reason TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Index pour optimiser les requêtes
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
-CREATE INDEX IF NOT EXISTS idx_products_slug ON products(slug);
-CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id);
-CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
-CREATE INDEX IF NOT EXISTS idx_cart_user ON cart(user_id);
-CREATE INDEX IF NOT EXISTS idx_cart_session ON cart(session_id);
-```
-
-#### 002_2fa_tables_postgres.sql
-
-```sql
--- Table two_factor_auth
-CREATE TABLE IF NOT EXISTS two_factor_auth (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER UNIQUE REFERENCES users(id),
-    secret VARCHAR(255) NOT NULL,
-    enabled BOOLEAN DEFAULT FALSE,
-    backup_codes TEXT[],
-    last_used_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table two_factor_sessions
-CREATE TABLE IF NOT EXISTS two_factor_sessions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    session_token VARCHAR(255) UNIQUE NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table trusted_devices
-CREATE TABLE IF NOT EXISTS trusted_devices (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    device_identifier VARCHAR(255) NOT NULL,
-    user_agent TEXT,
-    last_used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expires_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Ajouter colonne two_factor_required si elle n'existe pas
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name = 'users' AND column_name = 'two_factor_required'
-    ) THEN
-        ALTER TABLE users ADD COLUMN two_factor_required BOOLEAN DEFAULT FALSE;
-    END IF;
-END $$;
-```
-
-#### 003_rbac_permissions_postgres.sql
-
-```sql
--- Table roles
-CREATE TABLE IF NOT EXISTS roles (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table permissions
-CREATE TABLE IF NOT EXISTS permissions (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Table role_permissions
-CREATE TABLE IF NOT EXISTS role_permissions (
-    id SERIAL PRIMARY KEY,
-    role_id INTEGER REFERENCES roles(id) ON DELETE CASCADE,
-    permission_id INTEGER REFERENCES permissions(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(role_id, permission_id)
-);
-
--- Insérer les rôles par défaut
-INSERT INTO roles (name, description) VALUES
-('customer', 'Client standard'),
-('admin', 'Administrateur'),
-('super_admin', 'Super administrateur')
-ON CONFLICT (name) DO NOTHING;
-
--- Insérer les permissions par défaut
-INSERT INTO permissions (name, description) VALUES
-('products.read', 'Lire les produits'),
-('products.write', 'Créer/modifier les produits'),
-('products.delete', 'Supprimer les produits'),
-('orders.read', 'Lire les commandes'),
-('orders.write', 'Créer/modifier les commandes'),
-('orders.delete', 'Supprimer les commandes'),
-('users.read', 'Lire les utilisateurs'),
-('users.write', 'Créer/modifier les utilisateurs'),
-('users.delete', 'Supprimer les utilisateurs'),
-('categories.read', 'Lire les catégories'),
-('categories.write', 'Créer/modifier les catégories'),
-('categories.delete', 'Supprimer les catégories'),
-('analytics.read', 'Lire les statistiques'),
-('settings.read', 'Lire les paramètres'),
-('settings.write', 'Modifier les paramètres')
-ON CONFLICT (name) DO NOTHING;
-
--- Assigner les permissions aux rôles
--- Customer: lecture seule
-INSERT INTO role_permissions (role_id, permission_id)
-SELECT r.id, p.id FROM roles r, permissions p
-WHERE r.name = 'customer' AND p.name IN ('products.read', 'orders.read')
-ON CONFLICT DO NOTHING;
-
--- Admin: lecture et écriture
-INSERT INTO role_permissions (role_id, permission_id)
-SELECT r.id, p.id FROM roles r, permissions p
-WHERE r.name = 'admin' AND p.name NOT LIKE 'users.delete'
-ON CONFLICT DO NOTHING;
-
--- Super Admin: tout
-INSERT INTO role_permissions (role_id, permission_id)
-SELECT r.id, p.id FROM roles r, permissions p
-WHERE r.name = 'super_admin'
-ON CONFLICT DO NOTHING;
-
--- Ajouter colonne role_id si elle n'existe pas
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name = 'users' AND column_name = 'role_id'
-    ) THEN
-        ALTER TABLE users ADD COLUMN role_id INTEGER REFERENCES roles(id);
-        
-        -- Migrer les rôles existants
-        UPDATE users SET role_id = (SELECT id FROM roles WHERE name = role) WHERE role_id IS NULL;
-    END IF;
-END $$;
-```
-
-### 3.5 Créer le Script de Migration PostgreSQL
-
-Créez `backend/scripts/migrate_postgres.php` :
-
-```php
-<?php
-/**
- * Script de migration PostgreSQL pour Bloom Chloé
- * Exécute les migrations SQL sur la base de données PostgreSQL
- */
-
-// Configuration de la base de données PostgreSQL
-$databaseUrl = getenv('DATABASE_URL') ?: 'postgresql://bloom_chloe_user:password@localhost:5432/bloom_chloe';
-
-// Parser l'URL de connexion
-preg_match('/postgresql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/', $databaseUrl, $matches);
-$user = $matches[1];
-$password = $matches[2];
-$host = $matches[3];
-$port = $matches[4];
-$dbname = $matches[5];
-
-try {
-    // Connexion à PostgreSQL
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    echo "Connexion à PostgreSQL réussie\n";
-    
-    // Liste des migrations à exécuter
-    $migrations = [
-        '001_init_tables_postgres.sql',
-        '002_2fa_tables_postgres.sql',
-        '003_rbac_permissions_postgres.sql'
-    ];
-    
-    foreach ($migrations as $migration) {
-        $file = __DIR__ . '/../../database/migrations/postgres/' . $migration;
-        
-        if (!file_exists($file)) {
-            echo "⚠️  Fichier de migration non trouvé: $migration\n";
-            continue;
-        }
-        
-        echo "📄 Exécution de $migration...\n";
-        
-        $sql = file_get_contents($file);
-        
-        // Exécuter le SQL
-        try {
-            $pdo->exec($sql);
-            echo "✅ Migration $migration exécutée avec succès\n";
-        } catch (PDOException $e) {
-            echo "❌ Erreur lors de $migration: " . $e->getMessage() . "\n";
-            // Continuer avec les autres migrations
-        }
-    }
-    
-    echo "\n🎉 Toutes les migrations ont été exécutées\n";
-    
-} catch (PDOException $e) {
-    echo "❌ Erreur de connexion: " . $e->getMessage() . "\n";
-    exit(1);
-}
-```
-
-### 3.6 Exécuter les Migrations
-
-Depuis votre machine locale :
+Pour exécuter les migrations depuis votre machine locale :
 
 ```powershell
 # Définir l'URL de la base de données Render
-$env:DATABASE_URL = "postgresql://bloom_chloe_user:password@dpg-xxxxx.oregon-postgres.render.com:5432/bloom_chloe?sslmode=require"
+$env:DATABASE_URL = "mysql://daba_user:password@daba-db.mysql.render.com:3306/daba"
 
 # Exécuter les migrations
-php backend/scripts/migrate_postgres.php
+php backend/init_db.php
 ```
 
 Ou en une seule commande :
 
 ```powershell
-php backend/scripts/migrate_postgres.php
+php backend/init_db.php
 ```
 
 Le script utilisera la variable d'environnement `DATABASE_URL` si elle est définie.
@@ -620,11 +276,11 @@ Dans Render → Web Service → Environment Variables :
 APP_ENV=production
 APP_DEBUG=false
 
-# Base de données PostgreSQL
-DATABASE_URL=postgresql://user:password@host:5432/bloom_chloe
+# Base de données MySQL
+DATABASE_URL=mysql://user:password@host:3306/daba
 DB_HOST=your-db-host.render.com
-DB_PORT=5432
-DB_NAME=bloom_chloe
+DB_PORT=3306
+DB_NAME=daba
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
 
@@ -794,8 +450,8 @@ Vercel fournit :
 |---------|------|------|
 | **Render (Backend)** | Free | $0 |
 | Render (Backend) | Standard | $7/mois |
-| **Render (PostgreSQL)** | Free | $0 |
-| Render (PostgreSQL) | Standard | $7/mois |
+| **Render (MySQL)** | Free | $0 |
+| Render (MySQL) | Standard | $7/mois |
 | **Vercel (Frontend)** | Hobby | $0 |
 | Vercel (Frontend) | Pro | $20/mois |
 | **Stripe** | Pay-as-you-go | 2.9% + $0.30/transaction |
@@ -813,7 +469,7 @@ Vercel fournit :
 ## ✅ CHECKLIST DE DÉPLOIEMENT
 
 - [ ] Comptes créés (Render, Vercel, GitHub)
-- [ ] Base de données PostgreSQL créée
+- [ ] Base de données MySQL créée
 - [ ] Migrations exécutées
 - [ ] Backend déployé sur Render
 - [ ] Frontend déployé sur Vercel

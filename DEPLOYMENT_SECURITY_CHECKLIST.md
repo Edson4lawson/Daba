@@ -1,7 +1,7 @@
-# CHECKLIST DE DÉPLOIEMENT SÉCURISÉ - BLOOM-CHLOE
+# CHECKLIST DE DÉPLOIEMENT SÉCURISÉ - DABA
 
 **Version:** 1.0.0  
-**Date:** 12 Juillet 2026
+**Date:** .. ....... 2026
 
 ---
 
@@ -209,4 +209,4 @@
 
 ---
 
-**Checklist effective à compter du 12 Juillet 2026**
+**Checklist effective à compter du .. ....... 2026**

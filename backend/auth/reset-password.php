@@ -9,6 +9,7 @@
 require_once __DIR__ . '/../config/headers.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../middleware/rate_limit.php';
+require_once __DIR__ . '/../utils/password.php';
 
 // Rate limiting
 rateLimit('reset_password', 5, 300);
@@ -37,18 +38,10 @@ if ($password !== $passwordConfirmation) {
     sendJsonResponse(['error' => 'Les mots de passe ne correspondent pas'], 400);
 }
 
-// Valider la force du mot de passe
-if (strlen($password) < 8) {
-    sendJsonResponse(['error' => 'Le mot de passe doit contenir au moins 8 caractères'], 400);
-}
-if (!preg_match('/[A-Z]/', $password)) {
-    sendJsonResponse(['error' => 'Le mot de passe doit contenir au moins une majuscule'], 400);
-}
-if (!preg_match('/[a-z]/', $password)) {
-    sendJsonResponse(['error' => 'Le mot de passe doit contenir au moins une minuscule'], 400);
-}
-if (!preg_match('/[0-9]/', $password)) {
-    sendJsonResponse(['error' => 'Le mot de passe doit contenir au moins un chiffre'], 400);
+// Valider la force du mot de passe (politique stricte OWASP unifiée)
+$passwordError = validatePasswordStrength($password);
+if ($passwordError) {
+    sendJsonResponse(['error' => $passwordError], 400);
 }
 
 try {
@@ -70,8 +63,8 @@ try {
     
     $pdo->beginTransaction();
     
-    // Mettre à jour le mot de passe
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+    // Mettre à jour le mot de passe avec Argon2id (algorithme unifié)
+    $hashedPassword = hashPassword($password);
     $stmt = $pdo->prepare('UPDATE users SET password = ?, failed_login_attempts = 0, locked_until = NULL WHERE id = ?');
     $stmt->execute([$hashedPassword, $reset['user_id']]);
     

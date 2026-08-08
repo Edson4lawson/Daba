@@ -3,16 +3,162 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-daba-cream: #FEFDFA;
-  --color-daba-cream-alt: #EFEDE4;
-  --color-daba-navy: #1B2B47;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-karla: 'Karla', sans-serif;
+  --font-worksans: 'Work Sans', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+
+  --color-daba-cream: #f8f6f1;
+  --color-daba-cream-light: #fdfcf8;
+  --color-daba-cream-alt: #fbfaf6;
+  --color-daba-navy: #1b2b47;
   --color-daba-navy-deep: #030046;
-  --color-daba-orange: #CE4600;
-  --color-daba-orange-dark: #B83C00;
-  --color-daba-green: #6F8766;
-  --color-daba-slate: #5A6474;
-  --color-daba-slate-dark: #464650;
-  --color-daba-dark-bg: #12141C;
-  --color-daba-dark-card: #1B2233;
-  --color-daba-dark-border: #2A3244;
+  --color-daba-navy-marine: #1d3557;
+  --color-daba-blue-medium: #4f708a;
+  --color-daba-slate: #5a6474;
+  --color-daba-slate-light: #6b7280;
+  --color-daba-green: #6f8766;
+  --color-daba-orange: #ce4600;
+  --color-daba-orange-alt: #d65a31;
+  --color-daba-border: #dcd9cf;
+  --color-daba-border-light: #e5e7eb;
+
+  --shadow-card-light: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  --shadow-card-elevated: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-hero-accent: 0px 20px 50px -25px rgba(27, 43, 71, 0.28);
+
+  --radius-card: 8px;
+  --radius-btn: 20px;
+  --radius-pill: 9999px;
+}
+
+/* Custom Typography Utility Classes matching Design System specs */
+.font-serif-title {
+  font-family: var(--font-playfair);
+}
+
+.font-sans-body {
+  font-family: var(--font-karla);
+}
+
+.font-badge {
+  font-family: var(--font-worksans);
+  font-weight: 700;
+}
+
+.font-ui {
+  font-family: var(--font-inter);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f8f6f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcd9cf;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5a6474;
+}
+
+/* ==========================================================================
+   SweetAlert2 Custom DABA Theme Overrides
+   ========================================================================== */
+
+div.swal2-container {
+  font-family: 'Karla', sans-serif !important;
+  z-index: 10000 !important;
+}
+
+/* Modal Popup */
+.swal2-popup {
+  background-color: #fdfcf8 !important;
+  border: 1px solid #dcd9cf !important;
+  border-radius: 20px !important;
+  box-shadow: 0 20px 45px -15px rgba(27, 43, 71, 0.2) !important;
+  padding: 1.75rem 1.5rem !important;
+}
+
+/* Toast Popup */
+.swal2-popup.swal2-toast {
+  background-color: rgba(253, 252, 248, 0.98) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid #dcd9cf !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 30px -8px rgba(27, 43, 71, 0.18) !important;
+  padding: 0.85rem 1.25rem !important;
+}
+
+.swal2-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #1b2b47 !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.swal2-html-container {
+  font-family: 'Karla', sans-serif !important;
+  color: #5a6474 !important;
+  font-size: 0.925rem !important;
+  line-height: 1.5 !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Primary Action Button (Daba Orange) */
+.swal2-actions button.swal2-confirm,
+.swal2-confirm.daba-swal-confirm-btn {
+  background-color: #ce4600 !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.75rem 1.75rem !important;
+  box-shadow: 0 4px 12px rgba(206, 70, 0, 0.3) !important;
+  border: none !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.swal2-actions button.swal2-confirm:hover,
+.swal2-confirm.daba-swal-confirm-btn:hover {
+  background-color: #d65a31 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(206, 70, 0, 0.4) !important;
+}
+
+/* Secondary Action Button */
+.swal2-actions button.swal2-cancel,
+.swal2-cancel.daba-swal-cancel-btn {
+  background-color: #ffffff !important;
+  color: #1b2b47 !important;
+  border: 1px solid #dcd9cf !important;
+  border-radius: 9999px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.swal2-actions button.swal2-cancel:hover,
+.swal2-cancel.daba-swal-cancel-btn:hover {
+  background-color: #f8f6f1 !important;
+  border-color: #1b2b47 !important;
+}
+
+/* Custom Timer Progress Bar */
+.swal2-timer-progress-bar {
+  background-color: #ce4600 !important;
 }

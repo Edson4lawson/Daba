@@ -59,10 +59,6 @@
               <div v-if="product.discount" class="absolute top-4 right-4 bg-daba-orange text-white text-xs font-black px-3 py-1.5 rounded-full shadow-lg">
                 -{{ product.discount }}%
               </div>
-              <!-- Wishlist button -->
-              <button @click="toggleWishlist" class="absolute top-4 left-4 w-10 h-10 bg-daba-cream/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all">
-                <Icon :icon="isInWishlist ? 'solar:heart-bold' : 'solar:heart-linear'" class="w-5 h-5" :class="isInWishlist ? 'text-daba-orange' : 'text-daba-slate'" />
-              </button>
             </div>
             <!-- Thumbnail strip -->
             <div v-if="galleryImages.length > 1" class="flex gap-3 overflow-x-auto pb-2">
@@ -192,16 +188,21 @@ import { useRoute } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import { useProductStore } from '@/stores/products';
 import { useCartStore } from '@/stores/cart';
-import { useWishlistStore } from '@/stores/wishlist';
 import { useSEO } from '@/composables/useSEO';
 import Footer from '@/components/Footer.vue';
 import CartDrawer from '@/components/CartDrawer.vue';
-import Swal from 'sweetalert2';
+import { notifyAddToCart } from '@/utils/notifications';
+
+const addToCart = async () => {
+  if (!product.value || product.value.stock <= 0) return;
+  
+  await cartStore.addToCart(product.value, quantity.value);
+  notifyAddToCart(product.value.title, quantity.value);
+};
 
 const route = useRoute();
 const productStore = useProductStore();
 const cartStore = useCartStore();
-const wishlistStore = useWishlistStore();
 const { updateMetaTags } = useSEO();
 
 const loading = ref(true);
@@ -222,10 +223,6 @@ const galleryImages = computed(() => {
     images.push(...product.value.gallery);
   }
   return images.filter(Boolean);
-});
-
-const isInWishlist = computed(() => {
-  return product.value ? wishlistStore.isInWishlist(product.value.id) : false;
 });
 
 const similarProducts = computed(() => {
@@ -252,7 +249,7 @@ const loadProduct = async () => {
   if (product.value) {
     updateMetaTags({
       title: product.value.title,
-      description: product.value.description || `${product.value.title} — Découvrez ce produit exclusif chez Bloom by Chloé`,
+      description: product.value.description || `${product.value.title} — Découvrez ce produit exclusif chez Daba`,
       image: product.value.thumbnail,
       url: window.location.href
     });
@@ -261,36 +258,7 @@ const loadProduct = async () => {
   loading.value = false;
 };
 
-const addToCart = async () => {
-  if (!product.value || product.value.stock <= 0) return;
-  
-  await cartStore.addToCart(product.value, quantity.value);
-  
-  Swal.fire({
-    icon: 'success',
-    title: 'Ajouté au panier !',
-    text: `${quantity.value}x ${product.value.title}`,
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true
-  });
-};
 
-const toggleWishlist = () => {
-  if (!product.value) return;
-  const added = wishlistStore.toggleWishlist(product.value);
-  
-  Swal.fire({
-    icon: added ? 'success' : 'info',
-    title: added ? 'Ajouté aux favoris' : 'Retiré des favoris',
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 1500
-  });
-};
 
 onMounted(loadProduct);
 

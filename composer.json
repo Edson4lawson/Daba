@@ -1,6 +1,6 @@
 {
     "name": "daba/backend",
-    "description": "Daba E-commerce Backend API",
+    "description": "Daba Backend API",
     "type": "project",
     "license": "MIT",
     "require": {

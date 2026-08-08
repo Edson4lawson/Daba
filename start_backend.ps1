@@ -1,7 +1,7 @@
 # Script de démarrage du serveur PHP avec routeur
 # Usage: .\start_backend.ps1
 
-$backendDir = "c:\laragon\www\Bloom-chloe\backend"
+$backendDir = "c:\laragon\www\daba\backend"
 $port = 8080
 
 Write-Host "Démarrage du serveur PHP backend sur le port $port..." -ForegroundColor Green

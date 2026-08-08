@@ -147,7 +147,17 @@ import { useWishlistStore } from '@/stores/wishlist';
 import { useSEO } from '@/composables/useSEO';
 import Footer from '@/components/Footer.vue';
 import CartDrawer from '@/components/CartDrawer.vue';
-import Swal from 'sweetalert2';
+import { notifyAddToCart, notifyWishlist } from '@/utils/notifications';
+
+const addToCart = (product) => {
+  cartStore.addToCart(product);
+  notifyAddToCart(product.title, 1);
+};
+
+const addToWishlist = (product) => {
+  const added = wishlistStore.toggleWishlist(product);
+  notifyWishlist(product.title, added);
+};
 
 const route = useRoute();
 const productStore = useProductStore();
@@ -208,15 +218,7 @@ const resetFilters = () => {
   priceRange.value = maxPrice.value;
 };
 
-const addToCart = (product) => {
-  cartStore.addToCart(product);
-  Swal.fire({ icon: 'success', title: 'Ajouté au panier', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
-};
 
-const addToWishlist = (product) => {
-  const added = wishlistStore.toggleWishlist(product);
-  Swal.fire({ icon: added ? 'success' : 'info', title: added ? 'Ajouté aux favoris' : 'Retiré des favoris', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500 });
-};
 
 onMounted(async () => {
   await productStore.fetchProducts();

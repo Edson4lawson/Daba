@@ -25,10 +25,10 @@ echo 🎯 Dashboard: http://localhost:5xxx/admin
 echo.
 echo 👤 Connexion admin: admin@daba.local / Admin123!
 echo.
-echo 🛍️  Produits: 122 produits avec vraies images
-echo 🏪 Store: 12 produits premium
-echo 📂 Catégories: 32 catégories
+echo 🛍️  Produits:  produits avec vraies images
+echo 🏪 Store:  produits premium
+echo 📂 Catégories:  catégories
 echo.
-echo 📊 Total: 134 produits avec images !
+echo 📊 Total:  produits avec images !
 echo.
 pause

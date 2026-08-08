@@ -84,9 +84,6 @@
                 <Icon icon="solar:cart-large-minimalistic-bold" class="w-4 h-4" />
                 Ajouter
               </button>
-              <button @click="toggleWishlist(product)" class="w-14 bg-daba-cream border border-daba-cream-alt text-daba-slate font-black rounded-2xl hover:text-daba-orange transition-colors flex items-center justify-center">
-                <Icon :icon="isInWishlist(product.id) ? 'solar:heart-bold' : 'solar:heart-linear'" class="w-5 h-5" :class="{ 'text-daba-orange': isInWishlist(product.id) }" />
-              </button>
             </div>
           </div>
 
@@ -123,13 +120,16 @@ import { Icon } from '@iconify/vue';
 import OptimizedImage from './OptimizedImage.vue';
 import { useProductStore } from '../stores/products';
 import { useCartStore } from '../stores/cart';
-import { useWishlistStore } from '../stores/wishlist';
-import Swal from 'sweetalert2';
+import { notifyAddToCart } from '@/utils/notifications';
+
+const addToCart = async (product) => {
+  await cartStore.addToCart(product);
+  notifyAddToCart(product.title, 1);
+};
 
 const router = useRouter();
 const productStore = useProductStore();
 const cartStore = useCartStore();
-const wishlistStore = useWishlistStore();
 
 const loading = computed(() => productStore.loading);
 const products = computed(() => productStore.products);
@@ -186,23 +186,7 @@ const goToProduct = (product) => {
   router.push(`/produit/${product.slug || product.id}`);
 };
 
-const isInWishlist = (id) => wishlistStore.isInWishlist(id);
-const toggleWishlist = (product) => {
-  wishlistStore.toggleWishlist(product);
-  showToast('Favoris mis à jour');
-};
 
-const addToCart = async (product) => {
-  await cartStore.addToCart(product);
-  showToast('Produit ajouté au panier');
-};
-
-const showToast = (title) => {
-  Swal.fire({
-    toast: true, position: 'top-end', showConfirmButton: false, timer: 2000,
-    timerProgressBar: true, icon: 'success', title
-  });
-};
 
 onMounted(async () => {
   if (products.value.length === 0) {

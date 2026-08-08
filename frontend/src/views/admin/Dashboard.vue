@@ -595,7 +595,7 @@ const chartOptions = {
     }
   }
 }
-
+ 
 /**
  * Détermine la couleur de badge selon le statut de la commande
  */

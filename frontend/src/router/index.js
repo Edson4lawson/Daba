@@ -2,15 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Pages publiques
 const Home = () => import('@/views/Home.vue')
+const ProduitsPage = () => import('@/views/ProduitsPage.vue')
+const NotreHistoire = () => import('@/views/NotreHistoire.vue')
+const Tracabilite = () => import('@/views/Tracabilite.vue')
+const EspaceB2B = () => import('@/views/EspaceB2B.vue')
 const CookiePolicy = () => import('@/views/CookiePolicy.vue')
 const FAQ = () => import('@/views/FAQ.vue')
 const PrivacyPolicy = () => import('@/views/PrivacyPolicy.vue')
 const Returns = () => import('@/views/Returns.vue')
 const Shipping = () => import('@/views/Shipping.vue')
 const Terms = () => import('@/views/Terms.vue')
+const MentionsLegales = () => import('@/views/MentionsLegales.vue')
 const ProductDetail = () => import('@/views/ProductDetail.vue')
-// const ShopPage = () => import('@/views/ShopPage.vue') // Retiré car intégré dans Home
-const AccountPage = () => import('@/views/AccountPage.vue')
 const OrderConfirmation = () => import('@/views/OrderConfirmation.vue')
 
 // Pages Admin
@@ -35,8 +38,32 @@ const routes = [
     meta: { title: 'Accueil — Daba' }
   },
   {
+    path: '/produits',
+    name: 'Produits',
+    component: ProduitsPage,
+    meta: { title: 'Produits — Daba' }
+  },
+  {
     path: '/boutique',
-    redirect: { name: 'Home', hash: '#products' }
+    redirect: '/produits'
+  },
+  {
+    path: '/notre-histoire',
+    name: 'NotreHistoire',
+    component: NotreHistoire,
+    meta: { title: 'Notre Histoire — Daba' }
+  },
+  {
+    path: '/tracabilite',
+    name: 'Tracabilite',
+    component: Tracabilite,
+    meta: { title: 'Traçabilité & Contrôle — Daba' }
+  },
+  {
+    path: '/espace-b2b',
+    name: 'EspaceB2B',
+    component: EspaceB2B,
+    meta: { title: 'Espace B2B — Daba' }
   },
   {
     path: '/produit/:slug',
@@ -44,10 +71,10 @@ const routes = [
     component: ProductDetail,
     meta: { title: 'Produit — Daba' }
   },
-  {
-    path: '/mon-compte',
-    redirect: '/'
-  },
+  // {
+  //   path: '/mon-compte',
+  //   redirect: '/'
+  // }, // Retiré - espace client désactivé
   {
     path: '/commande-confirmee/:orderId',
     name: 'OrderConfirmation',
@@ -89,6 +116,12 @@ const routes = [
     name: 'Terms',
     component: Terms,
     meta: { title: 'CGV — Daba' }
+  },
+  {
+    path: '/mentions-legales',
+    name: 'MentionsLegales',
+    component: MentionsLegales,
+    meta: { title: 'Mentions légales — Daba' }
   },
   // Admin Login — Route séparée
   {

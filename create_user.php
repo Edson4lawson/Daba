@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/backend/config/db.php';
 
-$email = 'test@bloom-chloe.com';
+$email = 'test@daba.com';
 $password = 'password123';
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 

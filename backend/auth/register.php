@@ -12,14 +12,13 @@ require_once __DIR__ . '/../config/headers.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../middleware/auth.php';
 require_once __DIR__ . '/../middleware/rate_limit.php';
+require_once __DIR__ . '/../utils/password.php';
 
 // ⚠️ PROTECTION: Authentification admin requise
 $user = authenticate();
 
-// Vérifier que l'utilisateur est un admin
-if ($user['role'] !== 'admin') {
-    sendJsonResponse(['error' => 'Accès refusé. Seuls les administrateurs peuvent créer des comptes.'], 403);
-}
+// Vérifier que l'utilisateur est un admin (admin ou super_admin)
+requireAdmin($user);
 
 // ⚠️ PROTECTION: Limite à 10 créations par heure par admin
 rateLimit('admin_create_user', 10, 3600);
@@ -67,46 +66,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // ⚠️ SÉCURITÉ: Valider la force du mot de passe (Politique stricte OWASP)
-function validatePasswordStrength($password) {
-    // Minimum 12 caractères
-    if (strlen($password) < 12) {
-        return 'Le mot de passe doit contenir au moins 12 caractères';
-    }
-    // Maximum 128 caractères
-    if (strlen($password) > 128) {
-        return 'Le mot de passe ne peut pas dépasser 128 caractères';
-    }
-    // Au moins une majuscule
-    if (!preg_match('/[A-Z]/', $password)) {
-        return 'Le mot de passe doit contenir au moins une majuscule';
-    }
-    // Au moins une minuscule
-    if (!preg_match('/[a-z]/', $password)) {
-        return 'Le mot de passe doit contenir au moins une minuscule';
-    }
-    // Au moins un chiffre
-    if (!preg_match('/[0-9]/', $password)) {
-        return 'Le mot de passe doit contenir au moins un chiffre';
-    }
-    // Au moins un caractère spécial
-    if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-        return 'Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*(),.?":{}|<>)';
-    }
-    // Interdire les mots de passe communs (liste simplifiée)
-    $commonPasswords = ['password', '123456', 'qwerty', 'admin', 'welcome', 'letmein'];
-    if (in_array(strtolower($password), $commonPasswords)) {
-        return 'Ce mot de passe est trop commun. Choisissez un mot de passe plus complexe.';
-    }
-    // Interdire les séquences
-    if (preg_match('/(012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i', $password)) {
-        return 'Le mot de passe ne doit pas contenir de séquences consécutives.';
-    }
-    // Interdire les répétitions
-    if (preg_match('/(.)\1{2,}/', $password)) {
-        return 'Le mot de passe ne doit pas contenir de caractères répétés plus de 2 fois.';
-    }
-    return null;
-}
 
 $passwordError = validatePasswordStrength($data['password']);
 if ($passwordError) {
@@ -122,11 +81,7 @@ if ($stmt->fetch()) {
 
 // Hacher le mot de passe avec Argon2id (algorithme le plus sécurisé)
 // Argon2id est recommandé par OWASP et NIST pour le hash de mots de passe
-$hashedPassword = password_hash($data['password'], PASSWORD_ARGON2ID, [
-    'memory_cost' => 65536,      // 64 MB
-    'time_cost' => 4,            // 4 itérations
-    'threads' => 3               // 3 threads
-]);
+$hashedPassword = hashPassword($data['password']);
 
 $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 $userAgent = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255);

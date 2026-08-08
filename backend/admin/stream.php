@@ -8,10 +8,16 @@ header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 header('Connection: keep-alive');
 header('X-Accel-Buffering: no');
-// CORS pour SSE
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-header("Access-Control-Allow-Origin: $origin");
-header('Access-Control-Allow-Credentials: true');
+
+// CORS pour SSE - validation de l'origine
+$allowedOrigins = getenv('ALLOWED_ORIGINS') ?: 'http://localhost:5173';
+$allowedOriginsArray = array_map('trim', explode(',', $allowedOrigins));
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (in_array($origin, $allowedOriginsArray) || empty($origin)) {
+    header("Access-Control-Allow-Origin: " . ($origin ?: $allowedOriginsArray[0]));
+    header('Access-Control-Allow-Credentials: true');
+}
 
 // Authentifier sans utiliser sendJsonResponse (qui casserait le flux SSE)
 $token = $_GET['token'] ?? $_GET['access_token'] ?? '';

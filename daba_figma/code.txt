@@ -1,0 +1,28 @@
+PROJET: DABA SAS — Site vitrine volaille togolaise
+PAGES: Accueil, Produits, Notre Histoire, Traçabilité, Espace B2B
+VERSIONS: Desktop (1920px) + Mobile (768px)
+FOND GLOBAL: #f8f6f1 (crème chaud)
+
+POLICES:
+- Titres: Playfair Display (serif) — 60/48/36/30/24/18px
+- Corps: Karla (sans-serif) — 18/16/14/12/11px
+- Badges: Work Sans Bold — 12-14px
+- UI: Inter — 14/16px
+
+COULEURS PRINCIPALES:
+- Fond: #f8f6f1, #fdfcf8, #ffffff
+- Texte: #1b2b47 (primaire), #5a6474 (secondaire), #6b7280 (tertiaire)
+- Accent vert: #6f8766
+- Accent orange/CTA: #ce4600, #d65a31
+- Bleu marine: #1d3557
+- Bordures: #dcd9cf, #e5e7eb
+
+OMBRES:
+- Légère: 0px 1px 2px rgba(0,0,0,0.05)
+- Standard: 0px 4px 6px -4px rgba(0,0,0,0.1)
+- Forte: 0px 20px 50px -25px rgba(27,43,71,0.28)
+
+RAYONS: 8px (cartes), 16-24px (boutons), 9999px (pills)
+ESPACEMENTS: 8/12/16/20/24/32/40/48/64/80/96px
+BORDURES: 1px solid #dcd9cf ou #e5e7eb
+BACKDROP: blur(12px) ou blur(8px)

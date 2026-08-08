@@ -1,8 +1,10 @@
-﻿import { createApp } from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import router from './router'
 import './style.css'
+import 'aos/dist/aos.css'
+import AOS from 'aos'
 import App from './App.vue'
 
 // ── Iconify offline bundle ──────────────────────────────────────────────────
@@ -19,6 +21,13 @@ pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
 app.use(router)
+
+// Initialiser AOS avec respect de prefers-reduced-motion
+AOS.init({
+  duration: 700,
+  easing: 'ease-out-quad',
+  once: true,
+  disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+})
+
 app.mount('#app')
-
-

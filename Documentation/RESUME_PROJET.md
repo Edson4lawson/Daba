@@ -1,7 +1,7 @@
-# 📝 Résumé du Projet daba
+# 📝 Résumé du Projet Daba
 
 ## 🌍 Aperçu
-Bloom by Chloé est une boutique e-commerce moderne spécialisée dans les produits de beauté, maison et accessoires bien-être, ciblant principalement le marché béninois.
+Daba est une plateforme e-commerce moderne spécialisée dans la vente de produits en ligne, ciblant principalement le marché béninois.
 
 ## 🛠️ Stack Technique
 - **Frontend** : Vue 3 (Composition API), Vite, Tailwind CSS, Pinia, Axios.
@@ -16,12 +16,13 @@ Assurez-vous que MySQL est actif dans Laragon.
 ```bash
 php backend/init_db.php
 ```
-*Cela crée la table `bloom_chloe` et insère ~114 produits par défaut.*
+*Cela crée la base de données `daba` et insère ~114 produits par défaut.*
 
 ### 2. Backend (API)
-Le backend doit tourner sur le port **8001** pour correspondre à la configuration actuelle du frontend.
+Le backend doit tourner sur le port **8080** pour correspondre à la configuration actuelle du frontend.
 ```bash
-npm run backend
+cd backend
+php -S localhost:8080
 ```
 
 ### 3. Frontend (UI)
@@ -44,4 +45,4 @@ Accès : **http://localhost:5173**
 - [x] Connecter la wishlist au backend.
 - [x] Implémenter la signature HMAC pour les paiements.
 - [x] SEO : Ajouter les meta-tags dynamiques.
-- [x] Configuration Backend sur le port 8001.
+- [x] Configuration Backend sur le port 8080.

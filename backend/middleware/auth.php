@@ -74,7 +74,7 @@ function authenticate($lenient = false) {
 
 // Vérifier si l'utilisateur est administrateur
 function requireAdmin($user) {
-    if ($user['role'] !== 'admin') {
+    if (!in_array($user['role'] ?? '', ['admin', 'super_admin'], true)) {
         sendJsonResponse(['error' => 'Accès non autorisé. Droits administrateur requis.'], 403);
     }
 }

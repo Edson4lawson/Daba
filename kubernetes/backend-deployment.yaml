@@ -110,7 +110,7 @@ spec:
         - name: logs
           mountPath: /var/www/backend/logs
         - name: rate-limit
-          mountPath: /tmp/bloom_rate_limit
+          mountPath: /tmp/daba_rate_limit
       volumes:
       - name: logs
         emptyDir: {}

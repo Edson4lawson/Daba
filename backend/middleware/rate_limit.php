@@ -221,7 +221,7 @@ function logSuspiciousActivity($ip, $endpoint, $type) {
  * À appeler via cron toutes les heures
  */
 function cleanupRateLimitFiles() {
-    $rateLimitDir = sys_get_temp_dir() . '/bloom_rate_limit';
+    $rateLimitDir = sys_get_temp_dir() . '/daba_rate_limit';
     if (!is_dir($rateLimitDir)) {
         return;
     }

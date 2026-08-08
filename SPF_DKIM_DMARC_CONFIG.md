@@ -1,4 +1,4 @@
-# CONFIGURATION EMAIL SÉCURISÉE - daba
+# CONFIGURATION EMAIL SÉCURISÉE - DABA
 
 **Date:** 12 Juillet 2026  
 **Domaine:** daba.com

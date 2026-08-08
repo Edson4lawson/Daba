@@ -8,6 +8,7 @@
  */
 
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../utils/totp.php';
 
 /**
  * Vérifie si l'utilisateur a complété le 2FA
@@ -192,55 +193,4 @@ function addTrustedDevice($userId, $remember = false) {
     $stmt->execute([$userId, $deviceIdentifier, $userAgent, $ipAddress, $expiresAt, $expiresAt]);
 }
 
-/**
- * Fonctions TOTP (réutilisées depuis 2fa_verify.php)
- */
-function verifyTOTP($secret, $code) {
-    $secret = base32Decode($secret);
-    $time = floor(time() / 30);
-    
-    for ($i = -1; $i <= 1; $i++) {
-        $counter = $time + $i;
-        $expectedCode = generateTOTPCode($secret, $counter);
-        
-        if (hash_equals($expectedCode, $code)) {
-            return true;
-        }
-    }
-    
-    return false;
-}
 
-function generateTOTPCode($secret, $counter) {
-    $counterBytes = pack('N*', 0) . pack('N*', $counter);
-    $hash = hash_hmac('sha1', $counterBytes, $secret, true);
-    $offset = ord($hash[19]) & 0x0F;
-    $code = (
-        ((ord($hash[$offset]) & 0x7F) << 24) |
-        ((ord($hash[$offset + 1]) & 0xFF) << 16) |
-        ((ord($hash[$offset + 2]) & 0xFF) << 8) |
-        (ord($hash[$offset + 3]) & 0xFF)
-    ) % 1000000;
-    
-    return str_pad($code, 6, '0', STR_PAD_LEFT);
-}
-
-function base32Decode($secret) {
-    $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-    $secret = strtoupper($secret);
-    
-    $bits = '';
-    for ($i = 0; $i < strlen($secret); $i++) {
-        if ($secret[$i] === '=') continue;
-        $val = strpos($chars, $secret[$i]);
-        if ($val === false) continue;
-        $bits .= str_pad(decbin($val), 5, '0', STR_PAD_LEFT);
-    }
-    
-    $bytes = '';
-    for ($i = 0; $i + 8 <= strlen($bits); $i += 8) {
-        $bytes .= chr(bindec(substr($bits, $i, 8)));
-    }
-    
-    return $bytes;
-}

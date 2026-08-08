@@ -1,4 +1,4 @@
-# CONFIGURATION WAF ET PROTECTION DDoS - daba
+# CONFIGURATION WAF ET PROTECTION DDoS - DABA
 
 **Date:** 12 Juillet 2026  
 **Infrastructure:** Cloudflare + Kubernetes

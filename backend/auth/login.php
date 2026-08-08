@@ -20,6 +20,9 @@ loginRateLimit();
 requireCaptcha('login', 0.5);
 
 // Vérifier si la requête est de type POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    sendJsonResponse(['error' => 'Méthode non autorisée'], 405);
+}
 
 // Récupérer les données de la requête
 $data = getJsonData();
@@ -183,18 +186,18 @@ try {
         'user' => $userData
     ]);
 
-} catch (Exception $e) {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-    error_log('Erreur générale lors de la connexion: ' . $e->getMessage());
-    sendJsonResponse(['error' => 'Une erreur technique est survenue lors de la connexion. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez notre support.'], 500);
 } catch (PDOException $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
     error_log('Erreur lors de la connexion: ' . $e->getMessage());
     sendJsonResponse(['error' => 'Une erreur est survenue lors de l\'authentification. Veuillez réessayer.'], 500);
+} catch (Exception $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('Erreur générale lors de la connexion: ' . $e->getMessage());
+    sendJsonResponse(['error' => 'Une erreur technique est survenue lors de la connexion. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez notre support.'], 500);
 }
 
 /**

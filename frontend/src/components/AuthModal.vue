@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4 overflow-y-auto">
     <div class="bg-daba-cream rounded-2xl shadow-2xl w-full max-w-md p-8 relative max-h-[90vh] overflow-y-auto">
       <!-- Close Button -->
@@ -48,7 +48,7 @@ import { ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import Swal from 'sweetalert2';
+import { notifySuccess, notifyError } from '@/utils/notifications';
 
 const emit = defineEmits(['close', 'success']);
 
@@ -69,13 +69,7 @@ const handleLogin = async () => {
   try {
     await authStore.login(loginForm.value.email, loginForm.value.password);
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Connexion réussie !',
-      text: `Bienvenue ${authStore.user?.first_name || authStore.user?.email || 'Utilisateur'}`,
-      timer: 2000,
-      showConfirmButton: false
-    });
+    notifySuccess('Connexion réussie', `Ravi de vous revoir, ${authStore.user?.first_name || authStore.user?.email || 'Cher client'}`);
 
     const user = authStore.user;
     if (user && user.role === 'admin') {

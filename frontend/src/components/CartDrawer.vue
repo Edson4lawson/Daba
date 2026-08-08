@@ -1,232 +1,320 @@
 <template>
   <Transition name="slide-right">
-    <div v-if="isOpen" class="fixed inset-0 z-[200] overflow-hidden">
+    <div v-if="isOpen" class="fixed inset-0 z-[9999] overflow-hidden font-karla">
       <!-- Overlay -->
-      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" @click="$emit('close')"></div>
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" @click="closeDrawer"></div>
 
-      <!-- Drawer Content -->
+      <!-- Drawer Panel -->
       <div class="absolute inset-y-0 right-0 max-w-full flex">
         <div class="w-screen max-w-md bg-daba-cream shadow-2xl flex flex-col">
-          <!-- Header -->
-          <div class="px-6 py-5 border-b border-daba-cream-alt flex items-center justify-between bg-daba-cream-alt/50">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl bg-daba-orange flex items-center justify-center text-white shadow-lg shadow-daba-orange/20">
-                <Icon icon="solar:bag-3-bold" class="w-6 h-6" />
-              </div>
-              <h2 class="text-xl font-bold text-daba-navy">Votre Panier</h2>
-            </div>
-            <button @click="$emit('close')" class="p-2 text-daba-slate hover:text-daba-orange hover:bg-daba-cream rounded-full transition-all">
-              <Icon icon="solar:close-circle-bold" class="w-7 h-7" />
-            </button>
-          </div>
 
-          <!-- Items List -->
-          <div class="flex-1 overflow-y-auto py-6 px-6">
-            <div v-if="cartStore.items.length === 0" class="h-full flex flex-col items-center justify-center text-center space-y-4">
-              <div class="w-24 h-24 bg-daba-cream-alt rounded-full flex items-center justify-center">
-                <Icon icon="solar:bag-smile-linear" class="w-12 h-12 text-daba-slate-dark" />
+          <!-- ══ Header ══ -->
+          <div class="px-6 py-4 border-b border-daba-border flex items-center justify-between bg-daba-cream-light shrink-0">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-daba-orange flex items-center justify-center text-white">
+                <ShoppingBasket class="w-5 h-5" />
               </div>
               <div>
-                <p class="text-xl font-bold text-daba-navy">Votre panier est vide</p>
-                <p class="text-daba-slate">Découvrez nos produits et faites-vous plaisir !</p>
+                <h2 class="text-base font-bold font-playfair text-daba-navy">
+                  {{ isCheckoutStep ? 'Finaliser la commande' : 'Mon panier' }}
+                </h2>
+                <p class="text-[11px] text-daba-slate-light" v-if="!isCheckoutStep">
+                  {{ cartStore.totalItems }} article{{ cartStore.totalItems > 1 ? 's' : '' }}
+                </p>
               </div>
-              <button @click="$emit('close')" class="mt-4 px-8 py-3 bg-daba-orange text-white rounded-full font-bold shadow-lg shadow-daba-orange/20 hover:bg-daba-orange-dark transition-all">
-                Voir les produits
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button v-if="isCheckoutStep" @click="isCheckoutStep = false"
+                class="flex items-center gap-1 text-xs font-bold text-daba-slate hover:text-daba-navy transition-colors px-2 py-1">
+                <ArrowLeft class="w-3.5 h-3.5" />
+                Retour
+              </button>
+              <button @click="closeDrawer" class="p-1.5 text-daba-slate hover:text-daba-orange transition-colors" aria-label="Fermer le panier">
+                <X class="w-5 h-5" />
               </button>
             </div>
+          </div>
 
-            <div v-else class="space-y-6">
-              <div v-for="item in cartStore.items" :key="item.id" class="flex items-center space-x-4 p-3 rounded-2xl border border-daba-cream-alt hover:bg-daba-cream-alt transition-colors group">
-                <div class="w-20 h-20 flex-shrink-0 bg-daba-cream-alt rounded-xl overflow-hidden">
-                  <img :src="item.thumbnail || '/placeholder-perfume.jpg'" :alt="item.title" class="w-full h-full object-cover" />
+          <!-- ══ Mode 1 : Liste articles ══ -->
+          <div v-if="!isCheckoutStep" class="flex-1 overflow-y-auto" data-scrollable="true">
+
+            <!-- État vide -->
+            <div v-if="cartStore.items.length === 0" class="h-full flex flex-col items-center justify-center px-8 py-16 text-center space-y-5">
+              <div class="w-20 h-20 rounded-full bg-daba-cream-light border border-daba-border flex items-center justify-center">
+                <ShoppingBasket class="w-9 h-9 text-daba-slate-light" />
+              </div>
+              <div>
+                <p class="text-lg font-playfair font-semibold text-daba-navy mb-1">Votre panier est vide</p>
+                <p class="text-sm text-daba-slate leading-relaxed max-w-xs mx-auto">
+                  Nos volailles fraiches et fumées vous attendent — choisissez vos produits et on s'occupe du reste 🐔
+                </p>
+              </div>
+              <router-link to="/produits" @click="closeDrawer"
+                class="mt-2 px-7 py-3 bg-daba-orange text-white rounded-full font-inter font-bold text-xs uppercase tracking-wider shadow-md hover:bg-daba-orange-alt transition-all active:scale-95">
+                Voir le catalogue
+              </router-link>
+            </div>
+
+            <!-- Articles -->
+            <div v-else class="py-4 px-5 space-y-3">
+
+              <!-- Alerte commande minimum -->
+              <div v-if="cartStore.cartTotal < MIN_ORDER"
+                class="flex items-start gap-3 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-xs text-orange-800">
+                <AlertTriangle class="w-4 h-4 shrink-0 mt-0.5 text-orange-500" />
+                <div>
+                  <p class="font-bold">Minimum de commande : 10 000 FCFA</p>
+                  <p class="mt-0.5 opacity-80">
+                    Il manque <strong>{{ (MIN_ORDER - cartStore.cartTotal).toLocaleString('fr-FR') }} FCFA</strong> pour atteindre le minimum de livraison.
+                  </p>
                 </div>
+              </div>
+
+              <!-- Liste des items -->
+              <div v-for="item in cartStore.items" :key="item.id"
+                class="flex items-center gap-3 p-3 bg-white rounded-xl border border-daba-border shadow-sm hover:shadow-card-light transition-shadow">
+                <div class="w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-daba-border bg-daba-cream-light">
+                  <img :src="item.thumbnail" :alt="item.title" class="w-full h-full object-cover" />
+                </div>
+
                 <div class="flex-1 min-w-0">
-                  <h4 class="font-bold text-daba-navy truncate">{{ item.title }}</h4>
-                  <p class="text-daba-orange font-bold mb-2">{{ item.price }} Fcfa</p>
-                  
-                  <!-- Quantity Controls -->
-                  <div class="flex items-center space-x-3">
-                    <div class="flex items-center border border-daba-cream-alt rounded-lg p-1">
-                      <button @click="cartStore.updateQuantity(item.id, item.quantity - 1)" 
-                              class="p-1 text-daba-slate hover:text-daba-orange disabled:opacity-30"
-                              :disabled="item.quantity <= 1">
-                        <Icon icon="solar:minus-circle-linear" class="w-5 h-5" />
-                      </button>
-                      <span class="w-8 text-center text-sm font-bold text-daba-navy">{{ item.quantity }}</span>
-                      <button @click="cartStore.updateQuantity(item.id, item.quantity + 1)" 
-                              class="p-1 text-daba-slate hover:text-daba-orange">
-                        <Icon icon="solar:add-circle-linear" class="w-5 h-5" />
-                      </button>
-                    </div>
+                  <h4 class="font-bold text-sm text-daba-navy truncate leading-tight">{{ item.title }}</h4>
+                  <p class="text-daba-orange font-bold text-xs mt-0.5">{{ item.price?.toLocaleString('fr-FR') }} FCFA</p>
+
+                  <!-- Stepper quantité -->
+                  <div class="flex items-center gap-2 mt-2">
+                    <button @click="cartStore.updateQuantity(item.id, item.quantity - 1)"
+                      :disabled="item.quantity <= 1"
+                      class="w-7 h-7 rounded-lg bg-daba-cream-light border border-daba-border flex items-center justify-center text-daba-navy hover:bg-daba-border transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+                      <Minus class="w-3 h-3" />
+                    </button>
+                    <span class="w-6 text-center text-sm font-bold text-daba-navy">{{ item.quantity }}</span>
+                    <button @click="cartStore.updateQuantity(item.id, item.quantity + 1)"
+                      class="w-7 h-7 rounded-lg bg-daba-cream-light border border-daba-border flex items-center justify-center text-daba-navy hover:bg-daba-border transition-colors">
+                      <Plus class="w-3 h-3" />
+                    </button>
                   </div>
                 </div>
-                <button @click="cartStore.removeFromCart(item.id)" class="p-2 text-daba-slate-dark hover:text-red-500 transition-colors">
-                  <Icon icon="solar:trash-bin-trash-linear" class="w-6 h-6" />
-                </button>
+
+                <!-- Sous-total item + supprimer -->
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                  <p class="text-xs font-bold text-daba-navy">{{ (item.price * item.quantity).toLocaleString('fr-FR') }} FCFA</p>
+                  <button @click="cartStore.removeFromCart(item.id)"
+                    class="p-1.5 rounded-lg text-daba-slate-light hover:text-red-500 hover:bg-red-50 transition-colors" aria-label="Supprimer">
+                    <Trash2 class="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Footer / Checkout -->
-          <div v-if="cartStore.items.length > 0" class="p-6 bg-daba-cream-alt/50 border-t border-daba-cream-alt space-y-4">
-            <div class="space-y-2">
-              <div class="flex justify-between text-daba-slate text-sm">
-                <span>Sous-total</span>
-                <span>{{ cartStore.subtotal }} Fcfa</span>
-              </div>
-              <div class="flex justify-between text-daba-slate text-sm">
-                <span>Livraison</span>
-                <span>{{ cartStore.shippingFee }} Fcfa</span>
-              </div>
-              <div class="flex justify-between text-daba-navy font-black text-xl pt-2">
-                <span>Total</span>
-                <span class="text-daba-orange">{{ cartStore.cartTotal }} Fcfa</span>
+          <!-- ══ Mode 2 : Formulaire Checkout ══ -->
+          <div v-else class="flex-1 overflow-y-auto py-5 px-5 space-y-4" data-scrollable="true">
+            <!-- Résumé rapide -->
+            <div class="bg-daba-cream-light border border-daba-border rounded-xl p-4 text-xs">
+              <p class="font-bold text-daba-navy mb-2 text-sm">Récapitulatif</p>
+              <div class="flex justify-between text-daba-slate">
+                <span>{{ cartStore.totalItems }} article{{ cartStore.totalItems > 1 ? 's' : '' }}</span>
+                <span class="font-bold text-daba-navy">{{ cartStore.cartTotal?.toLocaleString('fr-FR') }} FCFA</span>
               </div>
             </div>
-            
-            <button @click="openPaymentModal" class="w-full py-4 bg-gradient-to-r from-daba-orange to-daba-orange-dark text-white rounded-2xl font-bold flex items-center justify-center space-x-3 shadow-xl shadow-daba-orange/20 hover:scale-[1.02] active:scale-95 transition-all">
-              <span>Passer la commande</span>
-              <Icon icon="solar:alt-arrow-right-linear" class="w-5 h-5" />
-            </button>
-            <p class="text-center text-[10px] text-daba-slate">Paiement Mobile Money MTN, Celtis Cash, Virement UBA Bank</p>
+
+            <form @submit.prevent="submitOrder" class="space-y-4">
+              <div>
+                <label class="block font-worksans text-[11px] font-bold uppercase tracking-wider text-daba-slate-light mb-1.5">Nom & Prénom *</label>
+                <input v-model="checkoutForm.name" type="text" required placeholder="Ex. Koffi Mensah"
+                  class="w-full px-4 py-2.5 bg-white border border-daba-border rounded-xl text-sm font-karla text-daba-navy focus:outline-none focus:ring-2 focus:ring-daba-orange transition-shadow" />
+              </div>
+              <div>
+                <label class="block font-worksans text-[11px] font-bold uppercase tracking-wider text-daba-slate-light mb-1.5">Téléphone / WhatsApp *</label>
+                <input v-model="checkoutForm.phone" type="tel" required placeholder="+228 90 00 00 00"
+                  class="w-full px-4 py-2.5 bg-white border border-daba-border rounded-xl text-sm font-karla text-daba-navy focus:outline-none focus:ring-2 focus:ring-daba-orange transition-shadow" />
+              </div>
+              <div>
+                <label class="block font-worksans text-[11px] font-bold uppercase tracking-wider text-daba-slate-light mb-1.5">Adresse de livraison *</label>
+                <input v-model="checkoutForm.address" type="text" required placeholder="Ex. Agbalépédogan, Lomé"
+                  class="w-full px-4 py-2.5 bg-white border border-daba-border rounded-xl text-sm font-karla text-daba-navy focus:outline-none focus:ring-2 focus:ring-daba-orange transition-shadow" />
+              </div>
+              <div>
+                <label class="block font-worksans text-[11px] font-bold uppercase tracking-wider text-daba-slate-light mb-1.5">Mode de paiement</label>
+                <select v-model="checkoutForm.payment_method"
+                  class="w-full px-4 py-2.5 bg-white border border-daba-border rounded-xl text-sm font-karla text-daba-navy focus:outline-none focus:ring-2 focus:ring-daba-orange">
+                  <option value="cash_on_delivery">Paiement à la livraison (Espèces)</option>
+                  <option value="mobile_money">T-Money / Flooz (Mobile Money)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-worksans text-[11px] font-bold uppercase tracking-wider text-daba-slate-light mb-1.5">Notes (optionnel)</label>
+                <textarea v-model="checkoutForm.customer_note" rows="2" placeholder="Heure, repère de livraison..."
+                  class="w-full px-4 py-2.5 bg-white border border-daba-border rounded-xl text-sm font-karla text-daba-navy focus:outline-none focus:ring-2 focus:ring-daba-orange resize-none"></textarea>
+              </div>
+
+              <button type="submit" :disabled="isSubmitting"
+                class="w-full py-3.5 bg-daba-orange text-white rounded-full font-inter font-bold text-xs uppercase tracking-wider hover:bg-daba-orange-alt transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                {{ isSubmitting ? 'Traitement…' : `Confirmer — ${cartStore.cartTotal?.toLocaleString('fr-FR')} FCFA` }}
+              </button>
+            </form>
           </div>
+
+          <!-- ══ Pied de tiroir sticky ══ -->
+          <div v-if="cartStore.items.length > 0 && !isCheckoutStep"
+            class="shrink-0 border-t border-daba-border bg-daba-cream-light px-5 py-4 space-y-3">
+
+            <!-- Totaux -->
+            <div class="space-y-1 text-sm">
+              <div class="flex justify-between text-daba-slate text-xs">
+                <span>Sous-total</span>
+                <span>{{ cartStore.cartTotal?.toLocaleString('fr-FR') }} FCFA</span>
+              </div>
+              <div class="flex justify-between text-daba-slate text-xs">
+                <span>Livraison</span>
+                <span class="text-daba-green font-semibold">Selon quartier</span>
+              </div>
+              <div class="flex justify-between text-daba-navy font-bold text-base pt-2 border-t border-daba-border-light">
+                <span>Total</span>
+                <span class="text-daba-orange">{{ cartStore.cartTotal?.toLocaleString('fr-FR') }} FCFA</span>
+              </div>
+            </div>
+
+            <!-- Badges de confiance -->
+            <div class="flex items-center gap-4 py-2 border-y border-daba-border-light">
+              <div class="flex items-center gap-1.5 text-[11px] text-daba-slate font-medium">
+                <Snowflake class="w-3.5 h-3.5 text-daba-green shrink-0" />
+                <span>Chaîne du froid respectée</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-[11px] text-daba-slate font-medium">
+                <HandCoins class="w-3.5 h-3.5 text-daba-green shrink-0" />
+                <span>Paiement à la livraison</span>
+              </div>
+            </div>
+
+            <!-- CTA Commander -->
+            <button @click="proceedToCheckout" :disabled="cartStore.cartTotal < MIN_ORDER"
+              class="w-full py-3.5 bg-daba-orange text-white rounded-full font-inter font-bold text-xs uppercase tracking-wider hover:bg-daba-orange-alt transition-all shadow-md active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              <ShoppingBasket class="w-4 h-4" />
+              Passer la commande
+              <ArrowRight class="w-4 h-4" />
+            </button>
+            <p class="text-center text-[10px] text-daba-slate-light">Livraison 24-48h · Lomé & environs · Froid continu</p>
+          </div>
+
         </div>
       </div>
     </div>
   </Transition>
-
-
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Icon } from '@iconify/vue';
-import { useCartStore } from '../stores/cart';
-import { useAuthStore } from '../stores/auth';
-import { orderService } from '../services/api';
-import Swal from 'sweetalert2';
+import { ref, reactive, toRef } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  ShoppingBasket, X, ArrowLeft, ArrowRight,
+  Minus, Plus, Trash2, AlertTriangle,
+  Snowflake, HandCoins
+} from 'lucide-vue-next'
+import { useCartStore } from '@/stores/cart'
+import { useAuthStore } from '@/stores/auth'
+import { orderService } from '@/services/api'
+import { useScrollLock } from '@/composables/useScrollLock'
+import { notifyOrderSuccess, notifyError } from '@/utils/notifications'
 
-defineProps({
-  isOpen: Boolean
-});
+const props = defineProps({ isOpen: Boolean })
+const emit = defineEmits(['close'])
 
-const emit = defineEmits(['close']);
+useScrollLock(toRef(props, 'isOpen'))
 
-const cartStore = useCartStore();
-const authStore = useAuthStore();
+const router = useRouter()
+const cartStore = useCartStore()
+const authStore = useAuthStore()
 
-// Guard contre les doubles soumissions
-const isSubmitting = ref(false);
+const MIN_ORDER = 10000
+const isCheckoutStep = ref(false)
+const isSubmitting = ref(false)
 
-const openPaymentModal = async () => {
-  if (cartStore.items.length === 0) {
-    Swal.fire({
-      title: 'Panier vide',
-      text: 'Votre panier est vide. Ajoutez des produits avant de passer commande.',
-      icon: 'warning',
-      confirmButtonColor: '#9333ea'
-    });
-    return;
+const checkoutForm = reactive({
+  name: '',
+  phone: '',
+  address: '',
+  payment_method: 'cash_on_delivery',
+  customer_note: ''
+})
+
+const closeDrawer = () => {
+  isCheckoutStep.value = false
+  emit('close')
+}
+
+const proceedToCheckout = () => {
+  if (cartStore.items.length === 0 || cartStore.cartTotal < MIN_ORDER) return
+  if (authStore.isAuthenticated && authStore.user) {
+    checkoutForm.name = authStore.user.first_name || authStore.user.name || ''
+    checkoutForm.phone = authStore.user.phone || ''
+    checkoutForm.address = authStore.user.address || ''
   }
+  isCheckoutStep.value = true
+}
 
-  // Vérifier si l'utilisateur est connecté
-  if (!authStore.isAuthenticated) {
-    emit('close'); // Fermer le panier pour laisser place À  la modal d'auth
-    
-    Swal.fire({
-      title: 'Identification Requise',
-      text: 'Veuillez vous connecter ou créer un compte pour procéder au paiement.',
-      icon: 'info',
-      confirmButtonText: 'Se connecter',
-      confirmButtonColor: '#9333ea',
-      showCancelButton: true,
-      cancelButtonText: 'Continuer mes achats',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Signaler au Header qu'on veut payer après la connexion
-        emit('request-payment-after-login');
-        emit('request-login');
-      }
-    });
-    return;
-  }
-
-  // Éviter les doubles soumissions
-  if (isSubmitting.value) return;
-  isSubmitting.value = true;
-
-  emit('close');
-  
-  // Créer la commande
-  Swal.fire({
-    title: 'Traitement...',
-    text: 'Création de votre commande',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-
+const submitOrder = async () => {
+  if (cartStore.items.length === 0 || isSubmitting.value) return
+  isSubmitting.value = true
   try {
-    // shipping_address ne doit jamais être vide — le backend renvoie 400 sinon
-    const shippingAddress =
-      (authStore.user?.address && authStore.user.address.trim()) ||
-      (authStore.user?.city && authStore.user.city.trim()) ||
-      'Cotonou, Bénin';
+    const isGuest = !authStore.isAuthenticated
+    const payload = isGuest ? {
+      guest_checkout: true,
+      name: checkoutForm.name,
+      phone: checkoutForm.phone,
+      address: checkoutForm.address,
+      payment_method: checkoutForm.payment_method,
+      customer_note: checkoutForm.customer_note,
+      items: cartStore.items.map(item => ({ product_id: parseInt(item.id, 10), quantity: parseInt(item.quantity, 10) }))
+    } : {
+      shipping_address: checkoutForm.address || 'Lomé, Togo',
+      payment_method: checkoutForm.payment_method,
+      customer_note: checkoutForm.customer_note
+    }
 
-    const orderData = {
-      shipping_address: shippingAddress,
-      payment_method: 'mobile_money',
-      customer_note: ''
-    };
-
-    const response = await orderService.create(orderData);
-    
-    if (response.data.order_id) {
-      Swal.close();
-      // Signaler au Header d'ouvrir le modal de paiement avec les bonnes infos
-      emit('open-payment', {
-        amount: cartStore.cartTotal,
-        orderId: response.data.order_id
-      });
+    const response = await orderService.create(payload)
+    if (response.data && (response.data.order_id || response.data.order_number)) {
+      const orderId = response.data.order_id || response.data.order_number
+      cartStore.clearCart()
+      closeDrawer()
+      notifyOrderSuccess(response.data.order_number || orderId)
+      router.push(`/commande-confirmee/${orderId}`)
     } else {
-      throw new Error('Erreur lors de la création de la commande');
+      throw new Error(response.data?.error || 'Erreur inattendue')
     }
   } catch (err) {
-    Swal.fire({
-      title: 'Erreur',
-      text: err.response?.data?.error || 'Impossible de créer la commande. Vérifiez votre stock.',
-      icon: 'error',
-      confirmButtonColor: '#9333ea'
-    });
+    notifyError('Erreur de commande', err.response?.data?.error || err.message || 'Impossible de créer la commande.')
   } finally {
-    isSubmitting.value = false;
+    isSubmitting.value = false
   }
-};
-
-const handlePaymentSuccess = (paymentData) => {
-  cartStore.clearCart();
-  Swal.fire({
-    title: 'Commande confirmée!',
-    text: `Votre commande a été payée avec succès via ${paymentData.provider.replace('_', ' ').toUpperCase()}`,
-    icon: 'success',
-    confirmButtonColor: '#9333ea'
-  });
-};
+}
 </script>
 
 <style scoped>
-.slide-right-enter-active, .slide-right-leave-active {
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+.slide-right-enter-active {
+  transition: opacity 0.3s ease;
 }
-.slide-right-enter-from, .slide-right-leave-to {
+.slide-right-leave-active {
+  transition: opacity 0.25s ease;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
   opacity: 0;
 }
-.slide-right-enter-from .w-screen, .slide-right-leave-to .w-screen {
-  transform: translateX(100%);
+.slide-right-enter-active .w-screen {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.slide-right-leave-active .w-screen {
+  animation: slideOutRight 0.25s ease forwards;
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
 }
 </style>
-
-
-

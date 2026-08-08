@@ -1,5 +1,39 @@
-# Vue 3 + Vite
+# Daba - E-commerce Platform
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Plateforme e-commerce moderne pour la vente de produits en ligne.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Stack Technique
+
+- **Frontend** : Vue 3 (Composition API), Vite, Tailwind CSS, Pinia, Axios
+- **Backend** : PHP Vanilla, Architecture orientée API, MySQL
+- **Sécurité** : JWT (Opaque Tokens), CORS List, Rate Limiting, Headers de sécurité
+
+## Procédure de Lancement
+
+### 1. Base de données
+Assurez-vous que MySQL est actif dans Laragon.
+```bash
+php backend/init_db.php
+```
+
+### 2. Backend (API)
+Le backend doit tourner sur le port **8080**.
+```bash
+cd backend
+php -S localhost:8080
+```
+
+### 3. Frontend (UI)
+Démarrez le serveur de développement Vite :
+```bash
+cd frontend
+npm run dev
+```
+Accès : **http://localhost:5173**
+
+## Documentation
+
+- [Résumé du projet](Documentation/RESUME_PROJET.md)
+- [Guide de déploiement](DEPLOYMENT_GUIDE.md)
+- [Audit de sécurité](SECURITY_AUDIT_REPORT.md)
+- [Politique de confidentialité](RGPD_COMPLIANCE.md)

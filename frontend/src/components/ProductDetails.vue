@@ -113,7 +113,26 @@ import { Icon } from '@iconify/vue';
 import OptimizedImage from './OptimizedImage.vue';
 import { useCartStore } from '../stores/cart';
 import { useWishlistStore } from '../stores/wishlist';
-import Swal from 'sweetalert2';
+import { notifyAddToCart, notifyWishlist } from '@/utils/notifications';
+
+const close = () => {
+  emit('close');
+};
+
+const handleAddToCart = async () => {
+  try {
+    await cartStore.addToCart(props.product, quantity.value);
+    notifyAddToCart(props.product.title, quantity.value);
+    close();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const toggleWishlist = () => {
+  const added = wishlistStore.toggleWishlist(props.product);
+  notifyWishlist(props.product.title, added);
+};
 
 const props = defineProps({
   isOpen: Boolean,
@@ -132,55 +151,7 @@ watch(() => props.product, () => {
   quantity.value = 1;
 });
 
-const close = () => {
-  emit('close');
-};
 
-const handleAddToCart = async () => {
-  try {
-    await cartStore.addToCart(props.product, quantity.value);
-    
-    // Success Modal
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-
-    Toast.fire({
-      icon: 'success',
-      title: `${props.product.title} ajouté au panier!`
-    });
-    
-    close();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const toggleWishlist = () => {
-  const added = wishlistStore.toggleWishlist(props.product);
-  
-  const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-  });
-
-  if (added) {
-    Toast.fire({ icon: 'success', title: 'Ajouté aux favoris' });
-  } else {
-    Toast.fire({ icon: 'info', title: 'Retiré des favoris' });
-  }
-};
 </script>
 
 <style scoped>

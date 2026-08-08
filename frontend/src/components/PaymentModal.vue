@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div v-if="isOpen" class="fixed inset-0 z-[200] flex items-start justify-center bg-black/50 backdrop-blur-sm pt-32 md:pt-40 overflow-y-auto">
     <div class="bg-daba-cream rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-6">
@@ -124,7 +124,7 @@
 import { ref, defineProps, defineEmits } from 'vue'
 import { Icon } from '@iconify/vue'
 import { paymentService } from '@/services/api'
-import Swal from 'sweetalert2'
+import { notifySuccess, notifyError } from '@/utils/notifications'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -162,29 +162,14 @@ const processPayment = async () => {
     const response = await paymentService.process(paymentData)
     
     if (response.data.success) {
-      Swal.fire({
-        title: 'Paiement réussi!',
-        text: response.data.message,
-        icon: 'success',
-        confirmButtonColor: '#9333ea'
-      })
+      notifySuccess('Paiement réussi', response.data.message || 'Votre paiement a été validé avec succès.')
       emit('success', response.data)
       closeModal()
     } else {
-      Swal.fire({
-        title: 'Erreur de paiement',
-        text: response.data.error || 'Une erreur est survenue',
-        icon: 'error',
-        confirmButtonColor: '#9333ea'
-      })
+      notifyError('Erreur de paiement', response.data.error || 'Une erreur est survenue lors de la transaction.')
     }
   } catch (error) {
-    Swal.fire({
-      title: 'Erreur de connexion',
-      text: 'Impossible de traiter le paiement',
-      icon: 'error',
-      confirmButtonColor: '#9333ea'
-    })
+    notifyError('Erreur de connexion', 'Impossible de traiter le paiement. Veuillez vérifier votre réseau et réessayez.')
   }
 }
 </script>

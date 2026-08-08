@@ -1,4 +1,4 @@
-# 🍪 Système de Gestion des Cookies - Bloom by Chloe
+# 🍪 Système de Gestion des Cookies - Daba
 
 Un système complet, moderne et conforme RGPD pour la gestion des cookies sur votre site e-commerce.
 

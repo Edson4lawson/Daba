@@ -46,6 +46,6 @@ services:
 
 databases:
   - name: daba-db
-    databaseName: bloom_chloe
-    user: bloom_chloe_user
+    databaseName: daba
+    user: daba_user
     plan: free
