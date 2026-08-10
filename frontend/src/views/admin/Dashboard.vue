@@ -8,10 +8,10 @@
     <div class="dashboard-header flex items-center justify-between space-y-8">
       <div>
         <h2 class="text-2xl font-black text-daba-navy dark:text-daba-cream tracking-tight space-y-2">Bonjour {{ authStore.user?.role || 'Admin' }}</h2>
-        <p class="text-sm text-daba-slate dark:text-daba-slate-dark font-medium">Voici l'activité de votre boutique Daba aujourd'hui.</p>
+        <p class="text-sm text-daba-slate dark:text-daba-cream font-medium">Voici l'activité de votre boutique Daba aujourd'hui.</p>
       </div>
       <div class="flex items-center space-x-2 bg-daba-cream dark:bg-daba-dark-bg px-4 py-2 rounded-2xl shadow-sm border border-daba-cream-alt dark:border-daba-dark-border">
-        <Calendar class="w-4 h-4 text-daba-slate-dark" />
+        <Calendar class="w-4 h-4 text-daba-slate dark:text-daba-cream" />
         <span class="text-sm font-bold text-daba-navy dark:text-white">{{ currentDate }}</span>
       </div>
     </div>

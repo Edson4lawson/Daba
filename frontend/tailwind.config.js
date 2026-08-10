@@ -23,11 +23,16 @@ export default {
         'daba-blue-medium': '#4f708a',
         'daba-slate': '#5a6474',
         'daba-slate-light': '#6b7280',
+        'daba-slate-dark': '#9ca3af',
         'daba-green': '#6f8766',
         'daba-orange': '#ce4600',
         'daba-orange-alt': '#d65a31',
         'daba-border': '#dcd9cf',
         'daba-border-light': '#e5e7eb',
+        // Dark mode colors
+        'daba-dark-bg': '#0a0a0a',
+        'daba-dark-card': '#1a1a1a',
+        'daba-dark-border': '#2a2a2a',
       },
       borderRadius: {
         'card': '8px',

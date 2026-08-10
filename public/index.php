@@ -38,6 +38,11 @@ file_put_contents($logFile, $logEntry, FILE_APPEND | LOCK_EX);
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+// Support pour passer l'URI via query string (pour compatibilité avec certains serveurs)
+if (isset($_GET['_uri'])) {
+    $requestUri = $_GET['_uri'];
+}
+
 // Nettoyer l'URI
 $requestUri = str_replace('/api', '', $requestUri);
 $requestUri = rtrim($requestUri, '/');
@@ -84,6 +89,23 @@ $routes = [
     
     // Admin
     'GET /admin/stream' => '/../backend/admin/stream.php',
+    'GET /admin/analytics/summary' => '/../backend/admin/analytics/summary.php',
+    'GET /admin/analytics/detailed' => '/../backend/admin/analytics/detailed.php',
+    'POST /admin/products/create' => '/../backend/admin/products/create.php',
+    'POST /admin/products/update' => '/../backend/admin/products/update.php',
+    'POST /admin/products/delete' => '/../backend/admin/products/delete.php',
+    'POST /admin/products/toggle_feature' => '/../backend/admin/products/toggle_feature.php',
+    'POST /admin/products/upload_image' => '/../backend/admin/products/upload_image.php',
+    'GET /admin/orders/get_all' => '/../backend/admin/orders/get_all.php',
+    'POST /admin/orders/update_status' => '/../backend/admin/orders/update_status.php',
+    'POST /admin/orders/delete' => '/../backend/admin/orders/delete.php',
+    'GET /admin/users/get_all' => '/../backend/admin/users/get_all.php',
+    'GET /admin/users/get_one' => '/../backend/admin/users/get_one.php',
+    'POST /admin/users/update_role' => '/../backend/admin/users/update_role.php',
+    'GET /admin/invoices/get_all.php' => '/../backend/admin/invoices/get_all.php',
+    'POST /admin/invoices/update_status.php' => '/../backend/admin/invoices/update_status.php',
+    'GET /admin/settings/get' => '/../backend/admin/settings/get.php',
+    'POST /admin/settings/update' => '/../backend/admin/settings/update.php',
 ];
 
 // Route key

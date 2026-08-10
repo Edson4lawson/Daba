@@ -36,13 +36,13 @@
       <table v-else class="min-w-full divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
         <thead class="bg-daba-cream-alt dark:bg-daba-dark-card/50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">ID</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Canal</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Client</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Montant</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Statut</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Date</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Actions</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Canal</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Client</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Montant</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Statut</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Actions</th>
           </tr>
         </thead>
         <tbody class="bg-daba-cream dark:bg-daba-dark-card divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
@@ -58,7 +58,7 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-daba-navy dark:text-white">{{ order.user_name }}</div>
-              <div class="text-sm text-daba-slate dark:text-daba-slate-dark">{{ order.user_email }}</div>
+              <div class="text-sm text-daba-slate dark:text-daba-cream">{{ order.user_email }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-navy dark:text-white">{{ order.total_amount }}FCFA</td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -75,13 +75,13 @@
                 <option value="cancelled">Annulée</option>
               </select>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-slate dark:text-daba-slate-dark">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-slate dark:text-daba-cream">
               {{ formatDate(order.created_at) }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <router-link :to="`/admin/orders/${order.id}`" class="text-daba-orange dark:text-daba-orange hover:text-daba-navy dark:hover:text-white">
+              <button @click="viewOrderDetail(order.id)" class="text-daba-orange dark:text-daba-orange hover:text-daba-navy dark:hover:text-white">
                 Détails
-              </router-link>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -93,7 +93,7 @@
       <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-transparent dark:border-daba-dark-border">
         <div class="sticky top-0 bg-daba-cream dark:bg-daba-dark-card z-10 px-6 py-4 border-b border-daba-cream-alt dark:border-daba-dark-border flex justify-between items-center">
           <h2 class="text-xl font-bold text-daba-navy dark:text-white">Détails de la commande #{{ selectedOrder.id }}</h2>
-          <button @click="selectedOrder = null" class="text-daba-slate dark:text-daba-slate-dark hover:text-daba-navy dark:hover:text-white">
+          <button @click="selectedOrder = null" class="text-daba-slate dark:text-daba-cream hover:text-daba-navy dark:hover:text-white">
             <X class="w-6 h-6" />
           </button>
         </div>
@@ -105,9 +105,9 @@
                 <User class="w-5 h-5 mr-2" /> Informations client
               </h3>
               <div class="space-y-2 text-sm">
-                <p class="text-daba-slate dark:text-daba-slate-dark">Nom: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.user_name }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Email: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.user_email }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Téléphone: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.phone || 'N/A' }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Nom: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.user_name }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Email: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.user_email }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Téléphone: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.phone || 'N/A' }}</span></p>
               </div>
             </div>
             <div class="bg-daba-cream-alt dark:bg-daba-dark-card/50 p-6 rounded-xl border border-daba-cream-alt dark:border-daba-dark-border">
@@ -115,10 +115,10 @@
                 <Package class="w-5 h-5 mr-2" /> Informations commande
               </h3>
               <div class="space-y-2 text-sm">
-                <p class="text-daba-slate dark:text-daba-slate-dark">Date: <span class="font-medium text-daba-navy dark:text-white">{{ formatDate(selectedOrder.created_at) }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Canal: <span :class="getCanalClass(selectedOrder.canal)" class="px-2 py-0.5 text-[10px] font-black uppercase rounded-full inline-flex items-center gap-1"><component :is="getCanalIcon(selectedOrder.canal)" class="w-3 h-3" /> {{ selectedOrder.canal || 'site' }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Statut: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.status }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Total: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.total_amount }}FCFA</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Date: <span class="font-medium text-daba-navy dark:text-white">{{ formatDate(selectedOrder.created_at) }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Canal: <span :class="getCanalClass(selectedOrder.canal)" class="px-2 py-0.5 text-[10px] font-black uppercase rounded-full inline-flex items-center gap-1"><component :is="getCanalIcon(selectedOrder.canal)" class="w-3 h-3" /> {{ selectedOrder.canal || 'site' }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Statut: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.status }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Total: <span class="font-medium text-daba-navy dark:text-white">{{ selectedOrder.total_amount }}FCFA</span></p>
               </div>
             </div>
           </div>
@@ -129,10 +129,10 @@
               <table class="min-w-full divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
                 <thead class="bg-daba-cream-alt dark:bg-daba-dark-card/50">
                   <tr>
-                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Produit</th>
-                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Prix unitaire</th>
-                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Quantité</th>
-                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Total</th>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Produit</th>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Prix unitaire</th>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Quantité</th>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Total</th>
                   </tr>
                 </thead>
                 <tbody class="bg-daba-cream dark:bg-daba-dark-card divide-y divide-daba-cream-alt dark:divide-daba-dark-border">

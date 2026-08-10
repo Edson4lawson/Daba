@@ -9,7 +9,7 @@
         </div>
         <div class="flex items-center gap-4">
           <ThemeToggle />
-          <button @click="handleLogout" class="px-4 py-2 text-xs font-black uppercase tracking-widest text-daba-slate hover:text-daba-orange transition-colors">
+          <button @click="handleLogout" class="px-4 py-2 text-xs font-black uppercase tracking-widest text-daba-slate dark:text-daba-cream hover:text-daba-orange dark:hover:text-daba-orange transition-colors">
             Déconnexion
           </button>
         </div>

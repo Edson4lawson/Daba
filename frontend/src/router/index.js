@@ -28,6 +28,7 @@ const AdminInvoices = () => import('@/views/admin/AdminInvoices.vue')
 const AdminSettings = () => import('@/views/admin/AdminSettings.vue')
 const AdminAnalytics = () => import('@/views/admin/AdminAnalytics.vue')
 const CategoryManager = () => import('@/views/admin/Categories/CategoryManager.vue')
+const ProductImages = () => import('@/views/admin/Products/ProductImages.vue')
 const Unauthorized = () => import('@/views/Unauthorized.vue')
 
 const routes = [
@@ -150,6 +151,12 @@ const routes = [
         path: 'products',
         name: 'AdminProducts',
         component: AdminProducts,
+        meta: { allowedRoles: ['admin', 'magasinier'] }
+      },
+      {
+        path: 'products/:id/images',
+        name: 'ProductImages',
+        component: ProductImages,
         meta: { allowedRoles: ['admin', 'magasinier'] }
       },
       {

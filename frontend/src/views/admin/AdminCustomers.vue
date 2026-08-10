@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-black text-daba-navy dark:text-white">Gestion des Clients</h1>
-        <p class="text-sm text-daba-slate dark:text-daba-slate-dark">{{ customers.length }} clients enregistrés</p>
+        <p class="text-sm text-daba-slate dark:text-daba-cream">{{ customers.length }} clients enregistrés</p>
       </div>
       <div class="relative">
         <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-daba-slate-dark" />
@@ -20,11 +20,11 @@
       <table v-else class="w-full">
         <thead>
           <tr class="bg-daba-cream-alt dark:bg-daba-dark-card/30 text-left">
-            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Client</th>
-            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Email</th>
-            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Inscrit le</th>
-            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Rôle</th>
-            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Actions</th>
+            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-cream uppercase tracking-wider">Client</th>
+            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-cream uppercase tracking-wider">Email</th>
+            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-cream uppercase tracking-wider">Inscrit le</th>
+            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-cream uppercase tracking-wider">Rôle</th>
+            <th class="px-6 py-4 text-[10px] font-black text-daba-slate dark:text-daba-cream uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
                 <p class="text-sm font-bold text-daba-navy dark:text-white">{{ customer.first_name || '' }} {{ customer.last_name || '' }}</p>
               </div>
             </td>
-            <td class="px-6 py-4 text-sm text-daba-slate dark:text-daba-slate-dark">{{ customer.email }}</td>
+            <td class="px-6 py-4 text-sm text-daba-slate dark:text-daba-cream">{{ customer.email }}</td>
             <td class="px-6 py-4 text-xs text-daba-slate">{{ formatDate(customer.created_at) }}</td>
             <td class="px-6 py-4">
               <span :class="customer.role === 'admin' ? 'bg-daba-cream-alt text-daba-navy' : 'bg-daba-cream-alt text-daba-slate'"
@@ -62,9 +62,9 @@
         <div class="px-8 py-6 border-b border-daba-cream-alt dark:border-daba-dark-border flex items-center justify-between bg-daba-cream-alt/50 dark:bg-daba-dark-card/20 flex-shrink-0">
           <div>
             <h2 class="text-xl font-bold text-daba-navy dark:text-white">Commandes de {{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}</h2>
-            <p class="text-sm text-daba-slate dark:text-daba-slate-dark">{{ selectedCustomer.email }}</p>
+            <p class="text-sm text-daba-slate dark:text-daba-cream">{{ selectedCustomer.email }}</p>
           </div>
-          <button @click="selectedCustomer = null" class="text-daba-slate-dark hover:text-daba-navy dark:hover:text-white">
+          <button @click="selectedCustomer = null" class="text-daba-slate dark:text-daba-cream hover:text-daba-navy dark:hover:text-white">
             <X class="w-6 h-6" />
           </button>
         </div>
@@ -89,7 +89,7 @@
                 </div>
                 <span class="text-sm font-bold text-daba-navy dark:text-white">{{ order.total_amount }} FCFA</span>
               </div>
-              <div class="text-xs text-daba-slate dark:text-daba-slate-dark">
+              <div class="text-xs text-daba-slate dark:text-daba-cream">
                 {{ formatDate(order.created_at) }}
               </div>
             </div>

@@ -4,7 +4,7 @@
     <div class="product-header flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold text-daba-navy dark:text-white">Catalogue Produits</h1>
-        <p class="text-sm text-daba-slate dark:text-daba-slate-dark">Gérez vos produits, stocks et promotions</p>
+        <p class="text-sm text-daba-slate dark:text-daba-cream">Gérez vos produits, stocks et promotions</p>
       </div>
       <button 
         @click="showCreateForm = true" 
@@ -56,23 +56,24 @@
         <table class="min-w-full divide-y divide-slate-100 dark:divide-daba-dark-border">
           <thead class="bg-daba-cream-alt dark:bg-daba-dark-card/50">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Produit</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Catégorie</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Prix/Stock</th>
-              <th class="px-6 py-4 text-center text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Mises en avant</th>
-              <th class="px-6 py-4 text-right text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Produit</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Catégorie</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Prix/Stock</th>
+              <th class="px-6 py-4 text-center text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Mises en avant</th>
+              <th class="px-6 py-4 text-right text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-daba-cream dark:bg-daba-dark-card divide-y divide-slate-100 dark:divide-daba-dark-border">
             <tr v-for="product in filteredProducts" :key="product.id" class="product-row hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition-colors">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <div class="w-12 h-12 rounded-xl bg-daba-cream-alt dark:bg-daba-dark-card flex-shrink-0 overflow-hidden border border-daba-cream-alt dark:border-daba-dark-border">
-                    <img :src="getImageUrl(product.image_url)" :alt="product.name" class="w-full h-full object-cover">
+                  <div class="w-12 h-12 rounded-xl bg-daba-cream-alt dark:bg-daba-dark-card flex-shrink-0 overflow-hidden border border-daba-cream-alt dark:border-daba-dark-border flex items-center justify-center">
+                    <img v-if="product.image_url" :src="getImageUrl(product.image_url)" :alt="product.name" class="w-full h-full object-cover">
+                    <ImageIcon v-else class="w-6 h-6 text-daba-slate-dark" />
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-bold text-daba-navy dark:text-white">{{ product.name }}</div>
-                    <div class="text-xs text-daba-slate dark:text-daba-slate-dark truncate max-w-[200px]">{{ product.slug }}</div>
+                    <div class="text-xs text-daba-slate dark:text-daba-cream truncate max-w-[200px]">{{ product.slug }}</div>
                   </div>
                 </div>
               </td>
@@ -153,30 +154,30 @@
           <form @submit.prevent="saveProduct" class="p-8">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Nom du produit</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Nom du produit</label>
               <input v-model="productForm.name" @input="generateSlug" required class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 focus:border-daba-orange outline-none dark:text-white">
             </div>
             <div class="space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Catégorie</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Catégorie</label>
               <select v-model="productForm.category_id" required class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white">
                 <option value="">Sélectionner...</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
               </select>
             </div>
             <div class="space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Prix (FCFA)</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Prix (FCFA)</label>
               <input v-model="productForm.price" type="number" step="0.01" required class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white">
             </div>
             <div class="space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Stock</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Stock</label>
               <input v-model="productForm.stock" type="number" required class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white">
             </div>
             <div class="md:col-span-2 space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Slug (URL)</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Slug (URL)</label>
               <input v-model="productForm.slug" required class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white">
             </div>
             <div class="md:col-span-2 space-y-1">
-              <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Description</label>
+              <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Description</label>
               <textarea v-model="productForm.description" rows="3" class="w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white"></textarea>
             </div>
           </div>

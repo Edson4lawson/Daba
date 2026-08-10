@@ -10,6 +10,20 @@
 require_once __DIR__ . '/../config/db.php';
 
 /**
+ * Vérifie si l'utilisateur a un rôle spécifique
+ * 
+ * @param array $user Données utilisateur
+ * @param array|string $roles Rôle(s) à vérifier
+ * @return bool True si l'utilisateur a l'un des rôles
+ */
+function hasRole($user, $roles) {
+    if (is_string($roles)) {
+        $roles = [$roles];
+    }
+    return in_array($user['role'] ?? '', $roles, true);
+}
+
+/**
  * Vérifie si l'utilisateur a une permission spécifique
  * 
  * @param array $user Données utilisateur

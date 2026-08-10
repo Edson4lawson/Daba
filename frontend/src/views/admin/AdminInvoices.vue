@@ -7,30 +7,30 @@
 
     <!-- KPI Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-      <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-daba-cream-alt dark:border-daba-dark-border">
+      <div class="bg-white dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-daba-dark-border">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-daba-slate dark:text-daba-slate-dark">Total Factures</span>
+          <span class="text-sm text-daba-slate dark:text-daba-cream">Total Factures</span>
           <FileText class="w-5 h-5 text-daba-orange" />
         </div>
         <p class="text-2xl font-bold text-daba-navy dark:text-white">{{ kpis.totalInvoices }}</p>
       </div>
-      <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-daba-cream-alt dark:border-daba-dark-border">
+      <div class="bg-white dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-daba-dark-border">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-daba-slate dark:text-daba-slate-dark">En Attente</span>
+          <span class="text-sm text-daba-slate dark:text-daba-cream">En Attente</span>
           <Clock class="w-5 h-5 text-daba-orange" />
         </div>
         <p class="text-2xl font-bold text-daba-navy dark:text-white">{{ kpis.pendingAmount.toLocaleString('fr-FR') }} FCFA</p>
       </div>
-      <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-daba-cream-alt dark:border-daba-dark-border">
+      <div class="bg-white dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-daba-dark-border">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-daba-slate dark:text-daba-slate-dark">Payées</span>
+          <span class="text-sm text-daba-slate dark:text-daba-cream">Payées</span>
           <CheckCircle class="w-5 h-5 text-daba-green" />
         </div>
         <p class="text-2xl font-bold text-daba-navy dark:text-white">{{ kpis.paidAmount.toLocaleString('fr-FR') }} FCFA</p>
       </div>
-      <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-daba-cream-alt dark:border-daba-dark-border">
+      <div class="bg-white dark:bg-daba-dark-card rounded-2xl shadow-sm p-6 border border-slate-100 dark:border-daba-dark-border">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-daba-slate dark:text-daba-slate-dark">En Retard</span>
+          <span class="text-sm text-daba-slate dark:text-daba-cream">En Retard</span>
           <AlertTriangle class="w-5 h-5 text-rose-500" />
         </div>
         <p class="text-2xl font-bold text-daba-navy dark:text-white">{{ kpis.overdueCount }}</p>
@@ -58,18 +58,18 @@
         <div class="animate-spin rounded-full h-8 w-8 border-2 border-daba-cream-alt border-t-daba-orange"></div>
       </div>
       <div v-else-if="filteredInvoices.length === 0" class="flex items-center justify-center py-20">
-        <p class="text-daba-slate dark:text-daba-slate-dark text-sm italic">Aucune facture pour le moment</p>
+        <p class="text-daba-slate dark:text-daba-cream text-sm italic">Aucune facture pour le moment</p>
       </div>
       <table v-else class="min-w-full divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
         <thead class="bg-daba-cream-alt dark:bg-daba-dark-card/50">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">N° Facture</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Commande</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Client</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Montant</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Statut</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Date</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-slate-dark uppercase">Actions</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">N° Facture</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Commande</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Client</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Montant</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Statut</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-daba-slate dark:text-daba-cream uppercase">Actions</th>
           </tr>
         </thead>
         <tbody class="bg-daba-cream dark:bg-daba-dark-card divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
@@ -78,13 +78,13 @@
               {{ invoice.invoice_number }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <router-link :to="`/admin/orders/${invoice.order_id}`" class="text-sm text-daba-orange dark:text-daba-orange hover:text-daba-navy dark:hover:text-white">
+              <router-link :to="`/admin/orders`" class="text-sm text-daba-orange dark:text-daba-orange hover:text-daba-navy dark:hover:text-white">
                 #{{ invoice.order_id }}
               </router-link>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="text-sm font-medium text-daba-navy dark:text-white">{{ invoice.first_name }} {{ invoice.last_name }}</div>
-              <div class="text-sm text-daba-slate dark:text-daba-slate-dark">{{ invoice.phone }}</div>
+              <div class="text-sm text-daba-slate dark:text-daba-cream">{{ invoice.phone }}</div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-navy dark:text-white">{{ invoice.amount.toLocaleString('fr-FR') }} FCFA</td>
             <td class="px-6 py-4 whitespace-nowrap">
@@ -92,7 +92,7 @@
                 {{ invoice.status }}
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-slate dark:text-daba-slate-dark">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-daba-slate dark:text-daba-cream">
               {{ formatDate(invoice.created_at) }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -117,7 +117,7 @@
       <div class="bg-daba-cream dark:bg-daba-dark-card rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-transparent dark:border-daba-dark-border">
         <div class="sticky top-0 bg-daba-cream dark:bg-daba-dark-card z-10 px-6 py-4 border-b border-daba-cream-alt dark:border-daba-dark-border flex justify-between items-center">
           <h2 class="text-xl font-bold text-daba-navy dark:text-white">Détails de la facture {{ selectedInvoice.invoice_number }}</h2>
-          <button @click="selectedInvoice = null" class="text-daba-slate dark:text-daba-slate-dark hover:text-daba-navy dark:hover:text-white">
+          <button @click="selectedInvoice = null" class="text-daba-slate dark:text-daba-cream hover:text-daba-navy dark:hover:text-white">
             <X class="w-6 h-6" />
           </button>
         </div>
@@ -129,8 +129,8 @@
                 <User class="w-5 h-5 mr-2" /> Informations client
               </h3>
               <div class="space-y-2 text-sm">
-                <p class="text-daba-slate dark:text-daba-slate-dark">Nom: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.first_name }} {{ selectedInvoice.last_name }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Téléphone: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.phone }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Nom: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.first_name }} {{ selectedInvoice.last_name }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Téléphone: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.phone }}</span></p>
               </div>
             </div>
             <div class="bg-daba-cream-alt dark:bg-daba-dark-card/50 p-6 rounded-xl border border-daba-cream-alt dark:border-daba-dark-border">
@@ -138,11 +138,11 @@
                 <FileText class="w-5 h-5 mr-2" /> Informations facture
               </h3>
               <div class="space-y-2 text-sm">
-                <p class="text-daba-slate dark:text-daba-slate-dark">N° Facture: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.invoice_number }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Commande liée: <router-link :to="`/admin/orders/${selectedInvoice.order_id}`" class="font-medium text-daba-orange dark:text-daba-orange hover:underline">#{{ selectedInvoice.order_id }}</router-link></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Statut: <span :class="getStatusClass(selectedInvoice.status)" class="px-2 py-0.5 text-[10px] font-black uppercase rounded-full inline-block">{{ selectedInvoice.status }}</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Montant: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.amount.toLocaleString('fr-FR') }} FCFA</span></p>
-                <p class="text-daba-slate dark:text-daba-slate-dark">Date: <span class="font-medium text-daba-navy dark:text-white">{{ formatDate(selectedInvoice.created_at) }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">N° Facture: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.invoice_number }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Commande liée: <router-link :to="`/admin/orders`" class="font-medium text-daba-orange dark:text-daba-orange hover:underline">#{{ selectedInvoice.order_id }}</router-link></p>
+                <p class="text-daba-slate dark:text-daba-cream">Statut: <span :class="getStatusClass(selectedInvoice.status)" class="px-2 py-0.5 text-[10px] font-black uppercase rounded-full inline-block">{{ selectedInvoice.status }}</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Montant: <span class="font-medium text-daba-navy dark:text-white">{{ selectedInvoice.amount.toLocaleString('fr-FR') }} FCFA</span></p>
+                <p class="text-daba-slate dark:text-daba-cream">Date: <span class="font-medium text-daba-navy dark:text-white">{{ formatDate(selectedInvoice.created_at) }}</span></p>
               </div>
             </div>
           </div>

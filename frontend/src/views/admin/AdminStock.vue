@@ -4,7 +4,7 @@
     <div class="stock-header flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold text-daba-navy dark:text-white">Gestion du Stock</h1>
-        <p class="text-sm text-daba-slate dark:text-daba-slate-dark">Ajustez les quantités et surveillez les alertes</p>
+        <p class="text-sm text-daba-slate dark:text-daba-cream">Ajustez les quantités et surveillez les alertes</p>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         <button 
           @click="showAlertsOnly = !showAlertsOnly"
           class="px-4 py-2 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2"
-          :class="showAlertsOnly ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-daba-cream-alt dark:bg-daba-dark-card/30 text-daba-slate dark:text-daba-slate-dark hover:bg-daba-cream-alt dark:hover:bg-slate-900/30'"
+          :class="showAlertsOnly ? 'bg-rose-500 text-white hover:bg-rose-600' : 'bg-daba-cream-alt dark:bg-daba-dark-card/30 text-daba-slate dark:text-daba-cream hover:bg-daba-cream-alt dark:hover:bg-slate-900/30'"
         >
           <AlertTriangle class="w-4 h-4" />
           {{ showAlertsOnly ? 'Tous les produits' : 'Alertes uniquement' }}
@@ -43,11 +43,11 @@
         <table class="min-w-full divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
           <thead class="bg-daba-cream-alt dark:bg-daba-dark-card/50">
             <tr>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Produit</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Catégorie</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Stock actuel</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Statut</th>
-              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase tracking-wider">Dernière mise à jour</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Produit</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Catégorie</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Stock actuel</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Statut</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-daba-slate dark:text-daba-cream uppercase tracking-wider">Dernière mise à jour</th>
             </tr>
           </thead>
           <tbody class="bg-daba-cream dark:bg-daba-dark-card divide-y divide-daba-cream-alt dark:divide-daba-dark-border">
@@ -56,13 +56,13 @@
                 <div class="text-sm font-bold text-daba-navy dark:text-white">{{ product.name }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-slate-dark">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-cream">
                   {{ product.category_name }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center gap-2">
-                  <button @click="adjustStock(product, -1)" class="w-6 h-6 rounded bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-slate-dark hover:bg-daba-cream-alt hover:text-rose-600 transition-colors text-xs font-bold">−</button>
+                  <button @click="adjustStock(product, -1)" class="w-6 h-6 rounded bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-cream hover:bg-daba-cream-alt hover:text-rose-600 transition-colors text-xs font-bold">−</button>
                   <input
                     v-if="editingStock === product.id"
                     v-model.number="tempStock"
@@ -81,7 +81,7 @@
                   >
                     {{ product.stock }}
                   </span>
-                  <button @click="adjustStock(product, 1)" class="w-6 h-6 rounded bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-slate-dark hover:bg-daba-cream-alt hover:text-daba-green transition-colors text-xs font-bold">+</button>
+                  <button @click="adjustStock(product, 1)" class="w-6 h-6 rounded bg-daba-cream-alt dark:bg-daba-dark-card text-daba-slate dark:text-daba-cream hover:bg-daba-cream-alt hover:text-daba-green transition-colors text-xs font-bold">+</button>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -89,7 +89,7 @@
                   {{ getStockStatus(product.stock) }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-xs text-daba-slate dark:text-daba-slate-dark">
+              <td class="px-6 py-4 whitespace-nowrap text-xs text-daba-slate dark:text-daba-cream">
                 {{ formatDate(product.updated_at) }}
               </td>
             </tr>

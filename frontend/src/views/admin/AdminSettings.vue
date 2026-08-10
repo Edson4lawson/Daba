@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-black text-daba-navy dark:text-white">Paramètres</h1>
-        <p class="text-sm text-daba-slate dark:text-daba-slate-dark">Configuration de votre boutique</p>
+        <p class="text-sm text-daba-slate dark:text-daba-cream">Configuration de votre boutique</p>
       </div>
     </div>
 
@@ -16,31 +16,31 @@
       <form @submit.prevent="saveSettings" class="space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Nom de la boutique</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Nom de la boutique</label>
             <input v-model="settings.store_name" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Email</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Email</label>
             <input v-model="settings.store_email" type="email" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Téléphone</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Téléphone</label>
             <input v-model="settings.store_phone" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Devise</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Devise</label>
             <input v-model="settings.currency" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Adresse</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Adresse</label>
             <input v-model="settings.store_address" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Frais de livraison (FCFA)</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Frais de livraison (FCFA)</label>
             <input v-model.number="settings.shipping_fee" type="number" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
           <div>
-            <label class="text-xs font-bold text-daba-slate dark:text-daba-slate-dark uppercase">Livraison gratuite à partir de (FCFA)</label>
+            <label class="text-xs font-bold text-daba-slate dark:text-daba-cream uppercase">Livraison gratuite à partir de (FCFA)</label>
             <input v-model.number="settings.free_shipping_threshold" type="number" class="mt-1 w-full px-4 py-2.5 bg-daba-cream-alt dark:bg-daba-dark-card/50 border border-daba-cream-alt dark:border-daba-dark-border rounded-xl focus:ring-2 focus:ring-daba-orange/20 outline-none dark:text-white" />
           </div>
         </div>

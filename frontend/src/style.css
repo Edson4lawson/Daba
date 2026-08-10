@@ -22,6 +22,9 @@
   --color-daba-orange-alt: #d65a31;
   --color-daba-border: #dcd9cf;
   --color-daba-border-light: #e5e7eb;
+  --color-daba-dark-bg: #12141C;
+  --color-daba-dark-card: #1B2233;
+  --color-daba-dark-border: #2A3244;
 
   --shadow-card-light: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
   --shadow-card-elevated: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
