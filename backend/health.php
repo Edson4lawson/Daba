@@ -7,7 +7,10 @@
 header('Content-Type: application/json; charset=utf-8');
 
 try {
-    // Vérifier la connexion à la base de données
+    // Définir pour éviter que db.php ne stoppe le script en cas d'erreur de connexion
+    define('NO_DB_AUTO_EXIT', true);
+    
+    // Charger la configuration de la base de données
     require_once __DIR__ . '/config/db.php';
     
     $health = [
@@ -15,20 +18,29 @@ try {
         'timestamp' => date('c'),
         'version' => '1.0.0',
         'environment' => getenv('APP_ENV') ?: 'unknown',
+        'database_type' => (!empty(getenv('DATABASE_URL')) || getenv('DB_CONNECTION') === 'pgsql') ? 'postgresql_supabase' : 'mysql',
         'checks' => []
     ];
     
     // Check Database
-    try {
-        $pdo->query("SELECT 1");
-        $health['checks']['database'] = [
-            'status' => 'up',
-            'message' => 'Connexion base de données OK'
-        ];
-    } catch (Exception $e) {
+    if (isset($pdo) && $pdo !== null) {
+        try {
+            $pdo->query("SELECT 1");
+            $health['checks']['database'] = [
+                'status' => 'up',
+                'message' => 'Connexion base de données OK'
+            ];
+        } catch (Exception $e) {
+            $health['checks']['database'] = [
+                'status' => 'down',
+                'message' => 'Requête de test échouée: ' . $e->getMessage()
+            ];
+            $health['status'] = 'unhealthy';
+        }
+    } else {
         $health['checks']['database'] = [
             'status' => 'down',
-            'message' => 'Connexion base de données échouée'
+            'message' => 'Connexion base de données échouée' . ($dbError ? ": $dbError" : '')
         ];
         $health['status'] = 'unhealthy';
     }

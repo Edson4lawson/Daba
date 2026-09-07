@@ -31,16 +31,22 @@ define('DB_PASS', getenv('DB_PASS') ?: ($_ENV['DB_PASS'] ?? ''));
 // CONNEXION PDO SÉCURISÉE
 // =============================================================================
 
+$pdo = null;
+$dbError = null;
+
 try {
     if (!empty(DATABASE_URL) || DB_CONNECTION === 'pgsql') {
         // --- PostgreSQL / Supabase ---
         if (!empty(DATABASE_URL)) {
-            $parsed = parse_url(DATABASE_URL);
+            $rawUrl = DATABASE_URL;
+            // Normaliser l'URL de connexion
+            $parsed = parse_url($rawUrl);
+            
             $pgHost = $parsed['host'] ?? DB_HOST;
             $pgPort = $parsed['port'] ?? 5432;
             $pgUser = isset($parsed['user']) ? urldecode($parsed['user']) : DB_USER;
             $pgPass = isset($parsed['pass']) ? urldecode($parsed['pass']) : DB_PASS;
-            $pgName = isset($parsed['path']) ? ltrim($parsed['path'], '/') : DB_NAME;
+            $pgName = isset($parsed['path']) ? ltrim(explode('?', $parsed['path'])[0], '/') : DB_NAME;
         } else {
             $pgHost = DB_HOST;
             $pgPort = DB_PORT;
@@ -49,14 +55,22 @@ try {
             $pgName = DB_NAME;
         }
 
-        $dsn = "pgsql:host={$pgHost};port={$pgPort};dbname={$pgName};sslmode=prefer";
+        // Supabase requiert sslmode=require (ou sslmode=prefer en fallback)
+        $dsn = "pgsql:host={$pgHost};port={$pgPort};dbname={$pgName};sslmode=require";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_TIMEOUT => 5
         ];
 
-        $pdo = new PDO($dsn, $pgUser, $pgPass, $options);
+        try {
+            $pdo = new PDO($dsn, $pgUser, $pgPass, $options);
+        } catch (PDOException $pgEx) {
+            // Deuxième tentative avec sslmode=prefer si require échoue en local
+            $fallbackDsn = "pgsql:host={$pgHost};port={$pgPort};dbname={$pgName};sslmode=prefer";
+            $pdo = new PDO($fallbackDsn, $pgUser, $pgPass, $options);
+        }
     } else {
         // --- MySQL / Laragon Local ---
         $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
@@ -64,7 +78,8 @@ try {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'"
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'",
+            PDO::ATTR_TIMEOUT => 5
         ];
 
         if (APP_ENV === 'production' && getenv('MYSQL_SSL_CA')) {
@@ -75,14 +90,21 @@ try {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
     }
 } catch (PDOException $e) {
-    if (APP_ENV !== 'production') {
-        error_log('Erreur DB: ' . $e->getMessage());
+    $dbError = $e->getMessage();
+    error_log('Erreur DB: ' . $dbError);
+    
+    // Si appelé depuis health.php, ne pas faire de exit() pour laisser le health check répondre
+    if (defined('NO_DB_AUTO_EXIT') && NO_DB_AUTO_EXIT) {
+        $pdo = null;
+        return;
     }
+    
+    $isDebug = (getenv('APP_DEBUG') === 'true' || ($_ENV['APP_DEBUG'] ?? '') === 'true' || APP_ENV !== 'production');
     
     http_response_code(500);
     echo json_encode([
         'error' => 'Service temporairement indisponible',
-        'details' => APP_ENV !== 'production' ? $e->getMessage() : null
+        'details' => $isDebug ? $dbError : null
     ]);
     exit();
 }
