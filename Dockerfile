@@ -81,12 +81,13 @@ RUN sed -i 's/user = nobody/user = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
     && sed -i 's/;listen.group = nobody/listen.group = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
     && sed -i 's/;listen.mode = 0660/listen.mode = 0660/g' /usr/local/etc/php-fpm.d/www.conf
 
-# Exposer le port PHP-FPM
-EXPOSE 9000
+# Exposer le port HTTP
+EXPOSE 8080 10000 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD php -r "file_exists('http://localhost:9000/health.php') || exit(1;"
+# Health check HTTP
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+    CMD php -r "file_get_contents('http://localhost:' . (getenv('PORT') ?: '8080') . '/health.php') !== false || exit(1);"
 
-# Démarrer PHP-FPM
-CMD ["php-fpm"]
+# Démarrer le serveur Web PHP avec le routeur centralisé
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} backend/index.php"]
+

@@ -11,22 +11,24 @@ services:
         value: production
       - key: APP_DEBUG
         value: false
+      - key: DB_CONNECTION
+        value: pgsql
       - key: DATABASE_URL
-        fromDatabase:
-          name: daba-db
-          property: connectionString
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
       - key: PAYMENT_SECRET_KEY
         generateValue: true
+      - key: EXTERNAL_API_KEY
+        generateValue: true
       - key: FRONTEND_URL
         value: https://daba.vercel.app
       - key: API_URL
         value: https://daba-api.onrender.com
       - key: ALLOWED_ORIGINS
-        value: https://daba.vercel.app,https://www.daba.com,https://daba.com
+        value: https://daba.vercel.app,https://www.daba.tg,https://daba.tg
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
@@ -41,11 +43,6 @@ services:
         sync: false
       - key: RECAPTCHA_SECRET_KEY
         sync: false
-    healthCheckPath: /
+    healthCheckPath: /health.php
     autoDeploy: false
 
-databases:
-  - name: daba-db
-    databaseName: daba
-    user: daba_user
-    plan: free
