@@ -9,7 +9,7 @@ export default defineConfig({
     vue(),
     tailwindcss(),
   ],
-  root: './frontend',          // index.html + src/ sont dans frontend/
+  root: './frontend',
   base: './',
   resolve: {
     alias: {
@@ -17,11 +17,11 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,   // 0.0.0.0 → accessible depuis le réseau local (téléphone)
+    host: true,
     port: 5173,
   },
   build: {
-    outDir: './frontend/dist',
+    outDir: '../dist',
     emptyOutDir: true,
     chunkSizeWarningLimit: 1000,
   },
