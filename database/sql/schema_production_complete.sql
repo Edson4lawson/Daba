@@ -464,7 +464,7 @@ INSERT INTO categories (name, slug, description, image_url, icon) VALUES
 ('Accessoire anti-insecte', 'accessoire-anti-insecte', 'Accessoires anti-insecte', NULL, 'solar:bug-bold'),
 ('Bricolage', 'bricolage', 'Outils de bricolage', NULL, 'solar:wrench-bold'),
 ('Accessoire High-Tech', 'accessoire-high-tech', 'Accessoires High-Tech', NULL, 'solar:laptop-bold'),
-('Collection Bloom', 'collection-bloom', 'Collection exclusive Bloom', NULL, 'solar:crown-bold'),
+('Collection Daba', 'collection-daba', 'Collection exclusive Daba', NULL, 'solar:crown-bold'),
 ('Range vaisselle', 'range-vaisselle', 'Rangement pour vaisselle', NULL, 'solar:sort-bold')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 

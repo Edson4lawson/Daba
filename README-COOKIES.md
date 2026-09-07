@@ -348,7 +348,7 @@ describe('useCookieConsent', () => {
 ### Contact
 
 Pour toute question ou problème, contactez :
-- 📧 Email : privacy@bloombychloe.bj
+- 📧 Email : contact@daba.tg
 - 📱 Téléphone : +229 XX XX XX XX
 
 ---

@@ -248,7 +248,7 @@ INSERT INTO categories (name, slug, description, image_url, icon) VALUES
 ('Accessoire anti-insecte', 'accessoire-anti-insecte', 'Accessoires anti-insecte', NULL, 'solar:bug-bold'),
 ('Bricolage', 'bricolage', 'Outils de bricolage', NULL, 'solar:wrench-bold'),
 ('Accessoire High-Tech', 'accessoire-high-tech', 'Accessoires High-Tech', NULL, 'solar:laptop-bold'),
-('Collection Bloom', 'collection-bloom', 'Collection exclusive Bloom', NULL, 'solar:crown-bold'),
+('Collection Daba', 'collection-daba', 'Collection exclusive Daba', NULL, 'solar:crown-bold'),
 ('Range vaisselle', 'range-vaisselle', 'Rangement pour vaisselle', NULL, 'solar:sort-bold')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 
@@ -256,5 +256,5 @@ ON DUPLICATE KEY UPDATE name=VALUES(name);
 -- CRÉATION D'UN UTILISATEUR ADMIN PAR DÉFAUT (mot de passe: Admin123!)
 -- =============================================================================
 INSERT INTO users (email, password, first_name, last_name, role) VALUES
-('admin@DABA.com', '$2y$12$LJ3m4ys.NUOvGQZ5UYueNe/FgKR5F0VHuVkYW3N.JQG/5.hxljMaO', 'Admin', 'Bloom', 'admin')
+('admin@daba.tg', '$2y$12$LJ3m4ys.NUOvGQZ5UYueNe/FgKR5F0VHuVkYW3N.JQG/5.hxljMaO', 'Admin', 'Daba', 'admin')
 ON DUPLICATE KEY UPDATE email=email;

@@ -75,7 +75,7 @@ Ce guide explique comment déployer Daba en production sur Render (backend PHP) 
 ### 1.3 Créer le Service Web PHP
 
 1. Dans Render, cliquez sur **"New +"** → **"Web Service"**
-2. Connectez votre dépôt GitHub Bloom-Chloé
+2. Connectez votre dépôt GitHub Daba
 3. Configurez :
    - **Name**: `daba-api`
    - **Region**: Même région que la base de données
@@ -137,7 +137,7 @@ CMD ["php-fpm"]
 ### 2.2 Déployer le Frontend
 
 1. Dans Vercel, cliquez sur **"Add New..."** → **"Project"**
-2. Sélectionnez votre dépôt GitHub Bloom-Chloé
+2. Sélectionnez votre dépôt GitHub Daba
 3. Configurez :
    - **Framework Preset**: Vue.js
    - **Root Directory**: `frontend`
@@ -349,7 +349,7 @@ VITE_RECAPTCHA_SITE_KEY=votre_cle_recaptcha
    ```bash
    SENDGRID_API_KEY=SG.votre_cle
    SENDGRID_FROM_EMAIL=noreply@daba.com
-   SENDGRID_FROM_NAME=Bloom Chloé
+   SENDGRID_FROM_NAME=Daba
    ```
 
 ### 5.3 Cloudinary (Images)

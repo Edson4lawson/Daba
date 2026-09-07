@@ -1,6 +1,6 @@
 <?php
 /**
- * Script de migration PostgreSQL pour Bloom Chloé
+ * Script de migration PostgreSQL pour Daba
  * Exécute les migrations SQL sur la base de données PostgreSQL
  */
 

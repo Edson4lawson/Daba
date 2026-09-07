@@ -495,8 +495,8 @@
 
 1. **Exécuter les migrations:**
    ```bash
-   mysql -u root -p bloom_chloe < database/migrations/002_2fa_tables.txt
-   mysql -u root -p bloom_chloe < database/migrations/003_rbac_permissions.txt
+   mysql -u root -p daba < database/migrations/002_2fa_tables.txt
+   mysql -u root -p daba < database/migrations/003_rbac_permissions.txt
    ```
 
 2. **Configurer les variables d'environnement:**
@@ -532,7 +532,7 @@
 
 ## CONCLUSION
 
-Le projet Bloom-Chloé a atteint un **niveau de sécurité élevé** avec l'implémentation de:
+Le projet Daba a atteint un **niveau de sécurité élevé** avec l'implémentation de:
 
 - ✅ Authentification multi-facteurs
 - ✅ RBAC granulaire

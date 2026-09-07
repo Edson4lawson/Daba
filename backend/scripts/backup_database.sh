@@ -1,16 +1,16 @@
 #!/bin/bash
 # =============================================================================
-# SCRIPT DE SAUVEGARDE AUTOMATIQUE CHIFFRÉE - BLOOM-CHLOE
+# SCRIPT DE SAUVEGARDE AUTOMATIQUE CHIFFRÉE - DABA
 # Sauvegarde MySQL avec chiffrement AES-256-GCM
 # =============================================================================
 
 # Configuration
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-3306}"
-DB_NAME="${DB_NAME:-bloom_chloe}"
+DB_NAME="${DB_NAME:-daba}"
 DB_USER="${DB_USER:-root}"
 DB_PASSWORD="${DB_PASSWORD:-}"
-BACKUP_DIR="${BACKUP_DIR:-/var/backups/bloom-chloe}"
+BACKUP_DIR="${BACKUP_DIR:-/var/backups/daba}"
 ENCRYPTION_KEY="${ENCRYPTION_KEY}"
 S3_BUCKET="${S3_BUCKET:-}"
 RETENTION_DAYS="${RETENTION_DAYS:-30}"
@@ -20,7 +20,7 @@ mkdir -p "$BACKUP_DIR"
 
 # Date du jour
 DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="$BACKUP_DIR/bloom_chloe_$DATE.sql"
+BACKUP_FILE="$BACKUP_DIR/daba_$DATE.sql"
 ENCRYPTED_FILE="$BACKUP_FILE.enc"
 
 echo "[$(date)] Début de la sauvegarde de la base de données..."
@@ -61,19 +61,17 @@ echo "[$(date)] Chiffrement terminé. Upload vers S3..."
 
 # Upload vers S3 si configuré
 if [ -n "$S3_BUCKET" ]; then
-    aws s3 cp "$ENCRYPTED_FILE" "s3://$S3_BUCKET/database-backups/bloom_chloe_$DATE.sql.enc"
-    
+    aws s3 cp "$ENCRYPTED_FILE" "s3://$S3_BUCKET/database-backups/daba_$DATE.sql.enc"
     if [ $? -eq 0 ]; then
-        echo "[$(date)] Upload S3 réussi. Suppression du fichier local..."
-        rm -f "$ENCRYPTED_FILE"
+        echo "[$(date)] Sauvegarde uploadée sur S3 avec succès"
     else
-        echo "[$(date)] AVERTISSEMENT: Upload S3 échoué, fichier conservé localement"
+        echo "[$(date)] ERREUR: Échec de l'upload sur S3"
     fi
 fi
 
-# Nettoyage des anciennes sauvegardes
+# Nettoyer les anciennes sauvegardes locales
 echo "[$(date)] Nettoyage des sauvegardes de plus de $RETENTION_DAYS jours..."
-find "$BACKUP_DIR" -name "bloom_chloe_*.sql.enc" -mtime +$RETENTION_DAYS -delete
+find "$BACKUP_DIR" -name "daba_*.sql.enc" -mtime +$RETENTION_DAYS -delete
 
 # Nettoyage S3
 if [ -n "$S3_BUCKET" ]; then

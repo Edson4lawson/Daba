@@ -1,6 +1,6 @@
 <?php
 /**
- * Health Check Endpoint - Bloom Chloé API
+ * Health Check Endpoint - Daba API
  * Utilisé par Render et les load balancers pour vérifier la santé du service
  */
 

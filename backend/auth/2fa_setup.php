@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration 2FA (Two-Factor Authentication) - Bloom Chloé
+ * Configuration 2FA (Two-Factor Authentication) - Daba
  * Génère un secret TOTP et un QR code pour l'activation
  * 
  * @endpoint POST /api/auth/2fa/setup
@@ -24,7 +24,7 @@ try {
     $secret = generateTOTPSecret();
     
     // Nom de l'application pour le QR code
-    $appName = 'Bloom Chloé';
+    $appName = 'Daba';
     $accountName = $user['email'];
     
     // Générer l'URL OTPAuth pour le QR code

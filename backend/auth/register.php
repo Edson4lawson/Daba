@@ -183,7 +183,7 @@ function sendVerificationEmail($email, $firstName, $token) {
     $verifyUrl = getenv('FRONTEND_URL') . "/verify-email?token=$token";
     
     // Implémenter avec PHPMailer, SendGrid, etc.
-    // $subject = "Vérifiez votre email - Bloom Chloé";
+    // $subject = "Vérifiez votre email - Daba";
     // ...
 }
 ?>

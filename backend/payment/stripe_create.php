@@ -1,6 +1,6 @@
 <?php
 /**
- * Création de session de paiement Stripe - Bloom Chloé
+ * Création de session de paiement Stripe - Daba
  * Crée une session Checkout Stripe pour le paiement
  * 
  * @endpoint POST /payment/stripe-create

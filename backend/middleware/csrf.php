@@ -1,6 +1,6 @@
 <?php
 /**
- * Protection CSRF (Cross-Site Request Forgery) - Bloom Chloé
+ * Protection CSRF (Cross-Site Request Forgery) - Daba
  * Génère et valide les tokens CSRF
  * 
  * @author Security Audit

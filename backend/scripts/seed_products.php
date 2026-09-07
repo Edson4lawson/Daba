@@ -191,10 +191,10 @@ $products = [
     ['name' => 'Montre connectée sport', 'category' => 'Accessoire High-Tech', 'price' => 25000, 'image' => 'produit86.jpg', 'desc' => 'Smartwatch avec écran AMOLED, suivi santé, GPS et autonomie 14 jours.'],
     ['name' => 'Enceinte Bluetooth étanche', 'category' => 'Accessoire High-Tech', 'price' => 12000, 'image' => 'produit87.jpg', 'desc' => 'Enceinte Bluetooth 5.0 portable étanche IPX7 avec basses profondes et 24h d\'autonomie.'],
     
-    // Collection Bloom
-    ['name' => 'Coffret beauté Bloom Essentiel', 'category' => 'Collection Bloom', 'price' => 35000, 'image' => 'produit88.jpg', 'desc' => 'Coffret exclusif Bloom by Chloé avec sélection de nos meilleurs produits beauté.'],
-    ['name' => 'Eau de parfum Bloom Signature', 'category' => 'Collection Bloom', 'price' => 28000, 'image' => 'produit89.jpg', 'desc' => 'Eau de parfum exclusive Bloom Signature — notes florales de jasmin, rose et iris.'],
-    ['name' => 'Crème visage Bloom Éclat', 'category' => 'Collection Bloom', 'price' => 15000, 'image' => 'produit90.jpg', 'desc' => 'Crème hydratante visage à l\'extrait de rose et acide hyaluronique, teint éclatant.'],
+    // Collection Daba
+    ['name' => 'Coffret beauté Daba Essentiel', 'category' => 'Collection Daba', 'price' => 35000, 'image' => 'produit88.jpg', 'desc' => 'Coffret exclusif Daba avec sélection de nos meilleurs produits beauté.'],
+    ['name' => 'Eau de parfum Daba Signature', 'category' => 'Collection Daba', 'price' => 28000, 'image' => 'produit89.jpg', 'desc' => 'Eau de parfum exclusive Daba Signature — notes florales de jasmin, rose et iris.'],
+    ['name' => 'Crème visage Daba Éclat', 'category' => 'Collection Daba', 'price' => 15000, 'image' => 'produit90.jpg', 'desc' => 'Crème hydratante visage à l\'extrait de rose et acide hyaluronique, teint éclatant.'],
     
     // Range vaisselle
     ['name' => 'Égouttoir vaisselle 2 niveaux', 'category' => 'Range vaisselle', 'price' => 8000, 'image' => 'produit52.jpg', 'desc' => 'Égouttoir vaisselle en acier inox 2 niveaux avec bac récupérateur d\'eau.'],

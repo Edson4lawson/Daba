@@ -1,6 +1,6 @@
 -- =============================================================================
 -- MIGRATION: TABLES POUR 2FA (Two-Factor Authentication)
--- Bloom Chloé - Sécurité
+-- Daba - Sécurité
 -- =============================================================================
 
 -- Table pour stocker les secrets 2FA des utilisateurs

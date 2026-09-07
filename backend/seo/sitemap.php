@@ -1,6 +1,6 @@
 <?php
 /**
- * Générateur de Sitemap XML Dynamique - Bloom Chloé
+ * Générateur de Sitemap XML Dynamique - Daba
  * Génère un sitemap.xml optimisé pour Google et les autres moteurs de recherche
  * 
  * @endpoint GET /sitemap.xml

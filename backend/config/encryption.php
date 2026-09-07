@@ -1,6 +1,6 @@
 <?php
 /**
- * Chiffrement AES-256-GCM - Bloom Chloé
+ * Chiffrement AES-256-GCM - Daba
  * Chiffrement des données sensibles (numéros de téléphone, adresses, etc.)
  * 
  * @author Security Audit

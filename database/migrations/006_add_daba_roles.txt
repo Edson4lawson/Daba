@@ -1,5 +1,5 @@
 -- Migration 006: Ajout des rôles Daba (commercial, magasinier, comptable)
--- Bloom Chloé / Daba Project
+-- Daba Project
 -- Date: 2026-07-31
 -- Cette migration ajoute 3 nouveaux rôles sans modifier les rôles existants
 

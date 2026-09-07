@@ -1,6 +1,6 @@
 <?php
 /**
- * Stripe Webhook Handler - Bloom Chloé
+ * Stripe Webhook Handler - Daba
  * Traite les webhooks Stripe pour confirmer les paiements
  * 
  * @endpoint POST /payment/stripe-webhook

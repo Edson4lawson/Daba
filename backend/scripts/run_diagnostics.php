@@ -1,11 +1,11 @@
 <?php
 /**
- * Script de diagnostic complet de Bloom-Chloé
+ * Script de diagnostic complet de Daba
  */
 
 require_once __DIR__ . '/../config/db.php';
 
-echo "=== DIAGNOSTIC BLOOM-CHLOÉ ===\n\n";
+echo "=== DIAGNOSTIC DABA ===\n\n";
 
 $errors = [];
 $warnings = [];

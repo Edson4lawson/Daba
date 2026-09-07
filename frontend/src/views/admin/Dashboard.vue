@@ -1,7 +1,7 @@
 <template>
     <!-- 
-    Tableau de Bord Administrateur (Dashboard)
-    Point d'entrée de la gestion Bloom. Affiche les statistiques clés (KPI),
+    Dashboard.vue - Administration Daba
+    Point d'entrée de la gestion Daba. Affiche les statistiques clés (KPI),
   -->
   <div class="space-y-8">
     <!-- En-tête contextuel avec Date Dynamique -->

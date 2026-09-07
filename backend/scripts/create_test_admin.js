@@ -5,7 +5,7 @@ localStorage.setItem('access_token', 'test_admin_token');
 localStorage.setItem('refresh_token', 'test_refresh_token');
 localStorage.setItem('user', JSON.stringify({
   id: 1,
-  email: 'admin@bloom-chloe.com',
+  email: 'admin@daba.tg',
   first_name: 'Admin',
   last_name: 'User',
   role: 'admin'

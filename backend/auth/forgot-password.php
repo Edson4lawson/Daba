@@ -85,7 +85,7 @@ function sendPasswordResetEmail($email, $firstName, $token) {
     $resetUrl = getenv('FRONTEND_URL') . "/reset-password?token=$token";
     
     // Exemple avec mail() natif (non recommandé en production)
-    // $subject = "Réinitialisation de votre mot de passe - Bloom Chloé";
+    // $subject = "Réinitialisation de votre mot de passe - Daba";
     // $message = "Bonjour $firstName,\n\nCliquez ici pour réinitialiser votre mot de passe:\n$resetUrl\n\nCe lien expire dans 1 heure.";
     // $headers = "From: noreply@daba.com";
     // mail($email, $subject, $message, $headers);

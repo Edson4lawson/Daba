@@ -1,6 +1,6 @@
 <?php
 /**
- * Middleware de vérification 2FA - Bloom Chloé
+ * Middleware de vérification 2FA - Daba
  * Vérifie que le 2FA est activé et validé pour les administrateurs
  * 
  * @author Security Audit

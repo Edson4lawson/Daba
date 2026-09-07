@@ -1,5 +1,5 @@
-﻿/**
- * Utilitaires de sanitization pour Bloom-Chloe
+/**
+ * Utilitaires de sanitization pour Daba
  * Protection contre XSS et autres injections côté client
  * 
  * @module services/sanitize

@@ -1,24 +1,24 @@
 #!/bin/bash
 # =============================================================================
-# SCRIPT DE RESTAURATION DE SAUVEGARDE CHIFFRÉE - BLOOM-CHLOE
+# SCRIPT DE RESTAURATION DE SAUVEGARDE CHIFFRÉE - DABA
 # Restauration MySQL avec déchiffrement AES-256-GCM
 # =============================================================================
 
 # Configuration
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-3306}"
-DB_NAME="${DB_NAME:-bloom_chloe}"
+DB_NAME="${DB_NAME:-daba}"
 DB_USER="${DB_USER:-root}"
 DB_PASSWORD="${DB_PASSWORD:-}"
-BACKUP_DIR="${BACKUP_DIR:-/var/backups/bloom-chloe}"
+BACKUP_DIR="${BACKUP_DIR:-/var/backups/daba}"
 ENCRYPTION_KEY="${ENCRYPTION_KEY}"
 S3_BUCKET="${S3_BUCKET:-}"
 
 # Vérifier les arguments
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <fichier_sauvegarde> [--from-s3]"
-    echo "Exemple: $0 bloom_chloe_20260712_120000.sql.enc"
-    echo "Exemple S3: $0 bloom_chloe_20260712_120000.sql.enc --from-s3"
+    echo "Exemple: $0 daba_20260712_120000.sql.enc"
+    echo "Exemple S3: $0 daba_20260712_120000.sql.enc --from-s3"
     exit 1
 fi
 

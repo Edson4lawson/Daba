@@ -61,7 +61,7 @@ $fakeActivities = [
     "Une cliente est sur la page de paiement...",
     "Nouveau visiteur depuis Abidjan.",
     "Un avis 5 étoiles vient d'être soumis !",
-    "La 'Trousse de Toilette Bloom' est très demandée aujourd'hui."
+    "La 'Trousse de Toilette Daba' est très demandée aujourd'hui."
 ];
 
 $counter = 0;

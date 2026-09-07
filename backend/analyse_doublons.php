@@ -17,7 +17,7 @@ $suspiciousDirs = [
     '_abandoned_src', 
     '_old_admin_attempt',
     '_old_frontend_attempt',
-    'bloom-backend',
+    'daba-backend',
     'api'
 ];
 
@@ -83,7 +83,7 @@ echo "=============================\n";
 
 $backendDirs = [
     'backend',
-    'bloom-backend',
+    'daba-backend',
     'api'
 ];
 

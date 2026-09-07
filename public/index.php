@@ -1,6 +1,6 @@
 <?php
 /**
- * Point d'entrée principal - Bloom Chloé API
+ * Point d'entrée principal - Daba API
  * Ce fichier sert de router pour toutes les requêtes API
  */
 

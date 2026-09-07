@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="space-y-6">
     <div class="newsletter-header flex items-center justify-between">
       <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Inscriptions Newsletter</h1>
@@ -120,7 +120,7 @@ const exportToCSV = () => {
   const link = document.createElement("a")
   const url = URL.createObjectURL(blob)
   link.setAttribute("href", url)
-  link.setAttribute("download", "subscribers_Bloom.csv")
+  link.setAttribute("download", "subscribers_Daba.csv")
   link.style.visibility = 'hidden'
   document.body.appendChild(link)
   link.click()

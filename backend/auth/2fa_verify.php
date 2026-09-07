@@ -1,6 +1,6 @@
 <?php
 /**
- * Vérification 2FA (Two-Factor Authentication) - Bloom Chloé
+ * Vérification 2FA (Two-Factor Authentication) - Daba
  * Vérifie le code TOTP et active le 2FA
  * 
  * @endpoint POST /api/auth/2fa/verify

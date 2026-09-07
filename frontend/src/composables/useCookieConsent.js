@@ -1,4 +1,4 @@
-﻿import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // Cookie consent composable for global use
 export function useCookieConsent() {
@@ -10,7 +10,7 @@ export function useCookieConsent() {
     functional: false
   })
 
-  const COOKIE_NAME = 'bloom_cookie_consent'
+  const COOKIE_NAME = 'daba_cookie_consent'
   const CONSENT_VERSION = '1.0'
 
   // Get cookie value

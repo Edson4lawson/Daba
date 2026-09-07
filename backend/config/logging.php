@@ -1,6 +1,6 @@
 <?php
 /**
- * Journalisation Centralisée - Bloom Chloé
+ * Journalisation Centralisée - Daba
  * Système de logging structuré pour les événements de sécurité
  * 
  * @author Security Audit
@@ -152,7 +152,7 @@ class SecurityLogger {
         // Envoyer email d'alerte
         $to = getenv('ALERT_EMAIL');
         if ($to) {
-            $subject = "[ALERT] Bloom Chloé - {$logEntry['category']}: {$logEntry['level']}";
+            $subject = "[ALERT] Daba - {$logEntry['category']}: {$logEntry['level']}";
             $body = json_encode($logEntry, JSON_PRETTY_PRINT);
             
             // Utiliser mail() ou un service comme SendGrid

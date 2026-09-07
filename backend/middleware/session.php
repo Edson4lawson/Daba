@@ -1,6 +1,6 @@
 <?php
 /**
- * Gestion de Sessions Sécurisées - Bloom Chloé
+ * Gestion de Sessions Sécurisées - Daba
  * Implémente HttpOnly, Secure, SameSite, rotation, expiration
  * 
  * @author Security Audit

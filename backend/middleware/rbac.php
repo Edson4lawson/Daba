@@ -1,6 +1,6 @@
 <?php
 /**
- * Middleware RBAC (Role-Based Access Control) - Bloom Chloé
+ * Middleware RBAC (Role-Based Access Control) - Daba
  * Vérifie les permissions granulaires des utilisateurs
  * 
  * @author Security Audit

@@ -44,14 +44,14 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Créer l'utilisateur de l'application
-RUN addgroup -g 1000 bloom && \
-    adduser -D -u 1000 -G bloom -h /var/www bloom
+RUN addgroup -g 1000 daba && \
+    adduser -D -u 1000 -G daba -h /var/www daba
 
 # Définir le répertoire de travail
 WORKDIR /var/www
 
 # Copier les fichiers de l'application
-COPY --chown=bloom:bloom . /var/www
+COPY --chown=daba:daba . /var/www
 
 # Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader --no-interaction
@@ -69,16 +69,16 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
 
 # Créer les répertoires nécessaires avec les bons permissions
 RUN mkdir -p /var/www/backend/logs \
-    /var/www/bloom_rate_limit \
+    /var/www/daba_rate_limit \
     /var/log/php \
-    && chown -R bloom:bloom /var/www \
+    && chown -R daba:daba /var/www \
     && chmod -R 755 /var/www
 
 # Configurer PHP-FPM
-RUN sed -i 's/user = nobody/user = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
-    && sed -i 's/group = nobody/group = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
-    && sed -i 's/;listen.owner = nobody/listen.owner = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
-    && sed -i 's/;listen.group = nobody/listen.group = bloom/g' /usr/local/etc/php-fpm.d/www.conf \
+RUN sed -i 's/user = nobody/user = daba/g' /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i 's/group = nobody/group = daba/g' /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i 's/;listen.owner = nobody/listen.owner = daba/g' /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i 's/;listen.group = nobody/listen.group = daba/g' /usr/local/etc/php-fpm.d/www.conf \
     && sed -i 's/;listen.mode = 0660/listen.mode = 0660/g' /usr/local/etc/php-fpm.d/www.conf
 
 # Exposer le port HTTP

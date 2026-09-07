@@ -1,6 +1,6 @@
 <?php
 /**
- * Sécurité des Uploads de Fichiers - Bloom Chloé
+ * Sécurité des Uploads de Fichiers - Daba
  * Validation stricte des fichiers uploadés
  * 
  * @author Security Audit

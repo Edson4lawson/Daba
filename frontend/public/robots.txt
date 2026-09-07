@@ -1,28 +1,26 @@
 # =============================================================================
-# BLOOM-CHLOE - robots.txt
+# DABA - robots.txt
 # Optimisé pour le référencement naturel et l'indexation par les IA
-# Dernière mise à jour: 2026-07-12
 # =============================================================================
 
 User-agent: *
-Allow: /
-
 # Autoriser l'indexation des assets statiques optimisés
 Allow: /assets/
 Allow: /images/
 
-# Bloquer les fichiers sensibles
-Disallow: /api/
+# DABA - robots.txt
+# Permet le crawl des moteurs de recherche tout en protégeant les pages sensibles
+
+User-agent: *
+Allow: /
 Disallow: /admin/
-Disallow: /bloom-manager/
-Disallow: /auth/
-Disallow: /cart/
-Disallow: /checkout/
-Disallow: /*.json$
-Disallow: /*.env$
+Disallow: /checkout
+Disallow: /profile
+Disallow: /api/
 
 # Sitemap
-Sitemap: https://bloom-chloe.com/sitemap.xml
+Sitemap: https://daba.tg/sitemap.xml
+
 
 # =============================================================================
 # GOOGLE SEARCH CONSOLE VERIFICATION

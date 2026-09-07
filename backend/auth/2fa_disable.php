@@ -1,6 +1,6 @@
 <?php
 /**
- * Désactivation 2FA (Two-Factor Authentication) - Bloom Chloé
+ * Désactivation 2FA (Two-Factor Authentication) - Daba
  * Désactive le 2FA pour un utilisateur (nécessite confirmation)
  * 
  * @endpoint POST /api/auth/2fa/disable

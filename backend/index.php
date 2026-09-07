@@ -1,6 +1,6 @@
 <?php
 /**
- * Routeur principal - Bloom Chloé Backend
+ * Routeur principal - Daba Backend
  * Gère toutes les requêtes API et envoie les headers CORS
  */
 
@@ -32,7 +32,7 @@ $path = trim($path, '/');
 // Si le chemin est vide, rediriger vers la racine
 if (empty($path) || $path === 'index.php') {
     header('Content-Type: application/json');
-    echo json_encode(['message' => 'Bloom Chloé API', 'version' => '1.0.0']);
+    echo json_encode(['message' => 'Daba API', 'version' => '1.0.0']);
     exit();
 }
 

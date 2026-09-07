@@ -18,10 +18,10 @@ INSERT IGNORE INTO users (
     email_verified_at,
     created_at
 ) VALUES (
-    'admin@DABA.com',
+    'admin@daba.tg',
     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- hash de "admin123"
     'Admin',
-    'Bloom Chloé',
+    'Daba',
     'admin',
     NOW(),
     NOW()

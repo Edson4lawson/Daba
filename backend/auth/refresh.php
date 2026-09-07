@@ -100,8 +100,8 @@ try {
     if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    error_log('BLOOM ERROR [Refresh]: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
-    error_log('BLOOM ERROR [Refresh]: ' . $e->getMessage());
+    error_log('DABA ERROR [Refresh]: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    error_log('DABA ERROR [Refresh]: ' . $e->getMessage());
     sendJsonResponse(['error' => 'Erreur lors du rafraîchissement de la session.'], 500);
 }
 ?>

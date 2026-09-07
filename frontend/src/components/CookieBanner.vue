@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <Transition
     enter-active-class="transform ease-out duration-500 transition-all"
     enter-from-class="translate-y-full opacity-0"
@@ -20,7 +20,7 @@
           <div class="flex-1 text-center md:text-left">
             <h3 class="text-lg font-bold text-daba-navy mb-2">Nous utilisons des cookies 🍪</h3>
             <p class="text-sm text-daba-slate leading-relaxed">
-              Nous utilisons des cookies pour améliorer votre expérience sur Bloom by Chloe.
+              Nous utilisons des cookies pour améliorer votre expérience sur DABA.
               En continuant, vous acceptez notre
               <router-link to="/privacy" class="text-daba-orange font-medium hover:underline">politique de confidentialité</router-link>.
             </p>

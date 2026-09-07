@@ -236,7 +236,7 @@ export const adminService = {
       return {
         success: true,
         settings: {
-          store_name: 'Bloom by Chloé',
+          store_name: 'Daba',
           store_email: 'egouassangni@mail.com',
           store_phone: '+229 01 56 78 37 70',
           store_address: 'Cotonou, Littoral, Bénin',

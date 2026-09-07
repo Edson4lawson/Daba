@@ -2,7 +2,7 @@
 require_once __DIR__ . '/backend/config/db.php';
 
 header('Content-Type: text/plain');
-echo "--- DIAGNOSTIC BLOOM-CHLOE ---\n\n";
+echo "--- DIAGNOSTIC DABA ---\n\n";
 
 echo "1. Connexion DB :\n";
 try {
