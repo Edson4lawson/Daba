@@ -1,10 +1,14 @@
 node_modules/
 .env
+.env.local
+!.env.example
+!.env.production.example
+!frontend/.env.production
 dist/
 vendor/
 backend/logs/
 *.log
-bloom_rate_limit/
+daba_rate_limit/
 .vscode/
 .idea/
 test_*.php

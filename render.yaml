@@ -26,7 +26,7 @@ services:
       - key: FRONTEND_URL
         value: https://daba.vercel.app
       - key: API_URL
-        value: https://daba-api.onrender.com
+        value: https://daba-pkar.onrender.com
       - key: ALLOWED_ORIGINS
         value: https://daba.vercel.app,https://www.daba.tg,https://daba.tg
       - key: STRIPE_SECRET_KEY
