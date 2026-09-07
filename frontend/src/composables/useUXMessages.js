@@ -83,7 +83,7 @@ export function useUXMessages() {
    * Messages de confirmation positifs
    */
   const successMessages = {
-    login: 'Connexion réussie ! Bienvenue sur Bloom Chloé.',
+    login: 'Connexion réussie ! Bienvenue chez Daba.',
     register: 'Compte créé avec succès ! Un email de confirmation vous a été envoyé.',
     logout: 'Vous avez été déconnecté avec succès.',
     profile_updated: 'Votre profil a été mis à jour avec succès.',

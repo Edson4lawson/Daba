@@ -458,6 +458,10 @@ const processSteps = [
 
 // Cryptographie SHA-256 en pur JavaScript natif (pour compatibilité hors-ligne / offline demo)
 const sha256 = async (message) => {
+  if (!crypto || !crypto.subtle) {
+    console.error('crypto.subtle is not available in this context')
+    return '0000000000000000000000000000000000000000000000000000000000000000'
+  }
   const msgBuffer = new TextEncoder().encode(message)
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
   const hashArray = Array.from(new Uint8Array(hashBuffer))

@@ -17,12 +17,13 @@ require_once __DIR__ . '/env.php';
 // CONFIGURATION CORS SÉCURISÉE
 // =============================================================================
 
-$isProduction = ($_ENV['APP_ENV'] ?? 'development') === 'production';
+$isProduction = ($_ENV['APP_ENV'] ?? getenv('APP_ENV') ?? 'development') === 'production';
 
 // Origines autorisées depuis l'environnement ou hardcoded
 $allowedOrigins = [];
-if (!empty($_ENV['ALLOWED_ORIGINS'])) {
-    $allowedOrigins = explode(',', $_ENV['ALLOWED_ORIGINS']);
+$rawAllowedOrigins = $_ENV['ALLOWED_ORIGINS'] ?? getenv('ALLOWED_ORIGINS') ?? '';
+if (!empty($rawAllowedOrigins)) {
+    $allowedOrigins = explode(',', $rawAllowedOrigins);
     $allowedOrigins = array_map('trim', $allowedOrigins);
 } else {
     // Fallback pour développement - autoriser tous les ports localhost
@@ -32,7 +33,8 @@ if (!empty($_ENV['ALLOWED_ORIGINS'])) {
         'http://localhost:8080',
         'http://127.0.0.1:5173',
         'http://127.0.0.1:3000',
-        'http://127.0.0.1:8080'
+        'http://127.0.0.1:8080',
+        'http://192.168.56.1:5173'
     ];
 }
 

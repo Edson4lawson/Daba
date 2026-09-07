@@ -14,45 +14,76 @@ require_once __DIR__ . '/env.php';
 
 
 // =============================================================================
-// CONFIGURATION DE LA BASE DE DONNÉES
+// CONFIGURATION DE LA BASE DE DONNÉES (HYBRIDE MYSQL / POSTGRESQL SUPABASE)
 // =============================================================================
 
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_NAME', getenv('DB_NAME') ?: 'daba');
-define('APP_ENV', getenv('APP_ENV') ?: 'development');
+define('APP_ENV', getenv('APP_ENV') ?: ($_ENV['APP_ENV'] ?? 'development'));
+define('DB_CONNECTION', getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? 'mysql'));
+define('DATABASE_URL', getenv('DATABASE_URL') ?: ($_ENV['DATABASE_URL'] ?? ''));
+
+define('DB_HOST', getenv('DB_HOST') ?: ($_ENV['DB_HOST'] ?? '127.0.0.1'));
+define('DB_PORT', getenv('DB_PORT') ?: ($_ENV['DB_PORT'] ?? (DB_CONNECTION === 'pgsql' ? '5432' : '3306')));
+define('DB_NAME', getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? 'daba'));
+define('DB_USER', getenv('DB_USER') ?: ($_ENV['DB_USER'] ?? 'root'));
+define('DB_PASS', getenv('DB_PASS') ?: ($_ENV['DB_PASS'] ?? ''));
 
 // =============================================================================
 // CONNEXION PDO SÉCURISÉE
 // =============================================================================
 
 try {
-    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
-    
-    $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false, // ⚠️ SÉCURITÉ: Désactive l'émulation des requêtes préparées
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'"
-    ];
-    
-    // Ajouter SSL en production si configuré
-    if (APP_ENV === 'production' && getenv('MYSQL_SSL_CA')) {
-        $options[PDO::MYSQL_ATTR_SSL_CA] = getenv('MYSQL_SSL_CA');
-        $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+    if (!empty(DATABASE_URL) || DB_CONNECTION === 'pgsql') {
+        // --- PostgreSQL / Supabase ---
+        if (!empty(DATABASE_URL)) {
+            $parsed = parse_url(DATABASE_URL);
+            $pgHost = $parsed['host'] ?? DB_HOST;
+            $pgPort = $parsed['port'] ?? 5432;
+            $pgUser = isset($parsed['user']) ? urldecode($parsed['user']) : DB_USER;
+            $pgPass = isset($parsed['pass']) ? urldecode($parsed['pass']) : DB_PASS;
+            $pgName = isset($parsed['path']) ? ltrim($parsed['path'], '/') : DB_NAME;
+        } else {
+            $pgHost = DB_HOST;
+            $pgPort = DB_PORT;
+            $pgUser = DB_USER;
+            $pgPass = DB_PASS;
+            $pgName = DB_NAME;
+        }
+
+        $dsn = "pgsql:host={$pgHost};port={$pgPort};dbname={$pgName};sslmode=prefer";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+
+        $pdo = new PDO($dsn, $pgUser, $pgPass, $options);
+    } else {
+        // --- MySQL / Laragon Local ---
+        $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'"
+        ];
+
+        if (APP_ENV === 'production' && getenv('MYSQL_SSL_CA')) {
+            $options[PDO::MYSQL_ATTR_SSL_CA] = getenv('MYSQL_SSL_CA');
+            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+        }
+
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
     }
-    
-    $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
-    
 } catch (PDOException $e) {
-    // ⚠️ SÉCURITÉ: Ne jamais exposer les détails d'erreur en production
     if (APP_ENV !== 'production') {
         error_log('Erreur DB: ' . $e->getMessage());
     }
     
     http_response_code(500);
-    echo json_encode(['error' => 'Service temporairement indisponible']);
+    echo json_encode([
+        'error' => 'Service temporairement indisponible',
+        'details' => APP_ENV !== 'production' ? $e->getMessage() : null
+    ]);
     exit();
 }
 
