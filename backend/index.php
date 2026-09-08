@@ -41,8 +41,11 @@ require_once __DIR__ . '/config/headers.php';
 $requestUri = $_SERVER['REQUEST_URI'];
 $scriptName = $_SERVER['SCRIPT_NAME'];
 
-// Extraire le chemin relatif (enlever la partie du script)
+// Extraire le chemin relatif
 $path = parse_url($requestUri, PHP_URL_PATH);
+
+// Le serveur est démarré avec backend/index.php comme document root
+// Donc le chemin est déjà relatif au dossier backend
 $path = str_replace(dirname($scriptName), '', $path);
 $path = str_replace('/backend', '', $path);
 $path = trim($path, '/');
