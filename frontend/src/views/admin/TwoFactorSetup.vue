@@ -30,8 +30,56 @@
           {{ success }}
         </div>
 
-        <!-- Step 1: Generate QR Code -->
+        <!-- Step 1: Choose Method -->
         <div v-if="step === 1">
+          <div class="text-center mb-6">
+            <h2 class="text-lg font-black text-daba-navy dark:text-white mb-2">Choisissez votre méthode de 2FA</h2>
+            <p class="text-sm text-daba-slate dark:text-daba-slate-dark">
+              Sélectionnez comment vous souhaitez recevoir vos codes de vérification
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <!-- QR Code Option -->
+            <button 
+              @click="method = 'qr'; step = 2"
+              class="w-full p-6 bg-white dark:bg-daba-dark-bg/50 border-2 border-daba-cream-alt dark:border-daba-dark-border hover:border-daba-orange rounded-2xl text-left transition-all hover:scale-[1.02]"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-daba-orange/10 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-daba-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-black text-daba-navy dark:text-white">Application d'authentification</h3>
+                  <p class="text-xs text-daba-slate dark:text-daba-slate-dark">Google Authenticator, Authy, etc.</p>
+                </div>
+              </div>
+            </button>
+
+            <!-- Email Option -->
+            <button 
+              @click="method = 'email'; step = 3"
+              class="w-full p-6 bg-white dark:bg-daba-dark-bg/50 border-2 border-daba-cream-alt dark:border-daba-dark-border hover:border-daba-orange rounded-2xl text-left transition-all hover:scale-[1.02]"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-daba-navy/10 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-daba-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-black text-daba-navy dark:text-white">Email</h3>
+                  <p class="text-xs text-daba-slate dark:text-daba-slate-dark">Recevoir un code par email</p>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Generate QR Code -->
+        <div v-if="step === 2">
           <div class="text-center mb-6">
             <h2 class="text-lg font-black text-daba-navy dark:text-white mb-2">Activer la double authentification</h2>
             <p class="text-sm text-daba-slate dark:text-daba-slate-dark">
@@ -79,15 +127,22 @@
 
           <button 
             v-if="qrCodeData"
-            @click="step = 2"
+            @click="step = 3"
             class="w-full py-4 bg-daba-navy text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             Continuer
           </button>
+
+          <button 
+            @click="step = 1"
+            class="w-full mt-4 py-3 text-daba-slate dark:text-daba-slate-dark font-bold text-sm hover:text-daba-orange dark:hover:text-white transition-colors"
+          >
+            ← Retour
+          </button>
         </div>
 
-        <!-- Step 2: Verify Code -->
-        <div v-if="step === 2">
+        <!-- Step 3: Verify QR Code -->
+        <div v-if="step === 3 && method === 'qr'">
           <div class="text-center mb-6">
             <h2 class="text-lg font-black text-daba-navy dark:text-white mb-2">Vérifier le code</h2>
             <p class="text-sm text-daba-slate dark:text-daba-slate-dark">
@@ -121,6 +176,47 @@
           </div>
 
           <button 
+            @click="step = 2"
+            class="w-full mt-4 py-3 text-daba-slate dark:text-daba-slate-dark font-bold text-sm hover:text-daba-orange dark:hover:text-white transition-colors"
+          >
+            ← Retour
+          </button>
+        </div>
+
+        <!-- Step 3: Send Email Code -->
+        <div v-if="step === 3 && method === 'email'">
+          <div class="text-center mb-6">
+            <h2 class="text-lg font-black text-daba-navy dark:text-white mb-2">Recevoir un code par email</h2>
+            <p class="text-sm text-daba-slate dark:text-daba-slate-dark">
+              Un code à 6 chiffres sera envoyé à votre adresse email
+            </p>
+          </div>
+
+          <button 
+            @click="sendEmailCode"
+            :disabled="loading"
+            class="w-full py-4 bg-gradient-to-r from-daba-orange to-daba-navy text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl shadow-daba-orange dark:shadow-none hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+          >
+            <span v-if="!loading">Envoyer le code par email</span>
+            <span v-else class="flex items-center justify-center gap-2">
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Envoi...
+            </span>
+          </button>
+
+          <div v-if="emailSent" class="p-4 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-2xl text-emerald-600 dark:text-emerald-400 text-sm font-bold text-center mb-6">
+            Code envoyé ! Vérifiez votre email.
+          </div>
+
+          <button 
+            v-if="emailSent"
+            @click="step = 4"
+            class="w-full py-4 bg-daba-navy text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
+          >
+            Continuer
+          </button>
+
+          <button 
             @click="step = 1"
             class="w-full mt-4 py-3 text-daba-slate dark:text-daba-slate-dark font-bold text-sm hover:text-daba-orange dark:hover:text-white transition-colors"
           >
@@ -128,8 +224,50 @@
           </button>
         </div>
 
-        <!-- Step 3: Success -->
-        <div v-if="step === 3">
+        <!-- Step 4: Verify Email Code -->
+        <div v-if="step === 4">
+          <div class="text-center mb-6">
+            <h2 class="text-lg font-black text-daba-navy dark:text-white mb-2">Vérifier le code email</h2>
+            <p class="text-sm text-daba-slate dark:text-daba-slate-dark">
+              Entrez le code à 6 chiffres reçu par email
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label class="text-[10px] font-black uppercase text-daba-slate dark:text-daba-slate-dark tracking-widest pl-2">Code reçu par email</label>
+              <input
+                v-model="verificationCode"
+                type="text"
+                maxlength="6"
+                placeholder="123456"
+                class="w-full bg-daba-cream-alt dark:bg-daba-dark-bg/50 border-2 border-daba-cream-alt dark:border-daba-dark-border focus:border-daba-orange rounded-2xl py-4 px-6 text-daba-navy dark:text-white font-bold text-center text-2xl tracking-[0.5em] outline-none transition-all"
+              />
+            </div>
+
+            <button 
+              @click="verifyEmailCode"
+              :disabled="loading || verificationCode.length !== 6"
+              class="w-full py-4 bg-gradient-to-r from-daba-orange to-daba-navy text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl shadow-daba-orange dark:shadow-none hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span v-if="!loading">Activer le 2FA</span>
+              <span v-else class="flex items-center justify-center gap-2">
+                <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                Vérification...
+              </span>
+            </button>
+          </div>
+
+          <button 
+            @click="step = 3"
+            class="w-full mt-4 py-3 text-daba-slate dark:text-daba-slate-dark font-bold text-sm hover:text-daba-orange dark:hover:text-white transition-colors"
+          >
+            ← Retour
+          </button>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div v-if="step === 5">
           <div class="text-center">
             <div class="w-20 h-20 bg-emerald-100 dark:bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg class="w-10 h-10 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,11 +299,13 @@ import api from '@/services/api'
 const router = useRouter()
 
 const step = ref(1)
+const method = ref('qr')
 const loading = ref(false)
 const error = ref(null)
 const success = ref(null)
 const qrCodeData = ref(null)
 const verificationCode = ref('')
+const emailSent = ref(false)
 
 const generateQRCode = async () => {
   loading.value = true
@@ -188,7 +328,37 @@ const verifyCode = async () => {
   try {
     const response = await api.post('/auth/2fa/verify', { code: verificationCode.value })
     success.value = response.data.message
-    step.value = 3
+    step.value = 5
+  } catch (err) {
+    error.value = err.response?.data?.error || 'Code incorrect'
+  } finally {
+    loading.value = false
+  }
+}
+
+const sendEmailCode = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await api.post('/auth/2fa/email')
+    success.value = response.data.message
+    emailSent.value = true
+  } catch (err) {
+    error.value = err.response?.data?.error || 'Erreur lors de l\'envoi de l\'email'
+  } finally {
+    loading.value = false
+  }
+}
+
+const verifyEmailCode = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await api.post('/auth/2fa/verify-email', { code: verificationCode.value })
+    success.value = response.data.message
+    step.value = 5
   } catch (err) {
     error.value = err.response?.data?.error || 'Code incorrect'
   } finally {
