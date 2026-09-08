@@ -6,8 +6,13 @@
 
 // Gérer les requêtes OPTIONS (preflight) AVANT tout autre traitement
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Headers CORS pour preflight
-    header('Access-Control-Allow-Origin: *');
+    // Headers CORS pour preflight - autoriser explicitement l'origine Vercel
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ($origin === 'https://daba-tg.vercel.app' || $origin === 'https://daba.vercel.app') {
+        header("Access-Control-Allow-Origin: $origin");
+    } else {
+        header('Access-Control-Allow-Origin: *');
+    }
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-2FA-Token');
     header('Access-Control-Max-Age: 86400');
@@ -15,6 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit();
 }
+
+// Envoyer les headers CORS pour toutes les requêtes
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigins = ['https://daba-tg.vercel.app', 'https://daba.vercel.app', 'https://www.daba.tg', 'https://daba.tg'];
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Credentials: true');
+} else {
+    header('Access-Control-Allow-Origin: *');
+}
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token, X-2FA-Token');
+header('Access-Control-Max-Age: 86400');
 
 // Charger la configuration CORS et headers
 require_once __DIR__ . '/config/headers.php';
