@@ -18,6 +18,7 @@ const OrderConfirmation = () => import('@/views/OrderConfirmation.vue')
 
 // Pages Admin
 const AdminLogin = () => import('@/views/admin/AdminLogin.vue')
+const TwoFactorSetup = () => import('@/views/admin/TwoFactorSetup.vue')
 const AdminLayout = () => import('@/layouts/AdminLayout.vue')
 const Dashboard = () => import('@/views/admin/Dashboard.vue')
 const AdminProducts = () => import('@/views/admin/AdminProducts.vue')
@@ -130,6 +131,13 @@ const routes = [
     name: 'AdminLogin',
     component: AdminLogin,
     meta: { title: 'Admin Login — Daba' }
+  },
+  // 2FA Setup — Route séparée
+  {
+    path: '/admin/2fa-setup',
+    name: 'TwoFactorSetup',
+    component: TwoFactorSetup,
+    meta: { requiresAuth: true, title: 'Configuration 2FA — Daba' }
   },
   // Admin Dashboard (avec layout sidebar)
   {

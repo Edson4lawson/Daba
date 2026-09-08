@@ -97,7 +97,15 @@ const handleLogin = async () => {
     // Fixed: redirect to /admin/dashboard (separate from login route)
     router.push('/admin/dashboard')
   } catch (err) {
-    error.value = typeof err === 'string' ? err : 'Identifiants invalides'
+    const errorMessage = typeof err === 'string' ? err : err.response?.data?.error || 'Identifiants invalides'
+    
+    // Si 2FA requis mais pas configuré, rediriger vers la page de setup
+    if (err.response?.data?.require_2fa_setup) {
+      router.push('/admin/2fa-setup')
+      return
+    }
+    
+    error.value = errorMessage
   } finally {
     loading.value = false
   }
