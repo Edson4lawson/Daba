@@ -49,7 +49,23 @@ if (!pathinfo($filePath, PATHINFO_EXTENSION)) {
     $filePath .= '.php';
 }
 
-// Si le fichier n'existe pas, essayer dans le dossier api
+// Si le fichier n'existe pas, essayer dans les sous-dossiers
+if (!file_exists($filePath)) {
+    // Extraire le premier segment du chemin (ex: "products" de "products/get_all.php")
+    $segments = explode('/', $path);
+    if (count($segments) >= 2) {
+        $firstSegment = $segments[0];
+        $restOfPath = implode('/', array_slice($segments, 1));
+        
+        // Essayer dans le sous-dossier correspondant
+        $filePath = __DIR__ . '/' . $firstSegment . '/' . $restOfPath;
+        if (!pathinfo($filePath, PATHINFO_EXTENSION)) {
+            $filePath .= '.php';
+        }
+    }
+}
+
+// Si le fichier n'existe toujours pas, essayer dans le dossier api
 if (!file_exists($filePath)) {
     $filePath = __DIR__ . '/api/' . $path;
     if (!pathinfo($filePath, PATHINFO_EXTENSION)) {
@@ -57,9 +73,8 @@ if (!file_exists($filePath)) {
     }
 }
 
-// Si le fichier n'existe toujours pas, essayer dans les sous-dossiers
+// Si le fichier n'existe toujours pas, essayer une recherche récursive
 if (!file_exists($filePath)) {
-    // Essayer de trouver le fichier dans tous les sous-dossiers
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(__DIR__, RecursiveDirectoryIterator::SKIP_DOTS)
     );
