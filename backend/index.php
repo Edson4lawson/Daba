@@ -4,15 +4,6 @@
  * Gère toutes les requêtes API et envoie les headers CORS
  */
 
-// DEBUG LOGS - À supprimer après diagnostic
-$debugLog = fopen(__DIR__ . '/debug.log', 'a');
-fwrite($debugLog, date('Y-m-d H:i:s') . " REQUEST_URI: " . ($_SERVER['REQUEST_URI'] ?? 'N/A') . "\n");
-fwrite($debugLog, date('Y-m-d H:i:s') . " SCRIPT_NAME: " . ($_SERVER['SCRIPT_NAME'] ?? 'N/A') . "\n");
-fwrite($debugLog, date('Y-m-d H:i:s') . " REQUEST_METHOD: " . ($_SERVER['REQUEST_METHOD'] ?? 'N/A') . "\n");
-fwrite($debugLog, date('Y-m-d H:i:s') . " HTTP_ORIGIN: " . ($_SERVER['HTTP_ORIGIN'] ?? 'N/A') . "\n");
-fwrite($debugLog, "----------------------------------------\n");
-fclose($debugLog);
-
 // Gérer les requêtes OPTIONS (preflight) AVANT tout autre traitement
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Headers CORS pour preflight - autoriser explicitement l'origine Vercel
@@ -48,15 +39,9 @@ require_once __DIR__ . '/config/headers.php';
 
 // Récupérer le chemin de la requête
 $requestUri = $_SERVER['REQUEST_URI'];
-$scriptName = $_SERVER['SCRIPT_NAME'];
 
 // Extraire le chemin relatif
 $path = parse_url($requestUri, PHP_URL_PATH);
-
-// Le serveur est démarré avec backend/index.php comme document root
-// Donc le chemin est déjà relatif au dossier backend
-$path = str_replace(dirname($scriptName), '', $path);
-$path = str_replace('/backend', '', $path);
 $path = trim($path, '/');
 
 // Si le chemin est vide, rediriger vers la racine
@@ -119,14 +104,9 @@ if (!file_exists($filePath)) {
 
 // Si le fichier n'existe pas, retourner 404
 if (!file_exists($filePath)) {
-    // DEBUG LOG - Ajouter le chemin essayé
-    $debugLog = fopen(__DIR__ . '/debug.log', 'a');
-    fwrite($debugLog, date('Y-m-d H:i:s') . " 404 - Path: " . $path . ", Tried: " . $filePath . "\n");
-    fclose($debugLog);
-    
     header('Content-Type: application/json');
     http_response_code(404);
-    echo json_encode(['error' => 'Endpoint not found', 'path' => $path, 'tried' => $filePath]);
+    echo json_encode(['error' => 'Endpoint not found']);
     exit();
 }
 
