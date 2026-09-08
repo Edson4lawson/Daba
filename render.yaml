@@ -28,7 +28,7 @@ services:
       - key: API_URL
         value: https://daba-pkar.onrender.com
       - key: ALLOWED_ORIGINS
-        value: https://daba.vercel.app,https://www.daba.tg,https://daba.tg
+        value: https://daba.vercel.app,https://www.daba.tg,https://daba.tg,https://daba-tg.vercel.app
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
